@@ -4,6 +4,7 @@
  * ----------------------------------------------------------------------
  */
 import React from "react";
+import Box from '@mui/material/Box';
 /*
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
@@ -57,7 +58,10 @@ function Space(props) {
       project-component={componentName}
       project-space={spaceName}
     >
-      {children}
+     
+        {children}
+      
+     
     </div>
   );
 }

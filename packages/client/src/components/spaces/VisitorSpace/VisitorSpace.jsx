@@ -4,8 +4,9 @@
  * ----------------------------------------------------------------------
  */
 
-import { Space } from "../../components";
+import { Space, Sidebar } from "../../components";
 import { VisitorRouter } from "../../../routers";
+import * as components from "../../components";
 
 /*
  * ----------------------------------------------------------------------
@@ -89,7 +90,9 @@ function VisitorSpace() {
   return (
     <Space id="VisitorSpace" className="VisitorSpace" spaceName="Visitor">
       <div className="VisitorSpace-Body">
+      <Sidebar >
         <VisitorRouter />
+      </Sidebar>
       </div>
     </Space>
   );

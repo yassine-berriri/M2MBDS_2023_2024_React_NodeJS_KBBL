@@ -4,8 +4,9 @@
  * ----------------------------------------------------------------------
  */
 
-import { Space } from "../../components";
+import { Space, Sidebar } from "../../components";
 import { AdminRouter } from "../../../routers";
+import * as components from "../../components";
 
 /*
  * ----------------------------------------------------------------------
@@ -89,7 +90,9 @@ function AdminSpace() {
   return (
     <Space id="AdminSpace" className="AdminSpace" spaceName="Admin">
       <div className="AdminSpace-Body">
+      <Sidebar >
         <AdminRouter/>
+        </Sidebar>
       </div>
     </Space>
   );

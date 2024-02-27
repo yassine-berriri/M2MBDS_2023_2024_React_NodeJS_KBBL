@@ -18,6 +18,7 @@ import React from "react";
 import "./Visitor_HomePage.css";
 import { Link } from "react-router-dom";
 import {useNavigate} from 'react-router-dom';
+import { Page } from "../../components";
 /*
  * ----------------------------------------------------------------------
  *                                Images                                |
@@ -61,10 +62,11 @@ function Visitor_HomePage() {
    */
 
   return (
-    <div>
+    <Page>
       {console.log("Visitor_HomePage")}
       <button onClick={handleClick}>hello visitor</button>
-    </div>
+      <input type="button" value="Go to Admin" onClick={handleClick} />
+    </Page>
   );
 }
 
