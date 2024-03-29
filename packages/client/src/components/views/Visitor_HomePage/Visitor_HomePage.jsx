@@ -15,7 +15,7 @@ import React from "react";
  *                                Styles                                |
  * ----------------------------------------------------------------------
  */
-import "./Visitor_HomePage.css";
+import "./Visitor_HomePage.scss";
 import { Link } from "react-router-dom";
 import {useNavigate} from 'react-router-dom';
 import { Page } from "../../components";
@@ -47,8 +47,12 @@ function Visitor_HomePage() {
   
   function handleClick() {
     console.log("clicked");
-    <Link to="/admin" />;
     navigate("/admin");
+  }
+
+  function handleClickPxBoard() {
+    console.log("clicked");
+    navigate("/pixelBoard"); 
   }
 
   /* --------------------------------------------------------------------
@@ -64,7 +68,7 @@ function Visitor_HomePage() {
   return (
     <Page>
       {console.log("Visitor_HomePage")}
-      <button onClick={handleClick}>hello visitor</button>
+      <button onClick={handleClickPxBoard}>hello visitor</button>
       <input type="button" value="Go to Admin" onClick={handleClick} />
     </Page>
   );

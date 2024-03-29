@@ -1,9 +1,15 @@
 import Page from "./Page/Page";
 import Space from "./Space/Space";
 import Sidebar from "./Sidebar/SideBar";
+import PopupCreatePxBoard from "./Popups/PopupCreatePxBoard";
+import DropDownButton from "./Buttons/DropDownButton/DropDownButton";
+import DropDownButtonDelai from "./Buttons/DropDownButtonDelai/DropDownButtonDelai";
 
 export {
     Space,
     Page,
-    Sidebar
+    Sidebar,
+    PopupCreatePxBoard,
+    DropDownButton,
+    DropDownButtonDelai
 };

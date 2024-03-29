@@ -4,6 +4,10 @@
  * ----------------------------------------------------------------------
  */
 import React from "react";
+import { Button } from 'reactstrap';
+import { Link } from "react-router-dom";
+import {useNavigate} from 'react-router-dom';
+
 /*
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
@@ -15,6 +19,9 @@ import React from "react";
  *                                Styles                                |
  * ----------------------------------------------------------------------
  */
+
+import "./Admin_HomePage.scss";
+import { PopupCreatePxBoard } from "../../components";
 
 /*
  * ----------------------------------------------------------------------
@@ -36,10 +43,18 @@ function Admin_HomePage() {
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
+
+  function handleClick() {
+    console.log("clicked");
+    <Link to="/admin" />;
+    navigate("/admin");
+  }
+
   /* --------------------------------------------------------------------
    *                            Effect Hooks                            |
    * --------------------------------------------------------------------
    */
+  const navigate = useNavigate();
 
   /* --------------------------------------------------------------------
    *                                 JSX                                |
@@ -47,9 +62,13 @@ function Admin_HomePage() {
    */
 
   return (
-    <div>
-      {console.log("Admin_HomePage")}
-     <p>hello admin</p>
+    <div className="conatainer">
+      <div className="buttonCreate">
+      <PopupCreatePxBoard/>
+      </div>
+      <div className="pxBoardList">
+        <h3>List PixelBoards</h3>
+      </div>
     </div>
   );
 }

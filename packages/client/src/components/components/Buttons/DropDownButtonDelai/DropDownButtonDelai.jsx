@@ -3,8 +3,8 @@
  *                          Components & Functions                      |
  * ----------------------------------------------------------------------
  */
-import React from "react";
-import Box from '@mui/material/Box';
+import React, { useState } from 'react';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 /*
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
@@ -16,27 +16,29 @@ import Box from '@mui/material/Box';
  *                                Styles                                |
  * ----------------------------------------------------------------------
  */
-import "./Space.scss";
+import "./DropDownButtonDelai.scss";
 /*
  * ----------------------------------------------------------------------
  *                                Images                                |
  * ----------------------------------------------------------------------
  */
 
-function Space(props) {
+function DropDownButtonDelai(props) {
   /* --------------------------------------------------------------------
    *                               Props                                |
    * --------------------------------------------------------------------
    */
-  const { id, spaceName, children } = props;
-  const className = props.className ? `Space ${props.className}` : "Space";
-  const componentName = props.componentName
-    ? `Space ${props.componentName}`
-    : "Space";
+  const { title,onSelectSize } = props;
+
   /* --------------------------------------------------------------------
    *                              States                                |
    * --------------------------------------------------------------------
    */
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
+  const sizes = Array.from({ length: 10 }, (_, i) => (i + 1) * 5);
+
   /* --------------------------------------------------------------------
    *                             Functions                              |
    * --------------------------------------------------------------------
@@ -46,24 +48,26 @@ function Space(props) {
    * --------------------------------------------------------------------
    */
 
+
   /* --------------------------------------------------------------------
    *                                 JSX                                |
    * --------------------------------------------------------------------
    */
 
   return (
-    <div
-      id={id}
-      className={className}
-      project-component={componentName}
-      project-space={spaceName}
-    >
-     
-        {children}
-      
-     
-    </div>
+    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+    <DropdownToggle caret>
+    {title}
+    </DropdownToggle>
+    <DropdownMenu>
+      {sizes.map((size) => (
+        <DropdownItem key={size} onClick={() => onSelectSize(size)}>
+          {size}
+        </DropdownItem>
+      ))}
+    </DropdownMenu>
+  </Dropdown>
   );
 }
 
-export default Space;
+export default DropDownButtonDelai;

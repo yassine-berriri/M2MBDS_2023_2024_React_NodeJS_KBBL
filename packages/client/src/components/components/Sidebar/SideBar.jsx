@@ -152,7 +152,7 @@ export default function SideBar(props) {
                 >
                   {index  === 0 ? <InboxIcon onClick = { () =>{
                     console.log("clicked")
-                    navigate("/admin");
+                    navigate("/pixelboard");
                   }}/> : index === 1 ?  <MailIcon />: <ShareIcon/>}
                 
                 </ListItemIcon>

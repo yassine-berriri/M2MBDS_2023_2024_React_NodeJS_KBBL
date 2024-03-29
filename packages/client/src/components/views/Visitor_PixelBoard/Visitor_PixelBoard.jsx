@@ -4,7 +4,6 @@
  * ----------------------------------------------------------------------
  */
 import React from "react";
-import Box from '@mui/material/Box';
 /*
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
@@ -16,31 +15,49 @@ import Box from '@mui/material/Box';
  *                                Styles                                |
  * ----------------------------------------------------------------------
  */
-import "./Space.scss";
+import "./Visitor_PixelBoard.scss";
+import { Link } from "react-router-dom";
+import {useNavigate} from 'react-router-dom';
+import {useState} from 'react';
+import { Page } from "../../components";
 /*
  * ----------------------------------------------------------------------
  *                                Images                                |
  * ----------------------------------------------------------------------
  */
 
-function Space(props) {
+
+function Visitor_PixelBoard() {
+
+
+  const navigate = useNavigate();
+
+  
   /* --------------------------------------------------------------------
    *                               Props                                |
    * --------------------------------------------------------------------
    */
-  const { id, spaceName, children } = props;
-  const className = props.className ? `Space ${props.className}` : "Space";
-  const componentName = props.componentName
-    ? `Space ${props.componentName}`
-    : "Space";
+ 
   /* --------------------------------------------------------------------
    *                              States                                |
    * --------------------------------------------------------------------
    */
+
+  const [pixels, setPixels] = useState(Array(16).fill('red')); 
   /* --------------------------------------------------------------------
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
+  
+  
+
+  const handlePixelClick = (index) => {
+    const newPixels = [...pixels];
+    newPixels[index] = 'black'; // Choisir la couleur ou la faire choisir par l'utilisateur
+    setPixels(newPixels);
+  };
+  
+
   /* --------------------------------------------------------------------
    *                            Effect Hooks                            |
    * --------------------------------------------------------------------
@@ -52,18 +69,15 @@ function Space(props) {
    */
 
   return (
-    <div
-      id={id}
-      className={className}
-      project-component={componentName}
-      project-space={spaceName}
-    >
-     
-        {children}
-      
-     
-    </div>
+    <div className="conatainer">
+       <div>PixelBoard ici</div>
+       <div className="board">
+         {pixels.map((color, index) => (
+       <div key={index} className="pixel" style={{ backgroundColor: color }}  onClick={() => handlePixelClick(index)}></div>
+        ))}
+        </div>
+        </div>
   );
 }
 
-export default Space;
+export default Visitor_PixelBoard;

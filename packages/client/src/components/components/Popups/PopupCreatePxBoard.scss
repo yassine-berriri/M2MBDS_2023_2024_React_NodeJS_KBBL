@@ -1,0 +1,81 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    width: 80%;
+    max-width: 400px;
+    display: grid;
+    justify-items: center;
+  
+    
+  
+    form {
+      display: flex;
+      flex-direction: column;
+  
+      label {
+        margin-top: 10px;
+      }
+  
+      input[type="text"],
+      input[type="email"] {
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+  
+     
+    }
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      &:first-child {
+      
+        color: white;
+      }
+      &:last-child {
+       
+        color: white;
+      }
+    }
+  }
+  
+  .open-button {
+    padding: 10px 20px;
+    border: none;
+    
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .popup-title {
+    margin-bottom: 20px; // Ajoutez de l'espace sous le titre pour séparer du contenu
+    text-align: center; // Centre le titre si cela correspond à votre design
+    color: #333; // Couleur du texte
+    font-size: 24px; // Taille du texte
+  }
+  

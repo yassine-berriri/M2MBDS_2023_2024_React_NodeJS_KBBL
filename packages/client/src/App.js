@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import logo from './logo.svg';
 import * as routers from "./routers";
-import './App.css';
+import './App.scss';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const { REACT_APP_API_URL } = process.env;

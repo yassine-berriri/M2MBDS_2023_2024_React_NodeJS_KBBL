@@ -7,6 +7,7 @@
 import { Space, Sidebar } from "../../components";
 import { VisitorRouter } from "../../../routers";
 import * as components from "../../components";
+import { Outlet } from "react-router-dom";
 
 /*
  * ----------------------------------------------------------------------
@@ -91,7 +92,7 @@ function VisitorSpace() {
     <Space id="VisitorSpace" className="VisitorSpace" spaceName="Visitor">
       <div className="VisitorSpace-Body">
       <Sidebar >
-        <VisitorRouter />
+        <Outlet />
       </Sidebar>
       </div>
     </Space>
