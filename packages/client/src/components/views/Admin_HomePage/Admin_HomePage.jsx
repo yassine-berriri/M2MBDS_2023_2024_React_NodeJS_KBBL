@@ -7,6 +7,10 @@ import React from "react";
 import { Button } from 'reactstrap';
 import { Link } from "react-router-dom";
 import {useNavigate} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchPxBoard } from '../../../redux/pxBoard/pxBoardThunk';
+import { useSelector } from 'react-redux';
 
 /*
  * ----------------------------------------------------------------------
@@ -22,6 +26,7 @@ import {useNavigate} from 'react-router-dom';
 
 import "./Admin_HomePage.scss";
 import { PopupCreatePxBoard } from "../../components";
+
 
 /*
  * ----------------------------------------------------------------------
@@ -39,15 +44,14 @@ function Admin_HomePage() {
    *                              States                                |
    * --------------------------------------------------------------------
    */
+  const [data, setData] = useState([]);
   /* --------------------------------------------------------------------
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
 
   function handleClick() {
-    console.log("clicked");
-    <Link to="/admin" />;
-    navigate("/admin");
+    fetchPxBoard()
   }
 
   /* --------------------------------------------------------------------
@@ -55,6 +59,17 @@ function Admin_HomePage() {
    * --------------------------------------------------------------------
    */
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchPxBoard());
+}, [ dispatch]);
+
+
+
+const pxBoardData = useSelector(state => state.pxBoard.pxBoards);
+
+console.log("pxBoardData", pxBoardData);
 
   /* --------------------------------------------------------------------
    *                                 JSX                                |
@@ -68,6 +83,10 @@ function Admin_HomePage() {
       </div>
       <div className="pxBoardList">
         <h3>List PixelBoards</h3>
+         { pxBoardData !== undefined &&  pxBoardData.length !== 0 ?
+         pxBoardData.map(pxBoard => (
+          <div key={pxBoard.id}>{pxBoard.title}</div>
+        )): <div>loading...</div>}
       </div>
     </div>
   );

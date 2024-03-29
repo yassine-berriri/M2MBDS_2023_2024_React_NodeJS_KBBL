@@ -5,11 +5,13 @@ import './App.scss';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { store } from '../src/redux/Store'; 
+import { Provider } from 'react-redux';
 
-const { REACT_APP_API_URL } = process.env;
 
 /*
 function App() {
+	const { REACT_APP_API_URL } = process.env;
 	const [resp, setResp] = useState(null);
 	const [error, setError] = useState(null);
 	const [loading, setLoading] = useState(null);
@@ -56,8 +58,9 @@ function App() {
 	return (
 		
 		<div className="App">
-		
+		  <Provider store={store}>
 		  <routers.RootRouter/>
+		  </Provider>
 		</div>
 	  );
 }
