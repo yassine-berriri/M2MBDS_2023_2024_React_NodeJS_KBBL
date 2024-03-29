@@ -1,15 +1,8 @@
-let PxBoard = require('../model/pxBoardModel');
+const express = require('express');
+const router = express.Router();
+const pxBoardController = require('../controllers/pxBoardController');
 
-function getAllPxBoards(req, res) {
-   
-    PxBoard.find().then(pxBoards => {
-       
-        res.send(pxBoards);
-    }).catch(err => {
-        res.status(500).send(err);
-    });
-}
+router.get('/pxBoards', pxBoardController.getAllPxBoards);
+router.post('/createPxBoard', pxBoardController.postPxBoard);
 
-
-
-module.exports = {getAllPxBoards};
+module.exports = router;
