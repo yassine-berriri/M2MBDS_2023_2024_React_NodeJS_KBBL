@@ -2,6 +2,23 @@
  
     .buttonCreate{
         display: flex;
-        justify-content: end;
+        justify-content: space-between;
+        margin-bottom: 3%;
     }
+
+    .cardGroup {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); // Creates three columns of equal width
+        grid-gap: 40px; // Sets the gap between rows and columns
+      
+        // Responsive adjustments
+        @media (max-width: 768px) {
+          grid-template-columns: repeat(2, 1fr); // Two columns on smaller screens
+        }
+      
+        @media (max-width: 480px) {
+          grid-template-columns: 1fr; // One column on very small screens
+        }
+      }
+      
 }
