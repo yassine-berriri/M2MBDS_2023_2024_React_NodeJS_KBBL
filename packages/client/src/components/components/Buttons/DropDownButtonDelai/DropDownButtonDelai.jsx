@@ -37,7 +37,7 @@ function DropDownButtonDelai(props) {
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
-  const sizes = Array.from({ length: 10 }, (_, i) => (i + 1) * 5);
+  const sizes = Array.from({ length: 6 }, (_, i) => (i + 1) * 5);
 
   /* --------------------------------------------------------------------
    *                             Functions                              |

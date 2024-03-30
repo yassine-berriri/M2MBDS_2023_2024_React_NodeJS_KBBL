@@ -4,12 +4,13 @@
  * ----------------------------------------------------------------------
  */
 import React, { useState } from 'react';
-import { Button } from 'reactstrap';
+import { Button, ButtonGroup } from 'reactstrap';
 import { FormGroup, Label, Input,   } from 'reactstrap';
 import DropDownButton from '../Buttons/DropDownButton/DropDownButton';
 import DropDownButtonDelai from '../Buttons/DropDownButtonDelai/DropDownButtonDelai';
 import { useDispatch, useSelector  } from 'react-redux'; 
 import { createPxBoard } from '../../../redux/pxBoard/pxBoardThunk';
+
 /*
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
@@ -29,7 +30,7 @@ import "./PopupCreatePxBoard.scss";
  * ----------------------------------------------------------------------
  */
 
-function PopupCreatePxBoard(props) {
+function PopupCreatePxBoard() {
   /* --------------------------------------------------------------------
    *                               Props                                |
    * --------------------------------------------------------------------
@@ -48,6 +49,7 @@ function PopupCreatePxBoard(props) {
   const [title, setTitle] = useState("");
   const [endDate, setEndDate] = useState(""); // Exemple de state pour la date de fin [A MODIFIER
   const todayDate = getTodayDate(); 
+  const [modeSelected, setmodeSelected] = useState([]);
   /* --------------------------------------------------------------------
    *                             Functions                              |
    * --------------------------------------------------------------------
@@ -83,6 +85,7 @@ function PopupCreatePxBoard(props) {
       size: boardSize,
       modificationDelai: delai,
       endDate: endDate, // Exemple de récupération de la valeur directement depuis l'input
+      mode: modeSelected
     };
 
     console.log("Données à envoyer pxBoard :", data);
@@ -96,6 +99,17 @@ function PopupCreatePxBoard(props) {
       console.error('Error creating pxBoard:', error.message);
       alert("Erreur lors de la création du PixelBoard");
     }
+  };
+
+  const onCheckboxBtnClick = (selected) => {
+    const index = modeSelected.indexOf(selected);
+    if (index < 0) {
+      modeSelected.push(selected);
+    } else {
+      modeSelected.splice(index, 1);
+    }
+    console.log("modeSelected", modeSelected);
+    setmodeSelected([...modeSelected]);
   };
 
 
@@ -127,6 +141,7 @@ function PopupCreatePxBoard(props) {
         <div className="popup-content">
           <h3 className="popup-title">Créer un nouveau PixelBoard</h3> {/* Titre ajouté ici */}
           <FormGroup>
+            <div className="inputTest">
             <Label for="title">Titre</Label>
             <Input
               type="text"
@@ -136,9 +151,14 @@ function PopupCreatePxBoard(props) {
               onChange={e => setTitle(e.target.value)}
               placeholder="Entrer le titre du pixelboard"
             />
+            </div>
       
+            <div className="inputTest">
             <Label for="taille">Taille</Label>
             <DropDownButton title={boardSizeLabel} onSelectSize={handleSelectSize} />
+            </div>
+
+            <div className="inputTest">
       
             <Label for="exampleDate">Date de fin</Label>
             <Input
@@ -150,9 +170,44 @@ function PopupCreatePxBoard(props) {
               placeholder="date placeholder"
               min={todayDate} // Définir l'attribut min avec la date du jour
             />
+            </div>
+
+            <div className="inputTest">
       
-            <Label for="exampleMode">Delai de modification</Label>
+            <Label for="exampleDelai">Delai de modification</Label>
             <DropDownButtonDelai title={delaiLabel} onSelectSize={handleSelectDelai} />
+            </div>
+
+            <div className="inputTest">
+
+            <Label for="exampleMode">Mode</Label>
+
+
+
+      <ButtonGroup>
+        <Button
+          color="primary"
+          outline
+          onClick={() => onCheckboxBtnClick("superposition")}
+          active={modeSelected.includes("superposition")}
+          title="Permet aux utilisateurs de superposer de nouvelles couleurs sur des pixels déjà colorés, leur donnant la possibilité de changer d'avis ou d'ajouter de la profondeur à leurs dessins."
+
+        >
+          superposition
+        </Button>
+        <Button
+          color="primary"
+          outline
+          onClick={() => onCheckboxBtnClick("historique")}
+          active={modeSelected.includes("historique")}
+          title="Permet aux utilisateurs de voir l'historique des modifications d'un pixel spécifique."
+        >
+          historique
+        </Button>
+      
+      </ButtonGroup>
+
+      </div>
       
             <div className="buttons">
               <Button type="submit" onClick={handleCreatePxBoard} color='success'>Envoyer</Button>

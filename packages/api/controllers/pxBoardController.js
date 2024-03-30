@@ -17,7 +17,8 @@ async function postPxBoard(req, res) {
         title: req.body.title,
         endDate: req.body.endDate,
         modificationDelai: req.body.modificationDelai,
-        size: req.body.size
+        size: req.body.size,
+        mode: req.body.mode
     });
 
     console.log("pxBoard à envoyer", pxBoard);
