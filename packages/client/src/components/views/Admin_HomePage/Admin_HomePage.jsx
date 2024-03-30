@@ -12,6 +12,10 @@ import { useDispatch } from 'react-redux';
 import { fetchPxBoard } from '../../../redux/pxBoard/pxBoardThunk';
 import { useSelector } from 'react-redux';
 import Tools from "../../../Utils/tools";
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import PopupDelete from "../../components/Popups/PopupDelete/PopupDelete";
 
 /*
  * ----------------------------------------------------------------------
@@ -67,6 +71,14 @@ function Admin_HomePage() {
 
 const { pxBoards, loading, error } = useSelector(state => state.pxBoard);
 
+const handleEdit = (id) => {
+  console.log(" edit clicked id = ", id);
+}
+
+const handleDelete = (id) => {
+  console.log(" delete clicked id = ", id);
+}
+
 
 
   /* --------------------------------------------------------------------
@@ -109,6 +121,14 @@ const { pxBoards, loading, error } = useSelector(state => state.pxBoard);
                                 }
                               </ul>
                               </CardText>
+
+                              <PopupDelete text={`Vous êtes sur le point de supprimer ce PixelBoard <<${pxBoard.title}>>`}/>
+                              <IconButton color="primary" onClick={() => handleEdit(pxBoard._id)} aria-label="edit">
+                              <EditIcon />
+                              </IconButton>
+                              <IconButton color="secondary" onClick={() => handleDelete(pxBoard._id)} aria-label="delete">
+                              <DeleteIcon />
+                              </IconButton>
                             </CardBody>
 
                           </Card>

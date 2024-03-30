@@ -6,7 +6,7 @@ export const fetchPxBoard = createAsyncThunk(
     "pxBoard/fetchPxBoard",
     async () => {
         try {
-            const response = await axios.get(REACT_APP_API_URL + "/api/pxBoards");
+            const response = await axios.get(REACT_APP_API_URL + "/api/allpxBoards");
             console.log('je suis dans le thunk', response.data);
             return response.data;
         } catch (error) {
