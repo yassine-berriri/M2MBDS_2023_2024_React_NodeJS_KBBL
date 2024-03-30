@@ -8,6 +8,8 @@ import { Button } from 'reactstrap';
 import { FormGroup, Label, Input,   } from 'reactstrap';
 import DropDownButton from '../Buttons/DropDownButton/DropDownButton';
 import DropDownButtonDelai from '../Buttons/DropDownButtonDelai/DropDownButtonDelai';
+import { useDispatch, useSelector  } from 'react-redux'; 
+import { createPxBoard } from '../../../redux/pxBoard/pxBoardThunk';
 /*
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
@@ -43,6 +45,8 @@ function PopupCreatePxBoard(props) {
   const [boardSizeLabel, setBoardSizeLabel] = useState("Choisisez la taille du PixelBoard");
   const [delai, setDelai] = useState(1); 
   const [delaiLabel, setDelaiLabel] = useState("Choisisez le dalai de modification");
+  const [title, setTitle] = useState("");
+  const [endDate, setEndDate] = useState(""); // Exemple de state pour la date de fin [A MODIFIER
   const todayDate = getTodayDate(); 
   /* --------------------------------------------------------------------
    *                             Functions                              |
@@ -72,13 +76,43 @@ function PopupCreatePxBoard(props) {
   }
 
 
+  const handleCreatePxBoard = async () => {
+    // Structure de données à envoyer. Assurez-vous de remplir ceci avec toutes les données nécessaires.
+    const data = {
+      title: title,
+      size: boardSize,
+      modificationDelai: delai,
+      endDate: endDate, // Exemple de récupération de la valeur directement depuis l'input
+    };
+
+    console.log("Données à envoyer pxBoard :", data);
+    
+    try{
+      dispatch(createPxBoard(data)).unwrap();
+      togglePopup();
+      alert("PixelBoard créé avec succès");
+    }
+    catch (error) {
+      console.error('Error creating pxBoard:', error.message);
+      alert("Erreur lors de la création du PixelBoard");
+    }
+  };
+
+
 
 
   /* --------------------------------------------------------------------
    *                            Effect Hooks                            |
    * --------------------------------------------------------------------
    */
- 
+  const dispatch = useDispatch();
+  const pxBoardError = useSelector((state) => state.pxBoard.error);
+  const pxBoards = useSelector((state) => state.pxBoard.pxBoards);
+
+  console.log("pxBoards", pxBoards);
+  console.log("pxBoardError", pxBoardError);
+
+
 
   /* --------------------------------------------------------------------
    *                                 JSX                                |
@@ -98,6 +132,8 @@ function PopupCreatePxBoard(props) {
               type="text"
               name="title"
               id="titleId"
+              value={title}
+              onChange={e => setTitle(e.target.value)}
               placeholder="Entrer le titre du pixelboard"
             />
       
@@ -109,6 +145,8 @@ function PopupCreatePxBoard(props) {
               type="date"
               name="date"
               id="exampleDate"
+              value={endDate}
+              onChange={e => setEndDate(e.target.value)}
               placeholder="date placeholder"
               min={todayDate} // Définir l'attribut min avec la date du jour
             />
@@ -117,7 +155,7 @@ function PopupCreatePxBoard(props) {
             <DropDownButtonDelai title={delaiLabel} onSelectSize={handleSelectDelai} />
       
             <div className="buttons">
-              <Button type="submit" color='success'>Envoyer</Button>
+              <Button type="submit" onClick={handleCreatePxBoard} color='success'>Envoyer</Button>
               <Button onClick={togglePopup} color='danger'>Fermer</Button>
             </div>
           </FormGroup>

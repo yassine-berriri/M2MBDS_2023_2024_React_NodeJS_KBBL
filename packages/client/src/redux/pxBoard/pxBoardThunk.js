@@ -1,13 +1,31 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
+import axios from 'axios'; 
+const { REACT_APP_API_URL } = process.env;
 
 export const fetchPxBoard = createAsyncThunk(
     "pxBoard/fetchPxBoard",
     async () => {
-        const response = await fetch("http://localhost:8010/api/pxBoards");
-        const data = await response.json();
-        console.log('je suis dans le thunk', data);
-        return data; 
+        try {
+            const response = await axios.get(REACT_APP_API_URL + "/api/pxBoards");
+            console.log('je suis dans le thunk', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching pxBoard:', error.message);
+            throw error;
+        }
     }
 );
 
+export const createPxBoard = createAsyncThunk(
+    "pxBoard/createPxBoard",
+    async (data) => {
+        try {
+            const response = await axios.post(REACT_APP_API_URL + "/api/createPxBoard", data);
+            console.log('je suis dans le thunk', response.data);
+            return response.data.pxBoard;
+        } catch (error) {
+            console.error('Error creating pxBoard:', error.message);
+            throw error;
+        }
+    }
+);

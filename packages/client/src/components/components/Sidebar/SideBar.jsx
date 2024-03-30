@@ -162,7 +162,6 @@ export default function SideBar(props) {
           ))}
         </List>
         <Divider />
-      
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 1 }}>
         <DrawerHeader />

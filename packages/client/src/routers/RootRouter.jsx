@@ -16,6 +16,7 @@ function RootRouter() {
           </Route>
           <Route  path="/admin" element={<spaces.AdminSpace/>}>
             <Route  path="/admin" element={<views.Admin_HomePage/>} />
+            
           </Route>
           
          

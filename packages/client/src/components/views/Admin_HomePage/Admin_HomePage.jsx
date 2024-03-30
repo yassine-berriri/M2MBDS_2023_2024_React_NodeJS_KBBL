@@ -66,10 +66,9 @@ function Admin_HomePage() {
 }, [ dispatch]);
 
 
+const { pxBoards, loading, error } = useSelector(state => state.pxBoard);
 
-const pxBoardData = useSelector(state => state.pxBoard.pxBoards);
-
-console.log("pxBoardData", pxBoardData);
+console.log("pxBoardData", pxBoards);
 
   /* --------------------------------------------------------------------
    *                                 JSX                                |
@@ -82,11 +81,16 @@ console.log("pxBoardData", pxBoardData);
       <PopupCreatePxBoard/>
       </div>
       <div className="pxBoardList">
-        <h3>List PixelBoards</h3>
-         { pxBoardData !== undefined &&  pxBoardData.length !== 0 ?
-         pxBoardData.map(pxBoard => (
-          <div key={pxBoard.id}>{pxBoard.title}</div>
-        )): <div>loading...</div>}
+      <h3>Liste des PixelBoards</h3>
+                {loading && <div>Chargement...</div>}
+                {error && <div className="error">{error}</div>}
+                {!loading && !error && pxBoards.length > 0 ? (
+                    pxBoards.map(pxBoard => (
+                        <div key={pxBoard.id}>{pxBoard.title}</div>
+                    ))
+                ) : (
+                    !loading && <div>Aucun PixelBoard trouvé.</div>
+                )}
       </div>
     </div>
   );

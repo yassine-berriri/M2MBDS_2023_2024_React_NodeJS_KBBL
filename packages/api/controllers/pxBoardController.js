@@ -24,7 +24,9 @@ async function postPxBoard(req, res) {
 
     try {
         const savedPxBoard = await pxBoard.save();
-        res.send({message: `pxBoard ${savedPxBoard.title} créé !`});
+        res.send({message: `pxBoard ${savedPxBoard.title} créé !`,
+            pxBoard: savedPxBoard   
+    });
     } catch (err) {
         res.status(500).send(err);
     }
