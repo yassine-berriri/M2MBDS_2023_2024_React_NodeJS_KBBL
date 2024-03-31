@@ -5,6 +5,7 @@ import PopupCreatePxBoard from "./Popups/PopupCreatePxBoard/PopupCreatePxBoard";
 import PopupDelete from "./Popups/PopupDelete/PopupDelete";
 import DropDownButton from "./Buttons/DropDownButton/DropDownButton";
 import DropDownButtonDelai from "./Buttons/DropDownButtonDelai/DropDownButtonDelai";
+import DropDownButtonTrie from "./Buttons/DropDownButtonTrie/DropDownButtonTrie";
 
 export {
     Space,
@@ -13,5 +14,6 @@ export {
     PopupCreatePxBoard,
     DropDownButton,
     DropDownButtonDelai,
-    PopupDelete
+    PopupDelete,
+    DropDownButtonTrie
 };
