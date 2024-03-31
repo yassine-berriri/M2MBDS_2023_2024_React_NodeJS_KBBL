@@ -3,7 +3,9 @@
  *                          Components & Functions                      |
  * ----------------------------------------------------------------------
  */
-import React from "react";
+import {useEffect, useState} from "react";
+import Pixel from "../Pixel/Pixel";
+import ColorPalette from "../ColorPalette/ColorPalette";
 /*
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
@@ -15,53 +17,55 @@ import React from "react";
  *                                Styles                                |
  * ----------------------------------------------------------------------
  */
-import "./Visitor_PixelBoard.scss";
-import { Link } from "react-router-dom";
-import {useNavigate} from 'react-router-dom';
-import {useState} from 'react';
-import { PxBord } from "../../components";
+import "./PxBoard.scss";
 /*
  * ----------------------------------------------------------------------
  *                                Images                                |
  * ----------------------------------------------------------------------
  */
 
-
-function Visitor_PixelBoard() {
-
-
-  const navigate = useNavigate();
-
-  
+function PxBoard({ rows = 50, cols = 50 }) {
   /* --------------------------------------------------------------------
    *                               Props                                |
    * --------------------------------------------------------------------
    */
- 
+ // const { pageName, children } = props;
+ // const className = props.className ? `PxBoard ${props.className}` : "PxBoard";
+//  const componentName = props.componentName
+  //  ? `PxBoard ${props.componentName}`
+   // : "PxBoard";
   /* --------------------------------------------------------------------
    *                              States                                |
    * --------------------------------------------------------------------
    */
 
-  const [pixels, setPixels] = useState(Array(16).fill('red')); 
+  const [selectedColor, setSelectedColor] = useState('white');
+
+  const boardStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    width: `${26 * cols}px`, // Largeur totale du tableau
+     // Optionnel, pour encadrer le tableau
+  };
+
   /* --------------------------------------------------------------------
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
-  
-  
 
-  const handlePixelClick = (index) => {
-    const newPixels = [...pixels];
-    newPixels[index] = 'black'; // Choisir la couleur ou la faire choisir par l'utilisateur
-    setPixels(newPixels);
-  };
-  
+    // Créer une liste de composants Pixel
+    const pixels = [];
+    for (let i = 0; i < rows * cols; i++) {
+      pixels.push(<Pixel key={i} selectedColor={selectedColor} />); // key est important pour les performances de React
+    }
 
   /* --------------------------------------------------------------------
    *                            Effect Hooks                            |
    * --------------------------------------------------------------------
    */
+  useEffect(() => {
+    window.scroll(0,0);
+  }, [])
 
   /* --------------------------------------------------------------------
    *                                 JSX                                |
@@ -69,11 +73,15 @@ function Visitor_PixelBoard() {
    */
 
   return (
-    <div className="conatainer">
-       <div>PixelBoard ici</div>
-       <PxBord/>
-        </div>
+    <div className="PxBoard"
+    //  className={className}
+      //project-component={componentName}
+     // project-page={pageName}
+    >
+      <div style={boardStyle}>{pixels}</div>
+      <ColorPalette onSelectColor={setSelectedColor} />
+    </div>
   );
 }
 
-export default Visitor_PixelBoard;
+export default PxBoard;
