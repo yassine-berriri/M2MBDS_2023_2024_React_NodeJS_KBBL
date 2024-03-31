@@ -31,7 +31,7 @@ function PopupDelete(props) {
    *                               Props                                |
    * --------------------------------------------------------------------
    */
-  const { pageName, children, text } = props;
+  const { pageName, children, text,onDelete} = props;
   const className = props.className ? `PopupDelete ${props.className}` : "PopupDelete";
   const componentName = props.componentName
     ? `PopupDelete ${props.componentName}`
@@ -48,7 +48,10 @@ function PopupDelete(props) {
    * --------------------------------------------------------------------
    */
   const toggle = () => setModal(!modal);
-
+  const functionAppeler = () => {
+    onDelete();
+    toggle();
+  }
     
   /* --------------------------------------------------------------------
    *                            Effect Hooks                            |
@@ -69,7 +72,7 @@ function PopupDelete(props) {
       project-component={componentName}
       project-page={pageName}
     >
-         <IconButton color="secondary" onClick={toggle} aria-label="delete">
+         <IconButton color="error" onClick={toggle} aria-label="delete">
                               <DeleteIcon />
                               </IconButton>
     
@@ -86,11 +89,11 @@ function PopupDelete(props) {
             {text}
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={toggle}>
-          OK
+        <Button color="primary" onClick={functionAppeler}>
+          Supprimer
         </Button>{' '}
         <Button color="secondary" onClick={toggle}>
-          Cancel
+          Exit
         </Button>
       </ModalFooter>
     </Modal>

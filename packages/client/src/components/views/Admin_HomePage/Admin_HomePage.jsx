@@ -9,15 +9,15 @@ import { Link } from "react-router-dom";
 import {useNavigate} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchPxBoard } from '../../../redux/pxBoard/pxBoardThunk';
+import { fetchPxBoard,deletePxBoard,updatePxBoard } from '../../../redux/pxBoard/pxBoardThunk';
 import { useSelector } from 'react-redux';
 import Tools from "../../../Utils/tools";
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PopupDelete from "../../components/Popups/PopupDelete/PopupDelete";
-
-/*
+import PopUpdate from "../../components/Popups/PopupUpdatePxBoard/PopUpdate";
+/*PopUpdate
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
  * ----------------------------------------------------------------------
@@ -69,7 +69,7 @@ function Admin_HomePage() {
 }, [ dispatch]);
 
 
-const { pxBoards, loading, error } = useSelector(state => state.pxBoard);
+let { pxBoards, loading, error } = useSelector(state => state.pxBoard);
 
 const handleEdit = (id) => {
   console.log(" edit clicked id = ", id);
@@ -77,7 +77,19 @@ const handleEdit = (id) => {
 
 const handleDelete = (id) => {
   console.log(" delete clicked id = ", id);
+  dispatch(deletePxBoard(id))
+  .then(() => {
+   dispatch(fetchPxBoard());
+  })
 }
+
+const handleUpdate = (id, updateData) => {
+  console.log("Update clicked id = ", id);
+  dispatch(updatePxBoard(id, updateData))
+    .then(() => {
+      dispatch(fetchPxBoard());
+    });
+};
 
 
 
@@ -122,13 +134,10 @@ const handleDelete = (id) => {
                               </ul>
                               </CardText>
 
-                              <PopupDelete text={`Vous êtes sur le point de supprimer ce PixelBoard <<${pxBoard.title}>>`}/>
-                              <IconButton color="primary" onClick={() => handleEdit(pxBoard._id)} aria-label="edit">
-                              <EditIcon />
-                              </IconButton>
-                              <IconButton color="secondary" onClick={() => handleDelete(pxBoard._id)} aria-label="delete">
-                              <DeleteIcon />
-                              </IconButton>
+                              <div className="popups">
+                              <PopUpdate pxBoard={pxBoard} onUpdate={(updateData) => handleUpdate(pxBoard._id, updateData)} />
+                              <PopupDelete onDelete={() => handleDelete(pxBoard._id)}  text={`Vous êtes sur le point de supprimer ce PixelBoard <<${pxBoard.title}>>`}/>
+                              </div>
                             </CardBody>
 
                           </Card>
