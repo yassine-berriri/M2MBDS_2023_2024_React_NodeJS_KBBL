@@ -18,8 +18,11 @@ import React from "react";
 import "./Visitor_PixelBoard.scss";
 import { Link } from "react-router-dom";
 import {useNavigate} from 'react-router-dom';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { PxBord } from "../../components";
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 /*
  * ----------------------------------------------------------------------
  *                                Images                                |
@@ -29,7 +32,7 @@ import { PxBord } from "../../components";
 
 function Visitor_PixelBoard() {
 
-
+  let { id } = useParams();
   const navigate = useNavigate();
 
   
@@ -63,6 +66,22 @@ function Visitor_PixelBoard() {
    * --------------------------------------------------------------------
    */
 
+  const { pxBoards, loading, error } = useSelector(state => state.pxBoard);
+
+  const getPxBoardById = (id) => {
+    const pxBoard = pxBoards.find((pxBoard) => pxBoard._id === id);
+    console.log("pxBoards dans visitor = ",pxBoard)
+    return pxBoard;
+  }
+
+  let myPxBoard = getPxBoardById(id);
+
+  useEffect(() => {
+    console.log("id = ",id)
+    
+  
+  }, [id]);
+
   /* --------------------------------------------------------------------
    *                                 JSX                                |
    * --------------------------------------------------------------------
@@ -71,7 +90,7 @@ function Visitor_PixelBoard() {
   return (
     <div className="conatainer">
        <div>PixelBoard ici</div>
-       <PxBord/>
+       <PxBord />
         </div>
   );
 }
