@@ -18,7 +18,7 @@ function RootRouter() {
             <Route  path="/admin" element={<views.Admin_HomePage/>} />
             
           </Route>
-          
+          <Route  path="/login" element={<views.SignInPage/>} />
          
         {/*token !== "" && userType ? (
           <>
