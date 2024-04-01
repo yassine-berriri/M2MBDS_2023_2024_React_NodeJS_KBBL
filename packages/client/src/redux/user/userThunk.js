@@ -2,6 +2,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { userStart, userSuccess, userFailure } from './userSlice';
+const { REACT_APP_API_URL } = process.env;
 
 
 
@@ -11,7 +12,7 @@ export const signInUser = createAsyncThunk(
   async (userData, { dispatch }) => {
     try {
       dispatch(userStart());
-      const response = await axios.post('http://localhost:3001/api/login', userData);
+      const response = await axios.post(REACT_APP_API_URL + '/api/login', userData);
       console.log(response);
       // Save token to localStorage instead of Redux store
       localStorage.setItem('token', response.data.token);
@@ -31,7 +32,7 @@ export const registerUser = createAsyncThunk(
   async (userData, { dispatch }) => {
     try {
       dispatch(userStart());
-      const response = await axios.post('http://localhost:3001/api/register', userData);
+      const response = await axios.post(REACT_APP_API_URL + '/api/register', userData);
       dispatch(userSuccess(response.data)); // Dispatch userSuccess action on successful registration
     } catch (error) {
       dispatch(userFailure(error.message)); // Dispatch userFailure action if registration fails
@@ -43,7 +44,7 @@ export const getUserById = createAsyncThunk(
   async (userId, { dispatch }) => {
     try {
       dispatch(userStart());
-      const response = await axios.get(`http://localhost:3001/api/user/${userId}`);
+      const response = await axios.get(REACT_APP_API_URL + '/api/user/${userId}');
       //console.log(response.data);
       dispatch(userSuccess(response.data)); 
     } catch (error) {
@@ -58,7 +59,7 @@ export const updateUserProfile = createAsyncThunk(
     try {
       dispatch(userStart());
       console.log(userData.userId);
-      const response = await axios.put(`http://localhost:3001/api/user/${userData.userId}`, userData.updatedData);
+      const response = await axios.put(REACT_APP_API_URL + '/api/user/${userData.userId}', userData.updatedData);
       const updatedUserData = response.data; 
       dispatch(userSuccess(updatedUserData, "Profile updated successfully"));
       return updatedUserData; 

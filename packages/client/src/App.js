@@ -7,7 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { store } from '../src/redux/Store'; 
 import { Provider } from 'react-redux';
-
+import "./assets/styles/main.css";
+import "./assets/styles/responsive.css";
 
 /*
 function App() {
