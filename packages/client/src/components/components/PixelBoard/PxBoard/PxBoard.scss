@@ -1,11 +1,16 @@
-.PxBoard{
+.PxBoard {
     display: flex;
-    flex-direction: row;
-}
-
-.pxBoardMatrice{
+    flex-direction: column; /* Changez pour column pour organiser verticalement */
+    align-items: center; /* Centrez les enfants horizontalement */
+  }
+  
+  .pxBoardInfo {
+    text-align: center; /* Centrer le texte des informations */
+    margin-bottom: 20px; /* Ajouter de l'espace entre les infos et la grille */
+  }
+  
+  .pxBoardMatrice {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-}
+  }

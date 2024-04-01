@@ -9,6 +9,7 @@ import ColorPalette from "../ColorPalette/ColorPalette";
 import io from 'socket.io-client';
 import { PopupError } from "../../../components";
 
+import { TailSpin } from 'react-loader-spinner';
 
 /*
  * ----------------------------------------------------------------------
@@ -35,8 +36,8 @@ function PxBoard(props) {
    */
   const { REACT_APP_API_URL } = process.env;
   const socket = io(REACT_APP_API_URL);
-  const { rows = 50, cols = 50, idPx, MyPxBoard } = props;
-  console.log("MyPxBoard = ", MyPxBoard)
+
+  const { idPx, myPxBoard} = props;
  // const className = props.className ? `PxBoard ${props.className}` : "PxBoard";
 //  const componentName = props.componentName
   //  ? `PxBoard ${props.componentName}`
@@ -45,6 +46,10 @@ function PxBoard(props) {
    *                              States                                |
    * --------------------------------------------------------------------
    */
+  
+    const [isLoading, setIsLoading] = useState(true);
+    const [pxBoard, setPxBoard] = useState(null);
+    const { size } = myPxBoard; // Supposons que `size` est toujours défini
 
   const [selectedColor, setSelectedColor] = useState('white');
   const [showPopupError, setShowPopupError] = useState(false);
@@ -55,6 +60,7 @@ function PxBoard(props) {
     flexWrap: 'wrap',
     width: sizeBackup * 25 ,
    // Largeur totale du tableau
+
      // Optionnel, pour encadrer le tableau
   };
 
@@ -89,7 +95,8 @@ function PxBoard(props) {
     //socket.emit('addPixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
    // socket.emit('deletePixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
   }
-
+  
+/*
     // Créer une liste de composants Pixel
     const pixels = [];
     for (let y = 0; y < sizeBackup; y++) {
@@ -106,6 +113,7 @@ function PxBoard(props) {
       );
     }
   }
+*/
 
  const  handleShowPopupError = (text) => {
     setPopupText(text);
@@ -113,6 +121,26 @@ function PxBoard(props) {
   }
 
    
+  // Générer les pixels basés sur les données de `myPxBoard`
+  const generatePixels = () => {
+    // Assurez-vous que `myPxBoard` et `myPxBoard.size` sont définis
+    const size = myPxBoard?.size || 50; // Utilisez une taille par défaut si non spécifié
+    return Array.from({ length: size * size }, (_, index) => {
+      const x = index % size;
+      const y = Math.floor(index / size);
+      const pixel = myPxBoard.pixels?.find(p => p.x === x && p.y === y);
+      return (
+        <Pixel key={`${x}-${y}`} 
+             selectedColor={selectedColor}
+              defaultColor={pixel ? pixel.color : 'white'} 
+              clickOnPixel={() => handleClickOnPixel(x, y)
+                
+              } />
+      );
+    });
+  };
+
+  const pixels = generatePixels(myPxBoard.size, myPxBoard.size, myPxBoard.pixels);
 
   /* --------------------------------------------------------------------
    *                            Effect Hooks                            |
@@ -123,6 +151,11 @@ function PxBoard(props) {
   useEffect(() => {
     console.log("id = ",idPx)
     const boardId = idPx;
+
+    if (myPxBoard && myPxBoard.pixels) {
+      setIsLoading(false);
+      // Autres actions après le chargement, si nécessaire
+    }
 
     socket.emit('joinBoard', boardId);
 
@@ -157,18 +190,25 @@ function PxBoard(props) {
    */
 
   return (
-    <div className="PxBoard"
-    //  className={className}
-      //project-component={componentName}
-     // project-page={pageName}
-    >
-      <div style={boardStyle}>{pixels}</div>
+    <div className="PxBoard">
+      <div className="pxBoardInfo">
+        <h1>{myPxBoard.title}</h1>
+        <p>Date de fin: {new Date(myPxBoard.endDate).toLocaleDateString()}</p>
+        <p>Délai de modification: {myPxBoard.modificationDelai} seconde</p>
+        <p>Créé le: {new Date(myPxBoard.createdAt).toLocaleDateString()}</p>
+        <p>Mode: {myPxBoard.mode.join(', ')}</p>
+      </div>
       <ColorPalette onSelectColor={setSelectedColor} />
 
       {showPopupError && <PopupError text={popupText} />}
 
+      <div className="pxBoardMatrice" style={{ width: myPxBoard.size * 25 }}>
+        {isLoading ? <div className="spinner"></div> : pixels}
+      </div>
     </div>
   );
+  
+  
 }
 
 export default PxBoard;

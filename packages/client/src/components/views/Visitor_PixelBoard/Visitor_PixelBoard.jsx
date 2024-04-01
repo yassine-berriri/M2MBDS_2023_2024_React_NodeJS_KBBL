@@ -87,7 +87,7 @@ function Visitor_PixelBoard() {
   return (
     <div className="conatainer">
        <div>PixelBoard ici</div>
-       <PxBord MyPxBoard={myPxBoard} idPx={id} />
+       <PxBord idPx={id}  myPxBoard={myPxBoard}   />
         </div>
   );
 }
