@@ -12,7 +12,7 @@ function PopupEditPxBoard({ pxBoard, onUpdate }) {
   const [modal, setModal] = useState(false);
   const [title, setTitle] = useState(pxBoard.title);
   const [size, setSize] = useState(pxBoard.size);
-  console.log("pxBoard dans popup",pxBoard);
+
   // Assurez-vous que la valeur est une chaîne pour le composant Input
   const [endDate, setEndDate] = useState(formatDate(pxBoard.endDate));
   const [modificationDelai, setModificationDelai] = useState(pxBoard.modificationDelai); // Converti en chaîne

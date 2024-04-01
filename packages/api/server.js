@@ -10,7 +10,14 @@ const app = express();
 
 
 const server = http.createServer(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+    cors: {
+        origin: "http://localhost:3000", // Autorise uniquement les requêtes CORS provenant de cette origine
+        methods: ["GET", "POST"], // Méthodes HTTP autorisées
+        allowedHeaders: ["my-custom-header"], // En-têtes HTTP autorisées
+        credentials: true // Permet les cookies CORS
+      }
+});
 connectDB();
 
 app.use(corsMiddleware);

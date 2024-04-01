@@ -1,6 +1,6 @@
 const PxBoard = require('../models/pxBoardModel.js');
 
-const { addPixelLogic, updatePixelLogic, deletePixelLogic } = require('../controllers/pxBoardController.js');
+const {  updatePixelLogic, deletePixelLogic } = require('../controllers/pxBoardController.js');
 
 module.exports = function(io) {
     io.on('connection', (socket) => {
@@ -25,8 +25,9 @@ module.exports = function(io) {
         // Ajout d'un pixel
         socket.on('addPixel', async (data) => {
             const { pxBoardId, x, y, color } = data;
-            const result = await addPixelLogic(pxBoardId, { x, y, color });
+            const result = await addPixel(data, io);
             if (result.success) {
+                console.log('Pixel ajouté');
                 io.to(pxBoardId).emit('pixelAdded', { x, y, color });
             } else {
                 socket.emit('actionFailed', 'L\'ajout du pixel a échoué');
@@ -62,6 +63,38 @@ module.exports = function(io) {
         });
     });
 };
+
+
+async function addPixel( data, io) {
+    try {
+        const { pxBoardId, x, y, color } = data;
+        console.log("addPixel", data);
+        const PxBoard = require('../models/pxBoardModel'); // Assurez-vous que le chemin d'accès est correct
+        const pxBoard = await PxBoard.findById(pxBoardId);
+      
+        if (!pxBoard) {
+            // Utilisez socket.emit pour envoyer un message d'erreur au client
+            io.emit('error', { message: 'PxBoard not found' });
+            console.log("PxBoard not found");
+            return { success: false };
+        }
+
+        // Ajouter le nouveau pixel au tableau
+        pxBoard.pixels.push({ x, y, color, history: [{ color, modifiedAt: new Date() }] });
+
+        const updatedPxBoard = await pxBoard.save();
+        // Utilisez socket.emit pour envoyer une confirmation au client
+        io.emit('pixelAdded', { message: 'Pixel added', pxBoard: updatedPxBoard });
+        console.log("Pixel added");
+        return { success: true };
+    } catch (err) {
+        // Utilisez socket.emit pour envoyer les détails de l'erreur au client
+        io.emit('error', err);
+        console.log("PxBoard not found 2", err);
+        return { success: false };
+    }
+}
+
 
 /*
 async function updatePixelInDB(data) {

@@ -6,6 +6,9 @@
 import {useEffect, useState} from "react";
 import Pixel from "../Pixel/Pixel";
 import ColorPalette from "../ColorPalette/ColorPalette";
+import io from 'socket.io-client';
+
+
 /*
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
@@ -24,12 +27,14 @@ import "./PxBoard.scss";
  * ----------------------------------------------------------------------
  */
 
-function PxBoard({ rows = 100, cols = 100 }) {
+function PxBoard(props) {
   /* --------------------------------------------------------------------
    *                               Props                                |
    * --------------------------------------------------------------------
    */
- // const { pageName, children } = props;
+  const { REACT_APP_API_URL } = process.env;
+  const socket = io(REACT_APP_API_URL);
+  const { rows = 100, cols = 100, idPx } = props;
  // const className = props.className ? `PxBoard ${props.className}` : "PxBoard";
 //  const componentName = props.componentName
   //  ? `PxBoard ${props.componentName}`
@@ -52,20 +57,39 @@ function PxBoard({ rows = 100, cols = 100 }) {
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
+  const handleClickOnPixel = () =>{
+    console.log("click")
+    socket.emit('addPixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
+  }
 
     // Créer une liste de composants Pixel
     const pixels = [];
     for (let i = 0; i < rows * cols; i++) {
-      pixels.push(<Pixel key={i} selectedColor={selectedColor} />); // key est important pour les performances de React
+      pixels.push(<Pixel clickOnPixel= {handleClickOnPixel} key={i} selectedColor={selectedColor} />); // key est important pour les performances de React
     }
+
+   
 
   /* --------------------------------------------------------------------
    *                            Effect Hooks                            |
    * --------------------------------------------------------------------
    */
+  
+
   useEffect(() => {
-    window.scroll(0,0);
-  }, [])
+    console.log("id = ",idPx)
+    const boardId = idPx;
+
+    socket.emit('joinBoard', boardId);
+
+    
+    
+    return () => {
+      socket.disconnect();
+      socket.emit('leaveBoard', boardId)
+    };
+  
+  }, [idPx]);
 
   /* --------------------------------------------------------------------
    *                                 JSX                                |

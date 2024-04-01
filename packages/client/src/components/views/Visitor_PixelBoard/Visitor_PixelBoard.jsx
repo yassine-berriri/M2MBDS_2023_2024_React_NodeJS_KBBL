@@ -23,6 +23,7 @@ import { PxBord } from "../../components";
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+
 /*
  * ----------------------------------------------------------------------
  *                                Images                                |
@@ -58,7 +59,11 @@ function Visitor_PixelBoard() {
     const newPixels = [...pixels];
     newPixels[index] = 'black'; // Choisir la couleur ou la faire choisir par l'utilisateur
     setPixels(newPixels);
+
+  
   };
+
+  
   
 
   /* --------------------------------------------------------------------
@@ -76,11 +81,9 @@ function Visitor_PixelBoard() {
 
   let myPxBoard = getPxBoardById(id);
 
-  useEffect(() => {
-    console.log("id = ",id)
-    
-  
-  }, [id]);
+
+
+ 
 
   /* --------------------------------------------------------------------
    *                                 JSX                                |
@@ -90,7 +93,7 @@ function Visitor_PixelBoard() {
   return (
     <div className="conatainer">
        <div>PixelBoard ici</div>
-       <PxBord />
+       <PxBord idPx={id} />
         </div>
   );
 }
