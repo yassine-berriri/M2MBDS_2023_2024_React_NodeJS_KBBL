@@ -11,7 +11,9 @@ function PopupEditPxBoard({ pxBoard, onUpdate }) {
   // Initialisation des états avec les valeurs actuelles de pxBoard
   const [modal, setModal] = useState(false);
   const [title, setTitle] = useState(pxBoard.title);
-  const [size, setSize] = useState(pxBoard.size); // Assurez-vous que la valeur est une chaîne pour le composant Input
+  const [size, setSize] = useState(pxBoard.size);
+  console.log("pxBoard dans popup",pxBoard);
+  // Assurez-vous que la valeur est une chaîne pour le composant Input
   const [endDate, setEndDate] = useState(formatDate(pxBoard.endDate));
   const [modificationDelai, setModificationDelai] = useState(pxBoard.modificationDelai); // Converti en chaîne
   const [mode, setMode] = useState(pxBoard.mode || []);
@@ -21,13 +23,25 @@ function PopupEditPxBoard({ pxBoard, onUpdate }) {
   const availableSizes = ['10', '20', '30', '40', '50', '60', '70', '80', '90', '100'];
   const availableDelais = [5,10,15,20,25,30]; // En secondes
 
-  const toggle = () => setModal(!modal);
+  const toggle = () => {
+    if (!modal) {
+      // Réinitialiser les états avec les valeurs actuelles de pxBoard seulement si nous sommes sur le point d'ouvrir le modal
+      setTitle(pxBoard.title);
+      setSize(pxBoard.size);
+      setEndDate(formatDate(pxBoard.endDate));
+      setModificationDelai(pxBoard.modificationDelai);
+      setMode(pxBoard.mode || []);
+    }
+    setModal(!modal);
+  };
+  
   const dispatch = useDispatch();
 
   const handleUpdate = () => {
     
     let _id = pxBoard._id;
-
+    
+    
     const updatedPxBoard = {
       _id,
       title,
@@ -44,8 +58,25 @@ function PopupEditPxBoard({ pxBoard, onUpdate }) {
     // Mettre à jour le pixelboard (à implémenter
     console.log("pxBoard dans update",_id, updatedPxBoard);
     console.log("title dans update",title, modificationDelai, mode, endDate);
-    toggle(); // Ferme la modal après l'envoi des données
+    reset();
   };
+
+  useEffect(() => {
+    if (modal) {
+      // Assurez-vous de réinitialiser les états seulement si le modal est ouvert pour éviter de le faire inutilement
+      setTitle(pxBoard.title);
+      setSize(pxBoard.size);
+      setEndDate(formatDate(pxBoard.endDate));
+      setModificationDelai(pxBoard.modificationDelai);
+      setMode(pxBoard.mode || []);
+    }
+  }, [pxBoard, modal]); // Écouter les changements de pxBoard et modal
+  
+
+  const reset = () =>{
+
+    toggle();
+  }
   
 
   return (

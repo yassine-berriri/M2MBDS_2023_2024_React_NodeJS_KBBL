@@ -98,7 +98,8 @@ function PopupCreatePxBoard() {
     
     try{
       dispatch(createPxBoard(data)).unwrap();
-      togglePopup();
+      reset();
+     // togglePopup();
       alert("PixelBoard créé avec succès");
     }
     catch (error) {
@@ -106,6 +107,15 @@ function PopupCreatePxBoard() {
       alert("Erreur lors de la création du PixelBoard");
     }
   };
+
+  const reset = () => {
+    setTitle("");
+    setBoardSize(10);
+    setDelai(1);
+    setDelaiLabel("Choisisez le dalai de modification");
+    setBoardSizeLabel("Choisisez la taille du PixelBoard");
+    togglePopup();
+  }
 
   const onCheckboxBtnClick = (selected) => {
     const index = modeSelected.indexOf(selected);
@@ -219,7 +229,7 @@ function PopupCreatePxBoard() {
       
             <div className="buttons">
               <Button type="submit" onClick={handleCreatePxBoard} color='success'>Envoyer</Button>
-              <Button onClick={togglePopup} color='danger'>Fermer</Button>
+              <Button onClick={  reset} color='danger'>Fermer</Button>
             </div>
           </FormGroup>
         </div>
