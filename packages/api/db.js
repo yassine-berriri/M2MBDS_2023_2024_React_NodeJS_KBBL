@@ -9,7 +9,7 @@ const connectDB = async () => {
         await mongoose.connect(uri, { });
         console.log("Connecté à la base MongoDB pxBoard dans le cloud !");
         console.log("at URI = " + uri);
-        console.log("vérifiez with http://localhost:8010/api/allpxBoards que cela fonctionne")
+        console.log("vérifiez with http://localhost:3001/api/allpxBoards que cela fonctionne")
     } catch (err) {
         console.error('Erreur de connexion: ', err);
     }
