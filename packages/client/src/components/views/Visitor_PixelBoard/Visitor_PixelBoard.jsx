@@ -47,7 +47,7 @@ function Visitor_PixelBoard() {
    * --------------------------------------------------------------------
    */
 
-  const [pixels, setPixels] = useState(Array(16).fill('red')); 
+
   /* --------------------------------------------------------------------
    *                             Functions                              |
    * --------------------------------------------------------------------
@@ -55,13 +55,7 @@ function Visitor_PixelBoard() {
   
   
 
-  const handlePixelClick = (index) => {
-    const newPixels = [...pixels];
-    newPixels[index] = 'black'; // Choisir la couleur ou la faire choisir par l'utilisateur
-    setPixels(newPixels);
 
-  
-  };
 
   
   
