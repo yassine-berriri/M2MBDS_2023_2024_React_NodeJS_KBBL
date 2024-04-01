@@ -20,7 +20,7 @@ export {
     DropDownButton,
     DropDownButtonDelai,
     PopupDelete,
-    DropDownButtonTrie
+    DropDownButtonTrie,
     PxBord,
     Pixel,
     ColorPalette
