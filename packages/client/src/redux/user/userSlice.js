@@ -2,6 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createAction } from '@reduxjs/toolkit';
 import { signInUser } from './userThunk';
+import { registerUser } from './userThunk';
 
 export const userSlice = createSlice({
   name: 'user',
@@ -12,6 +13,13 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+      })
      
       .addCase(signInUser.rejected, (state, action) => {
         state.loading = false;

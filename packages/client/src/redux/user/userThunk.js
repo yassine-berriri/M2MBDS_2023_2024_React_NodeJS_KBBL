@@ -24,4 +24,18 @@ export const signInUser = createAsyncThunk(
   }
 );
 
+// Thunk action for user registration
+export const registerUser = createAsyncThunk(
+  'user/register',
+  async (userData, { dispatch }) => {
+    try {
+      dispatch(userStart());
+      const response = await axios.post('http://localhost:3001/api/register', userData);
+      dispatch(userSuccess(response.data)); // Dispatch userSuccess action on successful registration
+    } catch (error) {
+      dispatch(userFailure(error.message)); // Dispatch userFailure action if registration fails
+    }
+  }
+);
+
 
