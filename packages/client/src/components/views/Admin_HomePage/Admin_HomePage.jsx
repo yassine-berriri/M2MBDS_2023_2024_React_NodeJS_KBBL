@@ -111,7 +111,7 @@ function Admin_HomePage() {
   const handleFilterByName = (name) => {
     setNameFilter(name);
     let updatedPxBoards = [...pxBoards];
-    updatedPxBoards = updatedPxBoards.filter(board => board.title.includes(name));
+    updatedPxBoards = updatedPxBoards.filter(board => board.title.toLowerCase().includes(name.toLowerCase()));
     setSortedPxBoards(updatedPxBoards);
   }
 
