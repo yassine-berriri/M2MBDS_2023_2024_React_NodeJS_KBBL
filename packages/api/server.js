@@ -23,6 +23,10 @@ app.use('/api', pxBoardsRoutes);
 
 //populateDB();
 
+
+const setupSocketHandlers = require('./socket/socketPxBoard');
+setupSocketHandlers(io); 
+  
 const port = process.env.PORT || 8010;
 server.listen(port, () => {
     console.log(`Serveur démarré sur http://localhost:${port}`);
