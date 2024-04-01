@@ -55,6 +55,9 @@ function Admin_HomePage() {
    * --------------------------------------------------------------------
    */
 
+  const handleClickonPxBoard = (id) => {
+    navigate(`/pixelBoard/${id}`);
+  }
   
 
   /* --------------------------------------------------------------------
@@ -102,7 +105,7 @@ const handleDelete = (id) => {
                     pxBoards.slice().reverse().map(pxBoard => (
                         <div key={pxBoard.id}>
                           <Card>
-                            <CardImg  height="10%" width="100%" src="https://picsum.photos/318/180" alt="Card image cap" />
+                            <CardImg onClick={() => handleClickonPxBoard(pxBoard._id)}  height="10%" width="100%" src="https://picsum.photos/318/180" alt="Card image cap" />
                             <CardBody>
                               <CardTitle tag="h5">{pxBoard.title}</CardTitle>
                               <CardSubtitle tag="h6" className="mb-2 text-muted">Date de création: {Tools.convertToSimpleDate(pxBoard.createdAt)}</CardSubtitle>

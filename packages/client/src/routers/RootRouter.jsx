@@ -12,7 +12,7 @@ function RootRouter() {
       <Routes>  
           <Route  path="/" element={<spaces.VisitorSpace/>}>
             <Route  path="/" element={<views.Visitor_HomePage/>} />
-            <Route  path="/pixelBoard" element={<views.Visitor_PixelBoard/>} />
+            <Route  path="/pixelBoard/:id" element={<views.Visitor_PixelBoard/>} />
           </Route>
           <Route  path="/admin" element={<spaces.AdminSpace/>}>
             <Route  path="/admin" element={<views.Admin_HomePage/>} />
