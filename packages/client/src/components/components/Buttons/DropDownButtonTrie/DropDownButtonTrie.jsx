@@ -3,11 +3,8 @@
  *                          Components & Functions                      |
  * ----------------------------------------------------------------------
  */
-import {useEffect, useState} from "react";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import PropTypes from 'prop-types';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
+import React, { useState } from 'react';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 /*
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
@@ -19,47 +16,38 @@ import DeleteIcon from '@mui/icons-material/Delete';
  *                                Styles                                |
  * ----------------------------------------------------------------------
  */
-import "./PopupDelete.scss";
+import "./DropDownButtonTrie.scss";
 /*
  * ----------------------------------------------------------------------
  *                                Images                                |
  * ----------------------------------------------------------------------
  */
 
-function PopupDelete(props) {
+function DropDownButtonTrie(props) {
   /* --------------------------------------------------------------------
    *                               Props                                |
    * --------------------------------------------------------------------
    */
-  const { pageName, children, text,onDelete} = props;
-  const className = props.className ? `PopupDelete ${props.className}` : "PopupDelete";
-  const componentName = props.componentName
-    ? `PopupDelete ${props.componentName}`
-    : "PopupDelete";
+  const { title,onSelectFilter } = props;
+
   /* --------------------------------------------------------------------
    *                              States                                |
    * --------------------------------------------------------------------
    */
-  
-  const [modal, setModal] = useState(false);
-  
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
+  const filter = ["Sans Trie","date de création", "date de fin", "taille", "delai de modification"];
+
   /* --------------------------------------------------------------------
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
-  const toggle = () => setModal(!modal);
-  const functionAppeler = () => {
-    onDelete();
-    toggle();
-  }
-    
   /* --------------------------------------------------------------------
    *                            Effect Hooks                            |
    * --------------------------------------------------------------------
    */
-  useEffect(() => {
-    window.scroll(0,0);
-  }, [])
+
 
   /* --------------------------------------------------------------------
    *                                 JSX                                |
@@ -67,41 +55,19 @@ function PopupDelete(props) {
    */
 
   return (
-    <div
-      className={className}
-      project-component={componentName}
-      project-page={pageName}
-    >
-         <IconButton color="error" onClick={toggle} aria-label="delete">
-                              <DeleteIcon />
-                              </IconButton>
-    
-    <Modal
-      isOpen={modal}
-      modalTransition={{ timeout: 500 }}
-      backdropTransition={{ timeout: 1000 }}
-      toggle={toggle}
-      className={className}
-      centered
-    >
-      <ModalHeader toggle={toggle}>Popup de Suppression</ModalHeader>
-      <ModalBody>
-            {text}
-      </ModalBody>
-      <ModalFooter>
-        <Button color="primary" onClick={functionAppeler}>
-          Supprimer
-        </Button>{' '}
-        <Button color="secondary" onClick={toggle}>
-          Exit
-        </Button>
-      </ModalFooter>
-    </Modal>
-   
-  </div>
+    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+    <DropdownToggle caret>
+    {title}
+    </DropdownToggle>
+    <DropdownMenu>
+      {filter.map((f) => (
+        <DropdownItem key={f} onClick={() => onSelectFilter(f)}>
+          {f}
+        </DropdownItem>
+      ))}
+    </DropdownMenu>
+  </Dropdown>
   );
 }
 
-
-
-export default PopupDelete;
+export default DropDownButtonTrie;

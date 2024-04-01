@@ -142,6 +142,7 @@ function leaveBoard(boardId) {
 socket.emit('addPixel', { pxBoardId: '123', x: 5, y: 10, color: '#ff0000' });
 
 // Envoi d'un événement pour mettre à jour un pixel
+
 socket.emit('updatePixel', { pxBoardId: '123', x: 5, y: 10, color: '#00ff00' });
 
 socket.emit('deletePixel', { pxBoardId: '123', x: 5, y: 10 });
