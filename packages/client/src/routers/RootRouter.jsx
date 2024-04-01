@@ -20,6 +20,7 @@ function RootRouter() {
           </Route>
           <Route  path="/login" element={<views.SignInPage/>} />
           <Route  path="/Register" element={<views.RegisterPage/>} />
+          <Route  path="/HomePage" element={<views.HomePage/>} />
          
         {/*token !== "" && userType ? (
           <>
