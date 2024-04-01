@@ -68,3 +68,22 @@ const registerUser = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+// Function to retrieve a user by ID
+const getUserById = async (req, res) => {
+  const { userId } = req.params; // Assuming user ID is a parameter
+
+  try {
+    // Find user by ID (excluding password for security)
+    const user = await User.findById(userId, { password: 0 });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error('Error fetching user by ID:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};

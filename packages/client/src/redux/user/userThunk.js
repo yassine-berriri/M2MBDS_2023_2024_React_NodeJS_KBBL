@@ -37,5 +37,17 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
-
+export const getUserById = createAsyncThunk(
+  'user/getUserById',
+  async (userId, { dispatch }) => {
+    try {
+      dispatch(userStart());
+      const response = await axios.get(`http://localhost:3001/api/user/${userId}`);
+      //console.log(response.data);
+      dispatch(userSuccess(response.data)); 
+    } catch (error) {
+      dispatch(userFailure(error.message));
+    }
+  }
+);
 
