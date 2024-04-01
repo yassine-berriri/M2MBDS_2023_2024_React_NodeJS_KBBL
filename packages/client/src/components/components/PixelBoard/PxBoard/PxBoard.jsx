@@ -54,7 +54,7 @@ function PxBoard(props) {
   const [selectedColor, setSelectedColor] = useState('white');
   const [showPopupError, setShowPopupError] = useState(false);
   const [popupText, setPopupText] = useState("");
-  let sizeBackup = MyPxBoard ? MyPxBoard.size : 50;
+  let sizeBackup = myPxBoard ? myPxBoard.size : 50;
   const boardStyle = {
     display: 'flex',
     flexWrap: 'wrap',
@@ -74,7 +74,7 @@ function PxBoard(props) {
     console.log("click", x, y, isColored)
     if (selectedColor !== 'white') {
     if (isColored) {
-      if (MyPxBoard.mode.includes("superposition")) {
+      if (myPxBoard.mode.includes("superposition")) {
       socket.emit('updatePixel', { pxBoardId: idPx, x, y, color: selectedColor });
       }
       else {
@@ -133,9 +133,10 @@ function PxBoard(props) {
         <Pixel key={`${x}-${y}`} 
              selectedColor={selectedColor}
               defaultColor={pixel ? pixel.color : 'white'} 
-              clickOnPixel={() => handleClickOnPixel(x, y)
-                
-              } />
+              clickOnPixel={handleClickOnPixel}
+              x = {x}
+              y = {y} 
+              />
       );
     });
   };
