@@ -58,9 +58,15 @@ function PxBoard(props) {
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
+
+  
   const handleClickOnPixel = (x, y) =>{
     console.log("click", x, y)
     socket.emit('addPixel', { pxBoardId: idPx, x, y, color: selectedColor });
+
+    //socket.emit('addPixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
+    socket.emit('updatePixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
+   // socket.emit('deletePixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
   }
 
     // Créer une liste de composants Pixel

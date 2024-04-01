@@ -1,7 +1,5 @@
 const PxBoard = require('../models/pxBoardModel.js');
 
-const {  updatePixelLogic, deletePixelLogic } = require('../controllers/pxBoardController.js');
-
 module.exports = function(io) {
     io.on('connection', (socket) => {
         console.log('Un utilisateur s\'est connecté');
@@ -37,7 +35,7 @@ module.exports = function(io) {
         // Mise à jour d'un pixel
         socket.on('updatePixel', async (data) => {
             const { pxBoardId, x, y, color } = data;
-            const result = await updatePixelLogic(pxBoardId, { x, y, color });
+            const result = await updatePixel(data, io);
             if (result.success) {
                 io.to(pxBoardId).emit('pixelUpdated', { x, y, color });
             } else {
@@ -48,7 +46,7 @@ module.exports = function(io) {
         // Suppression d'un pixel
         socket.on('deletePixel', async (data) => {
             const { pxBoardId, x, y } = data;
-            const result = await deletePixelLogic(pxBoardId, { x, y });
+            const result = await deletePixel(data, io);
             if (result.success) {
                 io.to(pxBoardId).emit('pixelDeleted', { x, y });
             } else {
@@ -65,6 +63,8 @@ module.exports = function(io) {
 };
 
 
+
+
 async function addPixel( data, io) {
     try {
         const { pxBoardId, x, y, color } = data;
@@ -75,7 +75,7 @@ async function addPixel( data, io) {
         if (!pxBoard) {
             // Utilisez socket.emit pour envoyer un message d'erreur au client
             io.emit('error', { message: 'PxBoard not found' });
-            console.log("PxBoard not found");
+      //      console.log("PxBoard not found");
             return { success: false };
         }
 
@@ -85,15 +85,81 @@ async function addPixel( data, io) {
         const updatedPxBoard = await pxBoard.save();
         // Utilisez socket.emit pour envoyer une confirmation au client
         io.emit('pixelAdded', { message: 'Pixel added', pxBoard: updatedPxBoard });
-        console.log("Pixel added");
+    //console.log("Pixel added");
         return { success: true };
     } catch (err) {
         // Utilisez socket.emit pour envoyer les détails de l'erreur au client
         io.emit('error', err);
-        console.log("PxBoard not found 2", err);
+    //    console.log("PxBoard not found 2", err);
         return { success: false };
     }
 }
+
+async function updatePixel(data, io) {
+
+
+    try {
+        console.log("updatePixel");
+
+        const { pxBoardId, x, y, color } = data;
+        const PxBoard = require('../models/pxBoardModel');
+        const pxBoard = await PxBoard.findById(pxBoardId);
+
+        if (!pxBoard) {
+            io.emit('error', { message: 'PxBoard not found' });
+            console.log("Pixel Updated not found");
+            return { success: false };
+        }
+
+        const pixelIndex = pxBoard.pixels.findIndex(pixel => pixel.x === x && pixel.y === y);
+        if (pixelIndex !== -1) {
+            pxBoard.pixels[pixelIndex].color = color;
+            pxBoard.pixels[pixelIndex].history.push({ color, modifiedAt: new Date() });
+            await pxBoard.save();
+            io.to(pxBoardId).emit('pixelUpdated', { x, y, color });
+          //  console.log("Pixel Updated");
+
+            return { success: true };
+
+        } else {
+            io.emit('error', { message: 'Pixel not found' });
+            //console.log("Pixel Updated not found 2 ");
+            return { success: false };
+        }
+    } catch (err) {
+        io.emit('error', err);
+        console.log("Pixel error",err);
+
+        return { success: false };
+
+    }
+}
+
+async function deletePixel(data, io) {
+    try {
+        const { pxBoardId, x, y } = data;
+        const PxBoard = require('../models/pxBoardModel');
+        const pxBoard = await PxBoard.findById(pxBoardId);
+
+        if (!pxBoard) {
+            io.emit('error', { message: 'PxBoard not found' });
+            return { success: false };
+        }
+
+        pxBoard.pixels = pxBoard.pixels.filter(pixel => !(pixel.x === x && pixel.y === y));
+        await pxBoard.save();
+        io.to(pxBoardId).emit('pixelDeleted', { x, y });
+        //console.log("Pixel Deleted");
+
+        return { success: true };
+
+    } catch (err) {
+        io.emit('error', { message: 'Failed to delete pixel', error: err });
+        return { success: false };
+
+    }
+}
+
 
 
 /*
