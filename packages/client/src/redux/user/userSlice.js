@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createAction } from '@reduxjs/toolkit';
 import { signInUser } from './userThunk';
 import { registerUser } from './userThunk';
+import { registerUser, signInUser,updateUserProfile } from './userThunk';
 
 export const userSlice = createSlice({
   name: 'user',
@@ -27,6 +28,25 @@ export const userSlice = createSlice({
       })
       .addCase(signInUser.pending, (state) => {
         state.loading = true;
+      })
+      .addCase(userSuccess, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.user = action.payload; 
+        state.successMessage = action.meta; 
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.loading = false;
+        state.error = null;
+        state.successMessage = action.meta; 
       });
   },
 });

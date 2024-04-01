@@ -4,6 +4,7 @@ import axios from 'axios';
 import { userStart, userSuccess, userFailure } from './userSlice';
 
 
+
 // Thunk action for user sign-in
 export const signInUser = createAsyncThunk(
   'user/signIn',
@@ -47,6 +48,23 @@ export const getUserById = createAsyncThunk(
       dispatch(userSuccess(response.data)); 
     } catch (error) {
       dispatch(userFailure(error.message));
+    }
+  }
+);
+
+export const updateUserProfile = createAsyncThunk(
+  'user/updateProfile',
+  async (userData, { dispatch }) => {
+    try {
+      dispatch(userStart());
+      console.log(userData.userId);
+      const response = await axios.put(`http://localhost:3001/api/user/${userData.userId}`, userData.updatedData);
+      const updatedUserData = response.data; 
+      dispatch(userSuccess(updatedUserData, "Profile updated successfully"));
+      return updatedUserData; 
+    } catch (error) {
+      dispatch(userFailure(error.message)); 
+      throw error; 
     }
   }
 );

@@ -87,3 +87,40 @@ const getUserById = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+const updateUserProfile = async (req, res) => {
+    const { userId } = req.params; // Assuming user ID is a parameter
+    const { firstName, lastName, email, role, password } = req.body;
+  
+    try {
+      // Find the user by ID
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Verify the password
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+  
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: 'Invalid password' });
+      }
+  
+      // Update the user's profile information
+      user.firstName = firstName;
+      user.lastName = lastName;
+      user.email = email;
+      user.role = role;
+  
+      // Save the updated user object
+      await user.save();
+      const user1 = await User.findById(userId);
+  
+      res.status(200).json({user:user1, message: 'Profile updated successfully' });
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+  module.exports = { registerUser, loginUser, getUserById,updateUserProfile };

@@ -8,5 +8,6 @@ router.post('/login', userController.loginUser);
 // Route to register a new user
 router.post('/register', userController.registerUser);
 router.get('/user/:userId', userController.getUserById);
+router.put('/user/:userId', userController.updateUserProfile);
 
 module.exports = router;
