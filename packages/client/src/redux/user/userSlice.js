@@ -1,8 +1,6 @@
 // userSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { createAction } from '@reduxjs/toolkit';
-import { signInUser } from './userThunk';
-import { registerUser } from './userThunk';
 import { registerUser, signInUser,updateUserProfile } from './userThunk';
 
 export const userSlice = createSlice({
