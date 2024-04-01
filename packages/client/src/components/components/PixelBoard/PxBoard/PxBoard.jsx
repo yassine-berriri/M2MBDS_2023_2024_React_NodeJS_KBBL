@@ -34,7 +34,7 @@ function PxBoard(props) {
    */
   const { REACT_APP_API_URL } = process.env;
   const socket = io(REACT_APP_API_URL);
-  const { rows = 100, cols = 100, idPx } = props;
+  const { rows = 50, cols = 50, idPx } = props;
  // const className = props.className ? `PxBoard ${props.className}` : "PxBoard";
 //  const componentName = props.componentName
   //  ? `PxBoard ${props.componentName}`
@@ -49,7 +49,8 @@ function PxBoard(props) {
   const boardStyle = {
     display: 'flex',
     flexWrap: 'wrap',
-    width: `${26 * cols}px`, // Largeur totale du tableau
+    width: cols * 50,
+   // Largeur totale du tableau
      // Optionnel, pour encadrer le tableau
   };
 
@@ -57,20 +58,31 @@ function PxBoard(props) {
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
-  const handleClickOnPixel = () =>{
-    console.log("click")
+
+  
+  const handleClickOnPixel = (x, y) =>{
+    console.log("click", x, y)
+    socket.emit('addPixel', { pxBoardId: idPx, x, y, color: selectedColor });
+
     //socket.emit('addPixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
     socket.emit('updatePixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
    // socket.emit('deletePixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
-
-
   }
 
     // Créer une liste de composants Pixel
     const pixels = [];
-    for (let i = 0; i < rows * cols; i++) {
-      pixels.push(<Pixel clickOnPixel= {handleClickOnPixel} key={i} selectedColor={selectedColor} />); // key est important pour les performances de React
+    for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const index = y * cols + x;
+      pixels.push(
+        <Pixel
+          clickOnPixel={() => handleClickOnPixel(x, y)} // Modifié pour passer x et y
+          key={index}
+          selectedColor={selectedColor}
+        />
+      );
     }
+  }
 
    
 
