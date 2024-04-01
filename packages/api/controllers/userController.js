@@ -32,3 +32,39 @@ const loginUser = async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
+
+  // Function to register a new user
+const registerUser = async (req, res) => {
+  const { firstName, lastName, email, password, role } = req.body;
+  console.log('req.body:', req.body);
+
+  try {
+    // Check if user with the same email already exists
+    let existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({ message: 'User with this email already exists' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
+    const newUser = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      role,
+      createdAt: new Date(), 
+      updatedAt: new Date() 
+    });
+
+    await newUser.save();
+
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    console.error('Error registering user:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
