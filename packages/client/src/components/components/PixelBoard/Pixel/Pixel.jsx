@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-function Pixel({ defaultColor = 'white', selectedColor, clickOnPixel }) {
+function Pixel({ defaultColor = 'white', selectedColor, clickOnPixel, x, y  }) {
 
   const [color, setColor] = useState(defaultColor);
 
   const handleSelectPixel = () => {
     console.log('handleSelectPixel');
-    clickOnPixel();
+    clickOnPixel(x, y, color !== defaultColor);
     setColor(selectedColor);
   }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 function ColorPalette({ onSelectColor }) {
-  const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'black', 'white'];
+  const colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple','white', 'black'];
 
   const paletteStyle = {
     display: 'flex',
