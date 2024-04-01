@@ -3,7 +3,9 @@
  *                          Components & Functions                      |
  * ----------------------------------------------------------------------
  */
-import React from "react";
+import {useEffect, useState} from "react";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+
 /*
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
@@ -15,69 +17,44 @@ import React from "react";
  *                                Styles                                |
  * ----------------------------------------------------------------------
  */
-import "./Visitor_PixelBoard.scss";
-import { Link } from "react-router-dom";
-import {useNavigate} from 'react-router-dom';
-import {useState, useEffect} from 'react';
-import { PxBord } from "../../components";
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
-
+import "./PopupError.scss";
 /*
  * ----------------------------------------------------------------------
  *                                Images                                |
  * ----------------------------------------------------------------------
  */
 
-
-function Visitor_PixelBoard() {
-
-  let { id } = useParams();
-  const navigate = useNavigate();
-
-  
+function PopupError(props) {
   /* --------------------------------------------------------------------
    *                               Props                                |
    * --------------------------------------------------------------------
    */
- 
+  const { pageName,  text} = props;
+  const className = props.className ? `PopupError ${props.className}` : "PopupError";
+  const componentName = props.componentName
+    ? `PopupError ${props.componentName}`
+    : "PopupError";
   /* --------------------------------------------------------------------
    *                              States                                |
    * --------------------------------------------------------------------
    */
-
-
+  
+  const [modal, setModal] = useState(true);
+  
   /* --------------------------------------------------------------------
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
+  const toggle = () => setModal(!modal);
   
-  
-
-
-
-  
-  
-
+    
   /* --------------------------------------------------------------------
    *                            Effect Hooks                            |
    * --------------------------------------------------------------------
    */
-
-  const { pxBoards, loading, error } = useSelector(state => state.pxBoard);
-
-  const getPxBoardById = (id) => {
-    const pxBoard = pxBoards.find((pxBoard) => pxBoard._id === id);
-    console.log("pxBoards dans visitor = ",pxBoard)
-    return pxBoard;
-  }
-
-  let myPxBoard = getPxBoardById(id);
-
-
-
- 
+  useEffect(() => {
+    window.scroll(0,0);
+  }, [])
 
   /* --------------------------------------------------------------------
    *                                 JSX                                |
@@ -85,11 +62,35 @@ function Visitor_PixelBoard() {
    */
 
   return (
-    <div className="conatainer">
-       <div>PixelBoard ici</div>
-       <PxBord MyPxBoard={myPxBoard} idPx={id} />
-        </div>
+    <div
+      className={className}
+      project-component={componentName}
+      project-page={pageName}
+    >
+    
+    <Modal
+      isOpen={modal}
+      modalTransition={{ timeout: 500 }}
+      backdropTransition={{ timeout: 1000 }}
+      toggle={toggle}
+      className={className}
+      centered
+    >
+      <ModalHeader toggle={toggle}>Alert</ModalHeader>
+      <ModalBody>
+            {text}
+      </ModalBody>
+      <ModalFooter>
+        <Button color="primary" onClick={toggle}>
+          Ok
+        </Button>
+      </ModalFooter>
+    </Modal>
+   
+  </div>
   );
 }
 
-export default Visitor_PixelBoard;
+
+
+export default PopupError;

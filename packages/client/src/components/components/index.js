@@ -12,6 +12,8 @@ import PxBord from "./PixelBoard/PxBoard/PxBoard";
 import Pixel from "./PixelBoard/Pixel/Pixel";
 import ColorPalette from "./PixelBoard/ColorPalette/ColorPalette";
 
+import PopupError from "./Popups/PopupError/PopupError";
+
 export {
     Space,
     Page,
@@ -23,5 +25,6 @@ export {
     DropDownButtonTrie,
     PxBord,
     Pixel,
-    ColorPalette
+    ColorPalette,
+    PopupError
 };

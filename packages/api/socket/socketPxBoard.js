@@ -25,8 +25,9 @@ module.exports = function(io) {
             const { pxBoardId, x, y, color } = data;
             const result = await addPixel(data, io);
             if (result.success) {
-                console.log('Pixel ajouté');
+               
                 io.to(pxBoardId).emit('pixelAdded', { x, y, color });
+                console.log('Pixel ajouté');
             } else {
                 socket.emit('actionFailed', 'L\'ajout du pixel a échoué');
             }
