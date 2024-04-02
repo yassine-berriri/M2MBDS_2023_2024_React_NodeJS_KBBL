@@ -14,3 +14,42 @@
     flex-wrap: wrap;
     justify-content: center;
   }
+  .countdownDisplay {
+    position: fixed; /* Ou "absolute", selon votre layout */
+    top: 10%;
+    left: 15%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 0 0 10px 10px;
+  }
+
+  .pixel-history {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 10px;
+    white-space: nowrap;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none; // Éviter que le tooltip n'interfère avec les événements de la souris
+  }
+  
+  .pixel:hover .pixel-history {
+    display: block;
+  }
+  .pixel-history-info {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    max-width: 300px;
+    z-index: 1000;
+  }
+  
