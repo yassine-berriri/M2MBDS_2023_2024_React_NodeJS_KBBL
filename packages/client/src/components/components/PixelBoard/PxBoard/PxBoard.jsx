@@ -49,12 +49,15 @@ function PxBoard(props) {
   
     const [isLoading, setIsLoading] = useState(true);
     const [pxBoard, setPxBoard] = useState(null);
-    const { size } = myPxBoard; // Supposons que `size` est toujours défini
+       // Supposons que `size` est toujours défini
 
   const [selectedColor, setSelectedColor] = useState('white');
   const [showPopupError, setShowPopupError] = useState(false);
   const [popupText, setPopupText] = useState("");
+  
   let sizeBackup = myPxBoard ? myPxBoard.size : 50;
+  let pixelsBackup = myPxBoard ? myPxBoard.pixels : [];
+
   const boardStyle = {
     display: 'flex',
     flexWrap: 'wrap',
@@ -70,8 +73,8 @@ function PxBoard(props) {
    */
 
   
-  const handleClickOnPixel = (x, y, isColored) =>{
-    console.log("click", x, y, isColored)
+  const handleClickOnPixel = (x, y, isColored, defaultColor) =>{
+    console.log("click", x, y, isColored, defaultColor)
     if (selectedColor !== 'white') {
     if (isColored) {
       if (myPxBoard.mode.includes("superposition")) {
@@ -128,7 +131,7 @@ function PxBoard(props) {
     return Array.from({ length: size * size }, (_, index) => {
       const x = index % size;
       const y = Math.floor(index / size);
-      const pixel = myPxBoard.pixels?.find(p => p.x === x && p.y === y);
+      const pixel = pixelsBackup.find(p => p.x === x && p.y === y);
       return (
         <Pixel key={`${x}-${y}`} 
              selectedColor={selectedColor}
@@ -141,7 +144,7 @@ function PxBoard(props) {
     });
   };
 
-  const pixels = generatePixels(myPxBoard.size, myPxBoard.size, myPxBoard.pixels);
+  const pixels = generatePixels(sizeBackup, sizeBackup, pixelsBackup);
 
   /* --------------------------------------------------------------------
    *                            Effect Hooks                            |
@@ -193,11 +196,11 @@ function PxBoard(props) {
   return (
     <div className="PxBoard">
       <div className="pxBoardInfo">
-        <h1>{myPxBoard.title}</h1>
-        <p>Date de fin: {new Date(myPxBoard.endDate).toLocaleDateString()}</p>
-        <p>Délai de modification: {myPxBoard.modificationDelai} seconde</p>
-        <p>Créé le: {new Date(myPxBoard.createdAt).toLocaleDateString()}</p>
-        <p>Mode: {myPxBoard.mode.join(', ')}</p>
+        <h1>{myPxBoard?.title}</h1>
+        <p>Date de fin: {new Date(myPxBoard?.endDate).toLocaleDateString()}</p>
+        <p>Délai de modification: {myPxBoard?.modificationDelai} seconde</p>
+        <p>Créé le: {new Date(myPxBoard?.createdAt).toLocaleDateString()}</p>
+        <p>Mode: {myPxBoard?.mode.join(', ')}</p>
       </div>
       <ColorPalette onSelectColor={setSelectedColor} />
 
