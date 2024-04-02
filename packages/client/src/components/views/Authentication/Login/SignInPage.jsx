@@ -3,6 +3,7 @@ import { Container, Row, Col, Button, Input, Label, FormGroup, Navbar, NavbarBra
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { signInUser } from '../../../../redux/user/userThunk'; 
+import { useNavigate } from 'react-router-dom';
 
 const SignInContainer = styled(Container)`
   padding: calc(20vh - 3rem) 10rem 2vh 1%;
@@ -28,6 +29,7 @@ const SignInPage = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSignIn = async () => {
     const validationErrors = {};
@@ -48,13 +50,17 @@ const SignInPage = () => {
     }
     try {
       await dispatch(signInUser({ email, password }));
-  
+      localStorage.setItem('token', 'votre-jeton');
+      dispatch({ type: 'USER_LOGIN_SUCCESS', payload: { email } });
+        
+      navigate('/HomePage');
       // Access token from localStorage (if needed within the component)
       const token = localStorage.getItem('token');
       console.log('Token:', token); // For example, to send the token in API requests
     } catch (error) {
       // Handle sign-in errors
     }
+    
   };
 
   return (

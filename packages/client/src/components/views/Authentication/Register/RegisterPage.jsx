@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Input, Label, FormGroup, Form , Navbar,
     NavbarBrand} from 'reactstrap';
 import { registerUser } from '../../../../redux/user/userThunk'; // Import thunk action for user registration
 import { useDispatch, useSelector } from 'react-redux';
 import { userStart, userFailure } from '../../../../redux/user/userSlice';
+
 
 import styled from 'styled-components';
 
@@ -36,6 +38,7 @@ const RegisterPage = () => {
     const [role, setRole] = useState('');
     const [errors, setErrors] = useState({});
     const dispatch = useDispatch(); // Get dispatch function from Redux
+    const navigate = useNavigate();
   
     const validateInputs = () => {
         const errors = {};
@@ -81,6 +84,7 @@ const RegisterPage = () => {
                 dispatch(userStart()); // Dispatch user start action
                 const userData = { firstName, lastName, email, phoneNumber, bio, password, role };
                 await dispatch(registerUser(userData)); // Dispatch thunk action for user registration
+                navigate('/login');
             } catch (error) {
                 dispatch(userFailure(error.message)); // Dispatch user failure action
             }

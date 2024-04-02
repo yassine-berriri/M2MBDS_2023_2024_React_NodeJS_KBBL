@@ -3,11 +3,16 @@
 import { Menu, Button } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import logo from "../../../assets/images/logo.png";
+import { useSelector } from 'react-redux';
 
 function Sidenav({ color }) {
   const { pathname } = useLocation();
   const page = pathname.replace("/", "");
 
+  const user = useSelector(state => state.user);
+  // Vérifier si l'utilisateur est connecté
+  const isLoggedIn = !!user;
+  
   const dashboard = [
     <svg
       width="20"
@@ -173,21 +178,23 @@ function Sidenav({ color }) {
         <Menu.Item className="menu-item-header" key="5">
           Account Pages
         </Menu.Item>
-        <Menu.Item key="2">
-          <NavLink to="/profile">
-            <span
-              className="icon"
-              style={{
-                background: page === "profile" ? color : "",
-              }}
-            >
-              {profile}
-            </span>
-            <span className="label">Profile</span>
-          </NavLink>
-        </Menu.Item>
+        {/* Afficher le lien vers le profil uniquement si l'utilisateur est connecté */}
+        {isLoggedIn && (
+          <Menu.Item key="2">
+            <NavLink to="/profile">
+              <span
+                className="icon"
+                style={{
+                  background: page === "profile" ? color : "",
+                }}
+              >
+                {profile}
+              </span>
+              <span className="label">Profile</span>
+            </NavLink>
+          </Menu.Item>
+        )}
       </Menu>
-     
     </>
   );
 }

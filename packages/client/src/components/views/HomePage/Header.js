@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 import {
   Row,
-  Col,
+  Col,  
   Breadcrumb,
   Badge,
   Dropdown,
@@ -27,7 +27,7 @@ import {
 import { NavLink, Link } from "react-router-dom";
 import styled from "styled-components";
 import avtar from "../../../assets/images/team-2.jpg";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signInUser } from '../../../redux/user/userThunk';
 
 const ButtonContainer = styled.div`
@@ -53,7 +53,7 @@ const ButtonContainer = styled.div`
 
 
 
-
+/*
 const profile = [
   <svg
     width="20"
@@ -71,9 +71,9 @@ const profile = [
     ></path>
   </svg>,
 ];
+*/
 
-
-
+/*
 const setting = [
   <svg
     width="20"
@@ -91,6 +91,7 @@ const setting = [
     ></path>
   </svg>,
 ];
+*/
 
 function Header({
   placement,
@@ -122,59 +123,47 @@ const logsetting = [
     ></path>
   </svg>,
 ];
-  useEffect(() => window.scrollTo(0, 0));
+  //useEffect(() => window.scrollTo(0, 0));
 
   const showDrawer = () => setVisible(true);
   const hideDrawer = () => setVisible(false);
   const dispatch = useDispatch();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);  
+  const user = useSelector(state => state.user);
+
+  useEffect(() => {
+    // Si l'utilisateur existe dans l'état user, cela signifie qu'il est connecté
+    setIsLoggedIn(!user);
+  }, [user]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('id');
     dispatch(signInUser({})); 
+    setIsLoggedIn(false);
     window.location.href = '/login'; // Redirect to the login page
 
   };
   return (
-    <>
-      <div className="setting-drwer" onClick={showDrawer}>
-        {setting}
-      </div>
-      <Row gutter={[24, 0]}>
-        <Col span={24} md={6}>
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <NavLink to="/">Pages</NavLink>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item style={{ textTransform: "capitalize" }}>
-              {name.replace("/", "")}
-            </Breadcrumb.Item>
-          </Breadcrumb>
-          <div className="ant-page-header-heading">
-            <span
-              className="ant-page-header-heading-title"
-              style={{ textTransform: "capitalize" }}
-            >
-              {subName.replace("/", "")}
-            </span>
-          </div>
-        </Col>
-        <Col span={24} md={18} className="header-control">
-  
-
-        <Button type="link" onClick={handleLogout}>
-            {logsetting}
-          </Button>
-         
-          <Link to="/profile" className="btn-sign-in">
-            {profile}
-            <span>Sign in</span>
-          </Link>
-         
-        </Col>
-      </Row>
-    </>
+    <Row justify="end">
+      <Col>
+        {/* Si l'utilisateur est connecté, affichez le bouton de déconnexion */}
+        {isLoggedIn ? (
+          <Button onClick={handleLogout}>SignOut</Button>
+        ) : (
+          /* Si l'utilisateur n'est pas connecté, affichez les boutons de connexion et d'inscription */
+          <>
+            <Link to="/login">
+              <Button>SignIn</Button>
+            </Link>
+            <Link to="/register">
+              <Button>SignUp</Button>
+            </Link>
+          </>
+        )}
+      </Col>
+    </Row>
   );
 }
 
