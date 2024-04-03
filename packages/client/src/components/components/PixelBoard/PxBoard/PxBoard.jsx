@@ -104,15 +104,15 @@ function PxBoard(props) {
       setTimeoutId(newTimeoutId); // Stockez l'ID pour une annulation future si nécessaire.
   };
 
-  const handleMouseLeave = () => {
-      // L'utilisateur a quitté le pixel; annulez l'action en attente.
-      if (timeoutId) clearTimeout(timeoutId);
-      setTimeoutId(null);
+    const handleMouseLeave = () => {
+        // L'utilisateur a quitté le pixel; annulez l'action en attente.
+        if (timeoutId) clearTimeout(timeoutId);
+        setTimeoutId(null);
 
-      // Effacez toutes les informations de survol pour éviter l'affichage obsolète.
-      setHoveredPixel(null);
-      setHoveredPixelHistory([]);
-  };
+        // Effacez toutes les informations de survol pour éviter l'affichage obsolète.
+        setHoveredPixel(null);
+        setHoveredPixelHistory([]);
+    };
 
 
 
@@ -127,10 +127,9 @@ function PxBoard(props) {
       return;
     }
     else {
-
-
-        startCountdown(myPxBoard.modificationDelai);
-
+       
+       setcanClick(false);
+       startCountdown(myPxBoard.modificationDelai);
         if (selectedColor !== 'white') {
         if (isColored) {
           if (myPxBoard.mode.includes("superposition")) {
@@ -152,9 +151,8 @@ function PxBoard(props) {
         
       }
    
-  }
-//socket.emit('addPixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
-   // socket.emit('deletePixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
+    }
+
   }
   
 /*
