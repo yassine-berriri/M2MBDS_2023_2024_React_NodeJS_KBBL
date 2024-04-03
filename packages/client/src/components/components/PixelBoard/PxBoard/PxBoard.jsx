@@ -367,7 +367,7 @@ useEffect(() => {
 useEffect(() => {
   const timer = setTimeout(() => {
     setIsLoading(false);
-  }, 8000); // 5000 millisecondes = 5 secondes
+  }, 6000); // 5000 millisecondes = 5 secondes
   return () =>{
     setPixelsState([]);
     console.log("test socket leaveBoard");
