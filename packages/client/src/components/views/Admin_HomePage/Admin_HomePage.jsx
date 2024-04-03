@@ -15,6 +15,8 @@ import Tools from "../../../Utils/tools";
 import { DropDownButtonTrie } from "../../components";
 import PopupDelete from "../../components/Popups/PopupDelete/PopupDelete";
 import PopUpdate from "../../components/Popups/PopupUpdatePxBoard/PopUpdate";
+import {MySpinnerPopup} from "../../components";
+
 /*PopUpdate
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
@@ -29,6 +31,8 @@ import PopUpdate from "../../components/Popups/PopupUpdatePxBoard/PopUpdate";
 
 import "./Admin_HomePage.scss";
 import { PopupCreatePxBoard } from "../../components";
+import PxBoard from "../../components/PixelBoard/PxBoard/PxBoard";
+
 
 
 /*
@@ -42,6 +46,8 @@ function Admin_HomePage() {
    *                               Props                                |
    * --------------------------------------------------------------------
    */
+
+
  
   /* --------------------------------------------------------------------
    *                              States                                |
@@ -51,12 +57,29 @@ function Admin_HomePage() {
   const [dropDownTrieLabel, setDropDownTrieLabel] = useState("Trier par");
   const [sortedPxBoards, setSortedPxBoards] = useState([]);
   const [nameFilter, setNameFilter] = useState("");
+
   
   /* --------------------------------------------------------------------
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
 
+  const   drawImageFromPixels = (pixels, width, height) => {
+    // Créer un élément canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+
+    // Dessiner chaque pixel
+    pixels.forEach(pixel => {
+      ctx.fillStyle = pixel.color; // Définir la couleur
+      ctx.fillRect(pixel.x, pixel.y, 1, 1); 
+    });
+
+ 
+    return canvas.toDataURL();
+  }
 
   const handleClickonPxBoard = (id) => {
     navigate(`/pixelBoard/${id}`);
@@ -139,8 +162,7 @@ useEffect(() => {
   // Initialisation de l'état local avec les données de Redux
   setSortedPxBoards(pxBoards);
 }, [pxBoards]);
-
-
+let imageUrl = "";
 
   /* --------------------------------------------------------------------
    *                                 JSX                                |
@@ -169,14 +191,24 @@ useEffect(() => {
       <div className="pxBoardList">
       
       <CardGroup className="cardGroup">
-                {loading && <div>Chargement...</div>}
+                {loading && <div> <MySpinnerPopup/> </div>}
                 {error && <div className="error">{error}</div>}
                 {!loading && !error && pxBoards.length > 0 ? (
                     
                     sortedPxBoards.slice().reverse().map(pxBoard => (
+                        imageUrl = drawImageFromPixels(pxBoard.pixels, 100, 100),
+
                         <div key={pxBoard.id}>
                           <Card>
-                            <CardImg onClick={() => handleClickonPxBoard(pxBoard._id)}  height="10%" width="100%" src="https://picsum.photos/318/180" alt="Card image cap" />
+                          <CardImg
+                          className="cardImg"
+                          onClick={() => handleClickonPxBoard(pxBoard._id)}
+                          height="100%" 
+                          width="100%"
+                          src={imageUrl} 
+                          alt="Card image cap"
+                          />
+                            {/*<CardImg   height="10%" width="100%" src="https://picsum.photos/318/180" alt="Card image cap" />*/}
                             <CardBody>
                               <CardTitle tag="h5">{pxBoard.title}</CardTitle>
                               <CardSubtitle tag="h6" className="mb-2 text-muted">Date de création: {Tools.convertToSimpleDate(pxBoard.createdAt)}</CardSubtitle>

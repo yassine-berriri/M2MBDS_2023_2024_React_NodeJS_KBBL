@@ -13,6 +13,7 @@ import Pixel from "./PixelBoard/Pixel/Pixel";
 import ColorPalette from "./PixelBoard/ColorPalette/ColorPalette";
 
 import PopupError from "./Popups/PopupError/PopupError";
+import MySpinnerPopup from "./Spinner/MySpinnerPopup";
 
 export {
     Space,
@@ -26,5 +27,6 @@ export {
     PxBord,
     Pixel,
     ColorPalette,
-    PopupError
+    PopupError,
+    MySpinnerPopup
 };

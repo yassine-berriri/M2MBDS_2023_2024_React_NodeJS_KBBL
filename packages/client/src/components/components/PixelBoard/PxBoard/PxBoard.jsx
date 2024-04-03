@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Pixel from "../Pixel/Pixel";
 import ColorPalette from "../ColorPalette/ColorPalette";
-import { PopupError } from "../../../components";
+import { MySpinnerPopup, PopupError } from "../../../components";
 import { TailSpin } from 'react-loader-spinner';
 import { useSocket } from '../../../../hooks/useSocket';
 
@@ -50,14 +50,18 @@ function PxBoard(props) {
    */
   
     const [isLoading, setIsLoading] = useState(true);
+  
     
        // Supposons que `size` est toujours défini
 
   const [selectedColor, setSelectedColor] = useState('white');
   const [showPopupError, setShowPopupError] = useState();
   const [popupText, setPopupText] = useState("");
-  
   const { pxBoard, loading, error } = useSelector(state => state.pxBoard);
+
+  const [showIndicator, setShowIndicator] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [color, setColor] = useState('white'); 
   
 
 
@@ -256,9 +260,6 @@ function PxBoard(props) {
     });
 
     console.log("emit = ", emit)
-
-   
-   
     }
     
     const addPixel = (x, y, color) => {
@@ -276,10 +277,18 @@ function PxBoard(props) {
           return newState;
         } else {
           // Si le pixel n'existe pas, l'ajouter au tableau
-          return [...currentState, { x, y, color }];
+          return [...currentState];
         }
       });
     };
+
+
+    const handleSelectColor = (color) => {
+      setSelectedColor(color);
+      setShowIndicator(true); 
+      setColor(color)
+    }
+
     
   
 
@@ -294,13 +303,13 @@ function PxBoard(props) {
     const boardId = idPx;
 
     if (myPxBoard && myPxBoard.pixels) {
-      setIsLoading(false);
+     // setIsLoading(false);
       // Autres actions après le chargement, si nécessaire
     }
 
     
     socket?.emit('joinBoard', idPx);
-
+    
      // Écoute pour les pixels ajoutés
     socket.on('pixelAdded', (data) => {
       const { x, y, color } = data;
@@ -336,7 +345,8 @@ function PxBoard(props) {
       socket?.off('pixelAdded');
       socket?.off('pixelUpdated');
       socket?.off('pixelDeleted');
-      //socket.emit('leaveBoard', boardId)
+      //
+    
       
     };
   
@@ -354,6 +364,35 @@ useEffect(() => {
     }
 }, [loading, error, pxBoard]);
 
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setIsLoading(false);
+  }, 8000); // 5000 millisecondes = 5 secondes
+  return () =>{
+    setPixelsState([]);
+    console.log("test socket leaveBoard");
+    socket.emit('leaveBoard', idPx);
+    clearTimeout(timer);
+  }
+ 
+}, [])
+
+
+  // Gestionnaire pour mettre à jour la position du curseur
+  /*
+  useEffect(() => {
+    const updateCursorPosition = (e) => {
+      setCursorPosition({ x: e.clientX, y: e.clientY });
+    };
+    if (showIndicator) {
+      window.addEventListener('mousemove', updateCursorPosition);
+    }
+    return () => {
+      window.removeEventListener('mousemove', updateCursorPosition);
+    };
+  }, [showIndicator]);
+  */
+
 
  
 
@@ -363,38 +402,44 @@ useEffect(() => {
    */
 
   return (
-    <div className="PxBoard">
-      <div className="pxBoardInfo">
-        <h1>{myPxBoard?.title}</h1>
-        <p>Date de fin: {new Date(myPxBoard?.endDate).toLocaleDateString()}</p>
-        <p>Délai de modification: {myPxBoard?.modificationDelai} seconde</p>
-        <p>Créé le: {new Date(myPxBoard?.createdAt).toLocaleDateString()}</p>
-        <p>Mode: {myPxBoard?.mode.join(', ')}</p>
-      </div>
-      <ColorPalette onSelectColor={setSelectedColor} />
-
-      {console.log("showPopupError", showPopupError)}
-
-      {showPopupError && <PopupError text={popupText} clicked={()=> setShowPopupError(!showPopupError)} />}
-
-      <div className="pxBoardMatrice" style={{ width: myPxBoard?.size * 25 }}>
     
-      {pixelsState?.map(({ x, y, color }) => (
-        <Pixel key={`${x}-${y}`}
-               selectedColor={selectedColor}
-               defaultColor={color}
-               clickOnPixel={() => addOrUpdatePixel(x, y, selectedColor, true)}
-               x={x}
-               y={y}
-               initColor={color} />
-      ))}
-    </div>
-      {/*
-      <div className="pxBoardMatrice" style={{ width: myPxBoard?.size * 25 }}> 
-        {isLoading ? <div className="spinner"></div> : pixels}
-      </div>
-      */}
-    </div>
+    <div className="PxBoard">
+      {console.log("isLoading +++++", isLoading)}
+    {isLoading ? (
+      // Affiche le loader si isLoading est vrai
+     <div> <MySpinnerPopup/> </div>
+    ) : (
+      // Utilisez un fragment ou une div englobante pour contenir plusieurs éléments
+      <>
+        <div className="pxBoardInfo">
+          <h1>{myPxBoard?.title}</h1>
+          <p>Date de fin: {new Date(myPxBoard?.endDate).toLocaleDateString()}</p>
+          <p>Délai de modification: {myPxBoard?.modificationDelai} seconde</p>
+          <p>Créé le: {new Date(myPxBoard?.createdAt).toLocaleDateString()}</p>
+          <p>Mode: {myPxBoard?.mode.join(', ')}</p>
+        </div>
+  
+        <ColorPalette onSelectColor={handleSelectColor} />
+  
+        {showPopupError && <PopupError text={popupText} clicked={() => setShowPopupError(false)} />}
+        
+        <div className="pxBoardMatrice" style={{ width: myPxBoard?.size * 25 }}>
+          {!error && pixelsState?.map(({ x, y, color }) => (
+            <Pixel key={`${x}-${y}`}
+                   selectedColor={selectedColor}
+                   defaultColor={color}
+                   clickOnPixel={() => addOrUpdatePixel(x, y, selectedColor, true)}
+                   x={x}
+                   y={y}
+                   initColor={color} />
+          ))}
+        </div>
+  
+        {error && <PopupError text="Une erreur est survenue sur notre serveur. Veuillez vérifier votre connexion et essayer à nouveau." clicked={() => setShowPopupError(false)} />}
+      </>
+    )}
+  </div>
+  
   );
   
   
