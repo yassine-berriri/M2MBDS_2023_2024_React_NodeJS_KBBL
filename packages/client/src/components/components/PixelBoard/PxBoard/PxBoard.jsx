@@ -57,6 +57,17 @@ function PxBoard(props) {
   const [selectedColor, setSelectedColor] = useState('white');
   const [showPopupError, setShowPopupError] = useState();
   const [popupText, setPopupText] = useState("");
+
+  const [countdown, setCountdown] = useState(0); // Le compte à rebours initial est à 0
+  const [canClick, setcanClick] = useState(true); // Le compte à rebours initial est à 0
+
+  const [hoveredPixelHistory, setHoveredPixelHistory] = useState([]);
+  const [pixelsData, setPixelsData] = useState([]);
+  const [hoveredPixel, setHoveredPixel] = useState(null);
+  const [timeoutId, setTimeoutId] = useState(null);
+
+  let delay = myPxBoard ? myPxBoard.modificationDelai : 0;
+
   const { pxBoard, loading, error } = useSelector(state => state.pxBoard);
 
   const [showIndicator, setShowIndicator] = useState(false);
@@ -83,55 +94,43 @@ function PxBoard(props) {
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
+  
 
+
+
+  // fonction pour le mode hisotrique
+
+    const handleMouseEnter = (x, y) => {
+      // Effacez toutes les informations de survol précédentes.
+      setHoveredPixel(null);
+      setHoveredPixelHistory([]);
+
+      // Annulez toute action en attente d'un survol précédent.
+      if (timeoutId) clearTimeout(timeoutId);
+
+      const newTimeoutId = setTimeout(() => {
+          const pixel = myPxBoard.pixels.find(p => p.x === x && p.y === y);
+          if (pixel) {
+              setHoveredPixel({ x, y, history: pixel.history || [] });
+          } else {
+              setHoveredPixel({ x, y, message: "Ce pixel est vierge." });
+          }
+      }, 3000); // Attendre 3 secondes avant de traiter.
+
+      setTimeoutId(newTimeoutId); // Stockez l'ID pour une annulation future si nécessaire.
+  };
+
+    const handleMouseLeave = () => {
+        // L'utilisateur a quitté le pixel; annulez l'action en attente.
+        if (timeoutId) clearTimeout(timeoutId);
+        setTimeoutId(null);
+
+        // Effacez toutes les informations de survol pour éviter l'affichage obsolète.
+        setHoveredPixel(null);
+        setHoveredPixelHistory([]);
+    };
   
-  const handleClickOnPixel = (x, y, isColored, initColor) =>{
-    console.log("click", x, y, isColored, initColor)
-    if (selectedColor !== 'white') {
-    if (isColored || initColor !== undefined) {
-      if (myPxBoard.mode.includes("superposition")) {
-      console.log("updatePixel", x, y, selectedColor)
-      socket.emit('updatePixel', { pxBoardId: idPx, x, y, color: selectedColor });
-      
-      }
-      else {
-        handleShowPopupError("Vous ne pouvez pas superposer les couleurs sur ce tableau, le mode dans ce pixelBoard est désactivé.")
-      }
-    }
-    else {
-      console.log("addPixel", x, y, selectedColor)
-      socket.emit('addPixel', { pxBoardId: idPx, x, y, color: selectedColor });
-      
-    }
-  }
-  else {
-    if (isColored || initColor !== undefined) {
-    socket.emit('deletePixel', { pxBoardId: idPx, x, y, color: selectedColor });
-    }
-  }
-   
-    //socket.emit('addPixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
-   // socket.emit('deletePixel', { pxBoardId: "6606beb983b0aeea038e1764", x: 5, y: 10, color: '#ff0000' });
-  }
-  
-/*
-    // Créer une liste de composants Pixel
-    const pixels = [];
-    for (let y = 0; y < sizeBackup; y++) {
-    for (let x = 0; x < sizeBackup; x++) {
-      const key = `pixel-${x}-${y}`;
-      pixels.push(
-        <Pixel
-          clickOnPixel={handleClickOnPixel} // Modifié pour passer x et y
-          key={key}
-          selectedColor={selectedColor}
-          x = {x}
-          y = {y}
-        />
-      );
-    }
-  }
-*/
+
 
  const  handleShowPopupError = (text) => {
     setPopupText(text);
@@ -139,29 +138,39 @@ function PxBoard(props) {
   }
 
    
-  // Générer les pixels basés sur les données de `myPxBoard`
-  const generatePixels = () => {
-    // Assurez-vous que `myPxBoard` et `myPxBoard.size` sont définis
-    const size = myPxBoard?.size || 50; // Utilisez une taille par défaut si non spécifié
-    return Array.from({ length: size * size }, (_, index) => {
-      const x = index % size;
-      const y = Math.floor(index / size);
-      const pixel = pixelsBackup.find(p => p.x === x && p.y === y);
-      
-      return (
-        <Pixel key={`${x}-${y}`} 
-             selectedColor={selectedColor}
-              defaultColor={pixel ? pixel.color : 'white'} 
-              clickOnPixel={handleClickOnPixel}
-              x = {x}
-              y = {y} 
-              initColor={pixel?.color}
-              />
-      );
-    });
+
+
+  const startCountdown = (delay) => {
+    setCountdown(delay); // Initialiser le compte à rebours avec le délai spécifié
+    const intervalId = setInterval(() => {
+      setCountdown((currentCountdown) => {
+        if (currentCountdown <= 1) {
+          clearInterval(intervalId); // Arrêter le compte à rebours lorsque 0 est atteint
+          setcanClick(true);
+          return 0;
+        }
+        setcanClick(false);
+        return currentCountdown - 1;
+      });
+    }, 1000); // Décrémenter chaque seconde
+  };
+  
+
+/*
+  const handleMouseEnter = () => {
+    const id = setTimeout(() => {
+      setShowHistory(true);
+    }, 3000); // Affiche l'historique après 3 secondes de survol
+    setTimeoutId(id);
   };
 
-  const pixels = generatePixels(sizeBackup, sizeBackup, pixelsBackup);
+  const handleMouseLeave = () => {
+    clearTimeout(timeoutId);
+    setShowHistory(false);
+  };
+
+*/
+
 
 
 
@@ -187,6 +196,15 @@ function PxBoard(props) {
   }
 
   function addOrUpdatePixel(x, y, selectedColor, emit) {
+    if (!canClick) {
+
+     // handleShowPopupError("Vous ne pouvez pas modifier le tableau pour le moment. Veuillez attendre la fin du délai de modification .");
+      return;
+    }
+       else {
+       
+       setcanClick(false);
+       startCountdown(myPxBoard.modificationDelai);
     let action = 'nothing';
     setPixelsState(prevState => {
       const pixelIndex = prevState?.findIndex(p => p.x === x && p.y === y);
@@ -257,7 +275,13 @@ function PxBoard(props) {
       else (
         handleShowPopupError("Vous ne pouvez pas ajouter un pixel en dehors de la matrice.")
       )
+       
+     
+      
+      
     });
+    
+    }
 
     console.log("emit = ", emit)
     }
@@ -289,8 +313,6 @@ function PxBoard(props) {
       setColor(color)
     }
 
-    
-  
 
   /* --------------------------------------------------------------------
    *                            Effect Hooks                            |
@@ -417,6 +439,9 @@ useEffect(() => {
           <p>Délai de modification: {myPxBoard?.modificationDelai} seconde</p>
           <p>Créé le: {new Date(myPxBoard?.createdAt).toLocaleDateString()}</p>
           <p>Mode: {myPxBoard?.mode.join(', ')}</p>
+          <div className="countdownDisplay">
+            Temps restant : {countdown} secondes
+          </div>
         </div>
   
         <ColorPalette onSelectColor={handleSelectColor} />
@@ -426,20 +451,45 @@ useEffect(() => {
         <div className="pxBoardMatrice" style={{ width: myPxBoard?.size * 25 }}>
           {!error && pixelsState?.map(({ x, y, color }) => (
             <Pixel key={`${x}-${y}`}
+                  history={pixel ? pixel.history : []}
+                  canClick={canClick}
                    selectedColor={selectedColor}
                    defaultColor={color}
                    clickOnPixel={() => addOrUpdatePixel(x, y, selectedColor, true)}
                    x={x}
                    y={y}
-                   initColor={color} />
+                   initColor={color} 
+                   {...(myPxBoard.mode.includes("historique") && { onMouseEnter: () => handleMouseEnter(x,y), onMouseLeave: handleMouseLeave })}
+
+                   />
           ))}
         </div>
+        
+        {
+          hoveredPixel && (
+        <div className="pixel-history-info">
+            {hoveredPixel.message ? (
+                <p>{hoveredPixel.message}</p>
+            ) : (
+                <>
+                    <p>History for pixel at ({hoveredPixel.x}, {hoveredPixel.y}):</p>
+                    {hoveredPixel.history && hoveredPixel.history.length > 0 ? (
+                        hoveredPixel.history.map((h, index) => (
+                            <p key={index}>Modified at {new Date(h.modifiedAt).toLocaleString()} to color {h.color}</p>
+                        ))
+                    ) : (
+                        <p>No history available.</p>
+                    )}
+                </>
+            )}
+           </div>
+          )
+        }
   
         {error && <PopupError text="Une erreur est survenue sur notre serveur. Veuillez vérifier votre connexion et essayer à nouveau." clicked={() => setShowPopupError(false)} />}
       </>
     )}
   </div>
-  
   );
   
   
