@@ -79,43 +79,44 @@ function PxBoard(props) {
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
+  
 
 
-  const handleMouseEnter = (x, y) => {
-    // Annuler un timeout précédent s'il existe
-    if (timeoutId) clearTimeout(timeoutId);
+  // fonction pour le mode hisotrique
 
-    // Créer un nouveau timeout
-    const newTimeoutId = setTimeout(() => {
-        // Chercher les informations du pixel seulement si l'utilisateur reste sur le pixel pendant plus de 3 secondes
-        const pixel = myPxBoard.pixels.find(p => p.x === x && p.y === y);
+    const handleMouseEnter = (x, y) => {
+      // Effacez toutes les informations de survol précédentes.
+      setHoveredPixel(null);
+      setHoveredPixelHistory([]);
 
-        if (!pixel) {
-            setHoveredPixel({ message: "Ce pixel est vierge.", x, y });
-            return;
-        }
+      // Annulez toute action en attente d'un survol précédent.
+      if (timeoutId) clearTimeout(timeoutId);
 
-        let message = `History for pixel at (${x}, ${y}): `;
-        if (pixel.history && pixel.history.length > 0) {
-            message += pixel.history.map(h => `Modified at ${new Date(h.modifiedAt).toLocaleString()} to color ${h.color}`).join("; ");
-        } else {
-            message += "No history available.";
-        }
+      const newTimeoutId = setTimeout(() => {
+          const pixel = myPxBoard.pixels.find(p => p.x === x && p.y === y);
+          if (pixel) {
+              setHoveredPixel({ x, y, history: pixel.history || [] });
+          } else {
+              setHoveredPixel({ x, y, message: "Ce pixel est vierge." });
+          }
+      }, 3000); // Attendre 3 secondes avant de traiter.
 
-        setHoveredPixel({ ...pixel, message });
-    }, 3000); // Attendre 3 secondes avant d'exécuter
+      setTimeoutId(newTimeoutId); // Stockez l'ID pour une annulation future si nécessaire.
+  };
 
-    // Stocker l'ID du timeout dans le state
-    setTimeoutId(newTimeoutId);
-};
+  const handleMouseLeave = () => {
+      // L'utilisateur a quitté le pixel; annulez l'action en attente.
+      if (timeoutId) clearTimeout(timeoutId);
+      setTimeoutId(null);
 
-const handleMouseLeave = () => {
-    // Annuler le timeout s'il existe pour éviter d'afficher les informations après que l'utilisateur ait quitté le pixel
-    if (timeoutId) clearTimeout(timeoutId);
-    setTimeoutId(null); // Réinitialiser l'ID du timeout
-    setHoveredPixel(null); // Effacer les informations du pixel survolé
-};
+      // Effacez toutes les informations de survol pour éviter l'affichage obsolète.
+      setHoveredPixel(null);
+      setHoveredPixelHistory([]);
+  };
 
+
+
+  // fonction pour tous les modes
 
 
   const handleClickOnPixel = (x, y, isColored, defaultColor) =>{
@@ -198,8 +199,8 @@ const handleMouseLeave = () => {
         clickOnPixel={handleClickOnPixel}
               x = {x}
               y = {y} 
-              onMouseEnter={() => handleMouseEnter(x,y)}
-              onMouseLeave={handleMouseLeave}
+       {...(myPxBoard.mode.includes("historique") && { onMouseEnter: () => handleMouseEnter(x,y), onMouseLeave: handleMouseLeave })}
+
   
           
               />
@@ -315,14 +316,26 @@ const handleMouseLeave = () => {
         {isLoading ? <div className="spinner"></div> : pixels}
       </div>
 
-
-      {
-        hoveredPixel && (
-          <div className="pixel-history-info">
-            <p>{hoveredPixel.message}</p>
-          </div>
-        )
-      }
+{
+    hoveredPixel && (
+        <div className="pixel-history-info">
+            {hoveredPixel.message ? (
+                <p>{hoveredPixel.message}</p>
+            ) : (
+                <>
+                    <p>History for pixel at ({hoveredPixel.x}, {hoveredPixel.y}):</p>
+                    {hoveredPixel.history && hoveredPixel.history.length > 0 ? (
+                        hoveredPixel.history.map((h, index) => (
+                            <p key={index}>Modified at {new Date(h.modifiedAt).toLocaleString()} to color {h.color}</p>
+                        ))
+                    ) : (
+                        <p>No history available.</p>
+                    )}
+                </>
+            )}
+        </div>
+    )
+}
 
       
 

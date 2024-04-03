@@ -29,8 +29,8 @@ function Pixel({ onMouseEnter, onMouseLeave, canClick ,defaultColor = 'white', s
       <div
           style={style}
           onClick={handleSelectPixel}
-        onMouseEnter={() => onMouseEnter(x, y)}   
-        onMouseLeave={onMouseLeave}
+          onMouseEnter={() => onMouseEnter && onMouseEnter(x, y)}
+          onMouseLeave={() => onMouseLeave && onMouseLeave()}
       ></div>
   );
   }
