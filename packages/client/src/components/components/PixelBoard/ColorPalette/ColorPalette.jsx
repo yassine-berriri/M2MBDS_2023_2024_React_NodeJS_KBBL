@@ -13,7 +13,7 @@ function ColorPalette({ onSelectColor }) {
     padding: '10px',
     border: '1px solid black',
     marginBottom: '29px',
-    maxWidth: '1200px' // Ajustez cette largeur selon le nombre de couleurs par ligne que vous souhaitez
+    maxWidth: '1940px' // Ajustez cette largeur selon le nombre de couleurs par ligne que vous souhaitez
   };
 
   const colorStyle = (color) => ({

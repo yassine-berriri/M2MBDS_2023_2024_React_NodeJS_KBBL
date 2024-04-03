@@ -10,6 +10,7 @@ import ColorPalette from "../ColorPalette/ColorPalette";
 import { MySpinnerPopup, PopupError } from "../../../components";
 import { TailSpin } from 'react-loader-spinner';
 import { useSocket } from '../../../../hooks/useSocket';
+import AnimatedTitle from "../../Animated/AnimatedTitle";
 
 /*
  * ----------------------------------------------------------------------
@@ -437,11 +438,14 @@ useEffect(() => {
       // Utilisez un fragment ou une div englobante pour contenir plusieurs éléments
       <>
         <div className="pxBoardInfo">
-          <h1>{myPxBoard?.title}</h1>
-          <p>Date de fin: {new Date(myPxBoard?.endDate).toLocaleDateString()}</p>
-          <p>Délai de modification: {myPxBoard?.modificationDelai} seconde</p>
-          <p>Créé le: {new Date(myPxBoard?.createdAt).toLocaleDateString()}</p>
-          <p>Mode: {myPxBoard?.mode.join(', ')}</p>
+
+          <AnimatedTitle title={myPxBoard?.title} />
+          
+          <p> <b>Date de fin: </b> {new Date(myPxBoard?.endDate).toLocaleDateString()}  <b> Créé le:  </b>{new Date(myPxBoard?.createdAt).toLocaleDateString()} </p>
+
+          <p> <b> Mode: </b> {myPxBoard?.mode.join(', ')} <b>Délai de modification:</b> {myPxBoard?.modificationDelai} seconde </p>
+
+          
           <div className="countdownDisplay">
             Temps restant : {countdown} secondes
           </div>
@@ -475,7 +479,7 @@ useEffect(() => {
                 <p>{hoveredPixel.message}</p>
             ) : (
                 <>
-                    <p>History for pixel at ({hoveredPixel.x}, {hoveredPixel.y}):</p>
+                    <h4>History for pixel at ({hoveredPixel.x}, {hoveredPixel.y})</h4>
                     {hoveredPixel.history && hoveredPixel.history.length > 0 ? (
                         hoveredPixel.history.map((h, index) => (
                             <p key={index}>Modified at {new Date(h.modifiedAt).toLocaleString()} to color {h.color}</p>
