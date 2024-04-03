@@ -70,7 +70,7 @@ function PopupEditPxBoard({ pxBoard, onUpdate }) {
       setModificationDelai(pxBoard.modificationDelai);
       setMode(pxBoard.mode || []);
     }
-  }, [pxBoard, modal]); // Écouter les changements de pxBoard et modal
+  }, [modal]); // Écouter les changements de pxBoard et modal
   
 
   const reset = () =>{

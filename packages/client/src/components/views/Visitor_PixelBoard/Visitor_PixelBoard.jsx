@@ -75,7 +75,8 @@ function Visitor_PixelBoard() {
 
   useEffect(() => {
     console.log("je suis dans useEffect visitor pxBoard loading = ",loading, pxBoards.length)
-    myPxBoard = getPxBoardById(id);
+    
+    //myPxBoard = getPxBoardById(id);
 
   });
   let myPxBoard = getPxBoardById(id);
