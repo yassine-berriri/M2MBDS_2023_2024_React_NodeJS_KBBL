@@ -262,6 +262,8 @@ function PxBoard(props) {
           socket.emit('deletePixel', { pxBoardId: idPx, x, y, color: selectedColor });
         }
         else if (action === "error") {
+          setcanClick(true);
+          startCountdown(0);
           handleShowPopupError("Vous ne pouvez pas superposer les couleurs sur ce tableau, le mode dans ce pixelBoard est désactivé.")
         }
         else {
@@ -394,6 +396,7 @@ useEffect(() => {
     setPixelsState([]);
     console.log("test socket leaveBoard");
     socket.emit('leaveBoard', idPx);
+    socket.disconnect();
     clearTimeout(timer);
   }
  
@@ -449,9 +452,9 @@ useEffect(() => {
         {showPopupError && <PopupError text={popupText} clicked={() => setShowPopupError(false)} />}
         
         <div className="pxBoardMatrice" style={{ width: myPxBoard?.size * 25 }}>
-          {!error && pixelsState?.map(({ x, y, color }) => (
+          {!error && pixelsState?.map(({ x, y, color, history }) => (
             <Pixel key={`${x}-${y}`}
-                  history={pixel ? pixel.history : []}
+                  history={history}
                   canClick={canClick}
                    selectedColor={selectedColor}
                    defaultColor={color}
