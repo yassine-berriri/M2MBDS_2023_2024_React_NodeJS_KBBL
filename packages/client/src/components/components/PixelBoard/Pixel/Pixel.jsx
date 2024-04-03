@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-function Pixel({ onMouseEnter, onMouseLeave, canClick ,defaultColor = 'white', selectedColor, clickOnPixel, x, y  }) {
+
+function Pixel({ onMouseEnter, onMouseLeave, canClick ,defaultColor = 'white', selectedColor, clickOnPixel, x, y, initColor  }) {
+
 
   const [color, setColor] = useState(defaultColor);
 
@@ -11,7 +13,7 @@ function Pixel({ onMouseEnter, onMouseLeave, canClick ,defaultColor = 'white', s
       return;
     }else{
     console.log('handleSelectPixel');
-    clickOnPixel(x, y, color !== defaultColor);
+    clickOnPixel(x, y, color !== defaultColor, initColor);
     setColor(selectedColor);
     }
   }
@@ -20,7 +22,7 @@ function Pixel({ onMouseEnter, onMouseLeave, canClick ,defaultColor = 'white', s
     const style = {
       width: '25px',
       height: '25px',
-      backgroundColor: color,
+      backgroundColor: defaultColor,
       display: 'inline-block',
       boxSizing: 'border-box',
       border: '1px solid grey' // Ajouter une bordure pour mieux distinguer les pixels

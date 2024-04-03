@@ -59,4 +59,19 @@ export const updatePxBoard = createAsyncThunk(
 );
 
 
+export const fetchPxBoardById = createAsyncThunk(
+    "pxBoard/fetchPxBoardById",
+    async (id) => {
+        try {
+            const response = await axios.get(REACT_APP_API_URL + `/api/pxBoard/${id}`);
+            console.log('je suis dans le thunk', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching pxBoard:', error.message);
+            throw error;
+        }
+    }
+);
+
+
 

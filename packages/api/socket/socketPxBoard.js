@@ -1,8 +1,9 @@
 const PxBoard = require('../models/pxBoardModel.js');
-
+let i = 0;
 module.exports = function(io) {
     io.on('connection', (socket) => {
-        console.log('Un utilisateur s\'est connecté');
+        console.log('Un utilisateur  s\'est connecté', i);
+        i++;
 
         // Rejoindre un tableau spécifique
         socket.on('joinBoard', async (boardId) => {
@@ -25,9 +26,8 @@ module.exports = function(io) {
             const { pxBoardId, x, y, color } = data;
             const result = await addPixel(data, io);
             if (result.success) {
-               
                 io.to(pxBoardId).emit('pixelAdded', { x, y, color });
-                console.log('Pixel ajouté');
+                console.log('Pixel ajouté', { x, y, color });
             } else {
                 socket.emit('actionFailed', 'L\'ajout du pixel a échoué');
             }
@@ -86,7 +86,7 @@ async function addPixel( data, io) {
         const updatedPxBoard = await pxBoard.save();
         // Utilisez socket.emit pour envoyer une confirmation au client
         io.emit('pixelAdded', { message: 'Pixel added', pxBoard: updatedPxBoard });
-    //console.log("Pixel added");
+        console.log("Pixel added");
         return { success: true };
     } catch (err) {
         // Utilisez socket.emit pour envoyer les détails de l'erreur au client

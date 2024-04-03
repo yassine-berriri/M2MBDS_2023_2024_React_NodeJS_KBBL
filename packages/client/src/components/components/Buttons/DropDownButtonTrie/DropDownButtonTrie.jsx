@@ -4,7 +4,7 @@
  * ----------------------------------------------------------------------
  */
 import React, { useState } from 'react';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 /*
  * ----------------------------------------------------------------------
  *                              Services & Models                       |
@@ -55,7 +55,7 @@ function DropDownButtonTrie(props) {
    */
 
   return (
-    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+    <UncontrolledDropdown isOpen={dropdownOpen} toggle={toggle} >
     <DropdownToggle caret>
     {title}
     </DropdownToggle>
@@ -66,7 +66,7 @@ function DropDownButtonTrie(props) {
         </DropdownItem>
       ))}
     </DropdownMenu>
-  </Dropdown>
+  </UncontrolledDropdown>
   );
 }
 

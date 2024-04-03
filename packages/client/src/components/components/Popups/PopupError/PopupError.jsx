@@ -29,7 +29,7 @@ function PopupError(props) {
    *                               Props                                |
    * --------------------------------------------------------------------
    */
-  const { pageName,  text} = props;
+  const { pageName,  text, clicked} = props;
   const className = props.className ? `PopupError ${props.className}` : "PopupError";
   const componentName = props.componentName
     ? `PopupError ${props.componentName}`
@@ -45,7 +45,9 @@ function PopupError(props) {
    *                             Functions                              |
    * --------------------------------------------------------------------
    */
-  const toggle = () => setModal(!modal);
+  const toggle = () => {
+    clicked()
+    setModal(!modal)};
   
     
   /* --------------------------------------------------------------------
@@ -70,8 +72,8 @@ function PopupError(props) {
     
     <Modal
       isOpen={modal}
-      modalTransition={{ timeout: 500 }}
-      backdropTransition={{ timeout: 1000 }}
+      modalTransition={{ timeout: 200 }}
+      backdropTransition={{ timeout: 200 }}
       toggle={toggle}
       className={className}
       centered
