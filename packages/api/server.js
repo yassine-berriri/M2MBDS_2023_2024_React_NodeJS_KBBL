@@ -18,7 +18,7 @@ const io = require('socket.io')(server, {
         credentials: true 
       }
 });
-connectDB();
+connectDB()
 
 app.use(corsMiddleware);
 app.use(bodyParser.urlencoded({ extended: true }));
