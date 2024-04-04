@@ -40,6 +40,8 @@ For example to add `express` to the api package you can run:
 ``` js
 yarn workspace api add express
 ```
+fortawesome
+npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
 
 For example to add a librairy for devDependencies to the client package you can run:
 ``` js

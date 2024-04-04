@@ -225,8 +225,8 @@ function PxBoard(props) {
       // Si le pixel existe déjà, mettez-le à jour
       if (pixelIndex !== -1) {
         const newState = [...prevState];
-     
-        if (selectedColor !== undefined) {
+        console.log("selectedColor", selectedColor)
+        if (selectedColor !== "#FFFFFF") {
         if ( prevState[pixelIndex].color !== undefined) {
           if (myPxBoard.mode.includes("superposition")) {
           console.log("updatePixel", x, y, selectedColor)
@@ -248,10 +248,15 @@ function PxBoard(props) {
         }
       }
       else {
-        if (newPixel.color !== undefined) {
+        if (prevState[pixelIndex].color !== undefined) {
+          console.log("deletePixel", x, y, selectedColor)
           action = "delete";
         //socket.emit('deletePixel', { pxBoardId: idPx, x, y, color: selectedColor });
         newState[pixelIndex] = newPixel;
+        }
+        else {
+          console.log("nothing to do")
+          startCountdown(0);
         }
       }
 
@@ -398,7 +403,7 @@ useEffect(() => {
 useEffect(() => {
   const timer = setTimeout(() => {
     setIsLoading(false);
-  }, 6000); // 5000 millisecondes = 5 secondes
+  }, 6000); 
   return () =>{
     setPixelsState([]);
     console.log("test socket leaveBoard");
@@ -482,12 +487,20 @@ useEffect(() => {
   
         <ColorPalette onSelectColor={handleSelectColor} />
 
+         {/* Carré qui change de couleur */}
+         <div className="color-selected">
+            <p>Couleur sélectionnée</p>
+         <div className="color-preview" style={{ backgroundColor: selectedColor}}>
+                {/* Ce div change de couleur basé sur selectedColor */}
+            </div>
+            </div>
+
         <div className="zoom-controls">
          <Button color="primary" className="zoom-button" onClick={handleZoomIn}>
-          <FontAwesomeIcon icon={faSearchPlus} /> Zoom In
+          <FontAwesomeIcon icon={faSearchPlus} /> 
         </Button>
           <Button color="secondary" className="zoom-button" onClick={handleZoomOut}>
-        <FontAwesomeIcon icon={faSearchMinus} /> Zoom Out
+        <FontAwesomeIcon icon={faSearchMinus} /> 
         </Button>
 </div>
         {showPopupError && <PopupError text={popupText} clicked={() => setShowPopupError(false)} />}

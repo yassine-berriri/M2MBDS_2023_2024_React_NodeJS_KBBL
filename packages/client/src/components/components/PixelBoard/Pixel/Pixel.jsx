@@ -25,7 +25,8 @@ function Pixel({ onMouseEnter, onMouseLeave, canClick ,defaultColor = 'white', s
       backgroundColor: defaultColor,
       display: 'inline-block',
       boxSizing: 'border-box',
-      border: '1px solid grey' // Ajouter une bordure pour mieux distinguer les pixels
+      border: '1px solid #E0E0E0', // Ajouter une bordure pour mieux distinguer les pixels
+    
     };
     return (
       <div
