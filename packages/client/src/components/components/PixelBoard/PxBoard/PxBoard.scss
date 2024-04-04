@@ -23,6 +23,7 @@
     color: white;
     padding: 10px 20px;
     border-radius: 0 0 10px 10px;
+    z-index: 1001;
   }
 
   .pixel-history {
@@ -37,6 +38,7 @@
     left: 50%;
     transform: translateX(-50%);
     pointer-events: none; // Éviter que le tooltip n'interfère avec les événements de la souris
+    z-index: 1001;
   }
   
   .pixel:hover .pixel-history {
@@ -52,4 +54,25 @@
     max-width: 300px;
     z-index: 1000;
   }
+
+  .zoom-controls {
+    position: fixed;
+    justify-content: left;
+    margin-bottom: 10px;
+    z-index: 1001;
+    top: 10%;
+    left: 85%;
+    transform: translateX(-50%);
+  }
+  
+  .zoom-button {
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+  }
+  
+  .zoom-button .fa-icon {
+    margin-right: 5px;
+  }
+  
   

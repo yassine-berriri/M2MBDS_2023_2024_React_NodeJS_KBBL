@@ -2,8 +2,7 @@ const PxBoard = require('../models/pxBoardModel.js');
 let i = 0;
 module.exports = function(io) {
     io.on('connection', (socket) => {
-        console.log('Un utilisateur  s\'est connecté', i);
-        i++;
+      
 
         // Rejoindre un tableau spécifique
         socket.on('joinBoard', async (boardId) => {
@@ -117,7 +116,7 @@ async function updatePixel(data, io) {
             pxBoard.pixels[pixelIndex].color = color;
             pxBoard.pixels[pixelIndex].history.push({ color, modifiedAt: new Date() });
             await pxBoard.save();
-            io.to(pxBoardId).emit('pixelUpdated', { x, y, color });
+            io.to(pxBoardId).emit('pixelUpdated', { x, y, color , history: [{ color, modifiedAt: new Date() }] });
           //  console.log("Pixel Updated");
 
             return { success: true };

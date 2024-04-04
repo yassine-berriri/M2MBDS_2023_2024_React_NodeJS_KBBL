@@ -10,6 +10,9 @@ import ColorPalette from "../ColorPalette/ColorPalette";
 import { MySpinnerPopup, PopupError } from "../../../components";
 import { TailSpin } from 'react-loader-spinner';
 import { useSocket } from '../../../../hooks/useSocket';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearchPlus, faSearchMinus } from '@fortawesome/free-solid-svg-icons';
+import { Button } from 'reactstrap';
 
 /*
  * ----------------------------------------------------------------------
@@ -100,8 +103,9 @@ function PxBoard(props) {
 
   // fonction pour le mode hisotrique
 
-    const handleMouseEnter = (x, y) => {
+    const handleMouseEnter = (x, y, mode) => {
       // Effacez toutes les informations de survol précédentes.
+
       setHoveredPixel(null);
       setHoveredPixelHistory([]);
 
@@ -418,8 +422,31 @@ useEffect(() => {
   }, [showIndicator]);
   */
 
+    /* --------------------------------------------------------------------
+   *                                 Style                                |
+   * --------------------------------------------------------------------
+   */
 
- 
+    // États existants
+  const [zoomLevel, setZoomLevel] = useState(1); // 1 est le niveau de zoom initial
+
+  // Fonction pour zoomer
+  const handleZoomIn = () => {
+    setZoomLevel(zoomLevel => zoomLevel * 1.2); // Zoom in de 20%
+  };
+
+  // Fonction pour dézoomer
+  const handleZoomOut = () => {
+    setZoomLevel(zoomLevel => zoomLevel / 1.2); // Zoom out de 20%
+  };
+
+   // Styles dynamiques pour la matrice, incluant le zoom
+   const pxBoardMatriceStyle = {
+    width: `${myPxBoard?.size * 25}px`,
+    transform: `scale(${zoomLevel})`, // Applique le zoom
+    transformOrigin: 'top center', // Ajustez selon les besoins
+    transition: 'transform 0.2s' // Effet de transition douce
+  };
 
   /* --------------------------------------------------------------------
    *                                 JSX                                |
@@ -448,11 +475,19 @@ useEffect(() => {
         </div>
   
         <ColorPalette onSelectColor={handleSelectColor} />
-  
+
+        <div className="zoom-controls">
+         <Button color="primary" className="zoom-button" onClick={handleZoomIn}>
+          <FontAwesomeIcon icon={faSearchPlus} /> Zoom In
+        </Button>
+          <Button color="secondary" className="zoom-button" onClick={handleZoomOut}>
+        <FontAwesomeIcon icon={faSearchMinus} /> Zoom Out
+        </Button>
+</div>
         {showPopupError && <PopupError text={popupText} clicked={() => setShowPopupError(false)} />}
         
-        <div className="pxBoardMatrice" style={{ width: myPxBoard?.size * 25 }}>
-          {!error && pixelsState?.map(({ x, y, color, history }) => (
+        <div className="pxBoardMatrice" style={pxBoardMatriceStyle}>
+          {!error && pixelsState?.map(({ x, y, color, history, mode }) => (
             <Pixel key={`${x}-${y}`}
                   history={history}
                   canClick={canClick}
@@ -462,7 +497,7 @@ useEffect(() => {
                    x={x}
                    y={y}
                    initColor={color} 
-                   {...(myPxBoard.mode.includes("historique") && { onMouseEnter: () => handleMouseEnter(x,y), onMouseLeave: handleMouseLeave })}
+                   {...(myPxBoard.mode.includes("historique") && { onMouseEnter: () => handleMouseEnter(x,y, mode), onMouseLeave: handleMouseLeave })}
 
                    />
           ))}
