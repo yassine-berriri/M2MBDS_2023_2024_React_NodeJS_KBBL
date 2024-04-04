@@ -5,9 +5,43 @@
   }
   
   .pxBoardInfo {
-    text-align: center; /* Centrer le texte des informations */
-    margin-bottom: 20px; /* Ajouter de l'espace entre les infos et la grille */
+    background-color: #f7f9fc; // Un fond clair pour contraster avec le texte
+    border-radius: 8px; // Bords arrondis pour un look moderne
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Ombre douce pour un effet de profondeur
+    padding: 20px; // Espacement intérieur pour ne pas coller au bord
+    margin-bottom: 20px; // Espacement avec les autres éléments de la page
+    margin-top: 10px; // Espacement avec les autres éléments de la page
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; // Police de caractère lisible
+  
+    h1 {
+      color: #333; // Couleur de titre sombre pour contraste
+      font-size: 24px; // Taille de police pour le titre
+      margin-bottom: 10px; // Espace après le titre
+    }
+  
+    p {
+      color: #666; // Couleur de texte légèrement sombre pour lire confortablement
+      font-size: 16px; // Taille de police pour le paragraphe
+      line-height: 1.5; // Hauteur de ligne pour la lisibilité
+      margin-bottom: 8px; // Espace entre les paragraphes
+  
+      &:last-child {
+        margin-bottom: 0; // Pas d'espace après le dernier paragraphe
+      }
+    }
+  
+    .countdownDisplay {
+      background-color: #e9efff; // Fond distinct pour le compte à rebours
+      color: #0056b3; // Couleur bleue pour le texte du compte à rebours, facile à repérer
+      border-radius: 4px; // Bords arrondis
+      padding: 8px 12px; // Espacement intérieur
+      font-weight: bold; // Texte en gras pour l'importance
+      display: inline-block; // Affichage en ligne pour le positionnement
+      margin-top: 10px; // Espace au-dessus du compteur
+    }
   }
+  
   
   .pxBoardMatrice {
     display: flex;
@@ -48,8 +82,9 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: white;
-    border: 1px solid #ccc;
+    background-color: rgb(56, 165, 255);
+    border: 1px solid #56526d;
+    color: white;
     padding: 10px;
     max-width: 300px;
     z-index: 1000;

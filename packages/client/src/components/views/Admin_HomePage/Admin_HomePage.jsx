@@ -16,6 +16,8 @@ import { DropDownButtonTrie } from "../../components";
 import PopupDelete from "../../components/Popups/PopupDelete/PopupDelete";
 import PopUpdate from "../../components/Popups/PopupUpdatePxBoard/PopUpdate";
 import {MySpinnerPopup} from "../../components";
+import IconButton from '@mui/material/IconButton';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 
 /*PopUpdate
  * ----------------------------------------------------------------------
@@ -85,7 +87,43 @@ function Admin_HomePage() {
     navigate(`/pixelBoard/${id}`);
   }
 
+  const downloadImage = (dataUrl, filename) => {
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  /*
 
+  const   drawImageFromPixelsPromise  = (pixels, width, height) => {
+
+    new Promise((resolve, reject) => {
+    // Créer un élément canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+
+    // Dessiner chaque pixel
+    pixels.forEach(pixel => {
+      ctx.fillStyle = pixel.color; // Définir la couleur
+      ctx.fillRect(pixel.x, pixel.y, 1, 1); 
+    });
+
+      resolve(canvas.toDataURL()); // Utilisez resolve pour retourner l'URL de l'image
+    });
+  }
+  */
+
+
+  const handleExportImage = (pixels) => {
+    const width = 150; // Largeur du canvas souhaitée
+    const height = 150; // Hauteur du canvas souhaitée
+    const dataUrl = drawImageFromPixels(pixels, width, height);
+    downloadImage(dataUrl, "pixelboard.png");
+  };
   const handleEdit = (id) => {
     console.log(" edit clicked id = ", id);
   }
@@ -229,6 +267,9 @@ let imageUrl = "";
                               </CardText>
 
                               <div className="popups">
+                              <IconButton color="primary" onClick={() => handleExportImage(pxBoard.pixels)} aria-label="export image">
+                              <PhotoCamera />
+                            </IconButton>
                               <PopUpdate pxBoard={pxBoard} onUpdate={(updateData) => handleUpdate(pxBoard._id, updateData)} />
                               <PopupDelete onDelete={() => handleDelete(pxBoard._id)}  text={`Vous êtes sur le point de supprimer ce PixelBoard <<${pxBoard.title}>>`}/>
                               </div>
