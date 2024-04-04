@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 let express = require('express');
 mongoose.Promise = global.Promise;
 
-const uri = 'mongodb+srv://yassineberriri:vHBIl1JGB46EUnlq@cluster0.axncp8h.mongodb.net/MBDS?retryWrites=true&w=majority';
-//const uri = 'mongodb://yassineberriri:vHBIl1JGB46EUnlq@localhost:27017/MBDS?authSource=admin';
+//const uri = 'mongodb+srv://yassineberriri:vHBIl1JGB46EUnlq@cluster0.axncp8h.mongodb.net/MBDS?retryWrites=true&w=majority';
+const uri = 'mongodb://yassineberriri:vHBIl1JGB46EUnlq@localhost:27017/MBDS?authSource=admin';
 
 
 

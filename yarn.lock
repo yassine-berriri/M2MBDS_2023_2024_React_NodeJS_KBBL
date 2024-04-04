@@ -3469,7 +3469,7 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-"api@file:C:\\Users\\User\\Desktop\\projetReact\\M2MBDS_2023_2024_React_NodeJS_KBBL\\packages\\api":
+"api@file:D:\\M2Miage\\ProjetReact\\M2MBDS_2023_2024_React_NodeJS_KBBL\\packages\\api":
   version "0.0.1"
   resolved "file:packages/api"
   dependencies:
@@ -4307,7 +4307,7 @@ cli-width@^3.0.0:
   resolved "https://registry.npmjs.org/cli-width/-/cli-width-3.0.0.tgz"
   integrity sha512-FxqpkPPwu1HjuN93Omfm4h8uIanXofW0RxVEW3k5RKx+mJJYSthzNhp32Kzxxy3YAEZ/Dc/EWN1vZRY0+kOhbw==
 
-"client@file:C:\\Users\\User\\Desktop\\projetReact\\M2MBDS_2023_2024_React_NodeJS_KBBL\\packages\\client":
+"client@file:D:\\M2Miage\\ProjetReact\\M2MBDS_2023_2024_React_NodeJS_KBBL\\packages\\client":
   version "0.0.1"
   resolved "file:packages/client"
   dependencies:
@@ -7047,11 +7047,6 @@ http-proxy@^1.18.1:
     eventemitter3 "^4.0.0"
     follow-redirects "^1.0.0"
     requires-port "^1.0.0"
-
-http@^0.0.1-security:
-  version "0.0.1-security"
-  resolved "https://registry.npmjs.org/http/-/http-0.0.1-security.tgz"
-  integrity sha512-RnDvP10Ty9FxqOtPZuxtebw1j4L/WiqNMDtuc1YMH1XQm5TgDRaR1G9u8upL6KD1bXHSp9eSXo/ED+8Q7FAr+g==
 
 https-proxy-agent@^5.0.0:
   version "5.0.1"

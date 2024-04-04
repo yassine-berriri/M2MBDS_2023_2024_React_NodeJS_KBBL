@@ -1,8 +1,8 @@
 import React from 'react';
 
 export const  colorsPalette = [
-    "#000000", "#2F4F4F", "#696969", "#708090", "#778899", "#B0C4DE", "#D3D3D3", "#DCDCDC",
-    "#F5F5F5", "#FFFFFF", "#FFFAFA", "#F0FFF0", "#F5FFFA", "#F0FFFF", "#F0F8FF", "#E6E6FA",
+    "#000000","#FFFFFF", "#2F4F4F", "#696969", "#708090", "#778899", "#B0C4DE", "#D3D3D3", "#DCDCDC",
+    "#F5F5F5", "#FFFAFA", "#F0FFF0", "#F5FFFA", "#F0FFFF", "#F0F8FF", "#E6E6FA",
     "#FFF0F5", "#FFE4E1", "#FFDAB9", "#FFE4B5", "#FFDEAD", "#FFFACD", "#FAFAD2", "#FFFFE0",
     "#FFFF00", "#FFD700", "#FFA500", "#FF8C00", "#FF7F50", "#F08080", "#CD5C5C", "#DC143C",
     "#B22222", "#8B0000", "#FF0000", "#FF4500", "#FF6347", "#FF69B4", "#FF1493", "#FF00FF",

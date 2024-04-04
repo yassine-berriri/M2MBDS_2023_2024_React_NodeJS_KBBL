@@ -9,6 +9,10 @@ const http = require('http');
 const app = express();
 
 
+
+connectDB()
+
+
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
     cors: {
@@ -18,7 +22,7 @@ const io = require('socket.io')(server, {
         credentials: true 
       }
 });
-connectDB()
+
 
 app.use(corsMiddleware);
 app.use(bodyParser.urlencoded({ extended: true }));
