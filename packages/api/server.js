@@ -7,10 +7,18 @@ const socketIo = require('socket.io');
 const http = require('http');
 
 const app = express();
+const migrateData = require('./scripts/migrate-data'); 
 
 
+/*
+(async () => {
+    await connectDB();
+    //await migrateData(); // Exécutez la migration après la connexion à la DB
+})();
+*/
 
 connectDB()
+
 
 
 const server = http.createServer(app);
