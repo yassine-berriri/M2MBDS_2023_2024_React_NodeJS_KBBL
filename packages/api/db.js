@@ -4,7 +4,7 @@ mongoose.Promise = global.Promise;
 
 const uri = 'mongodb+srv://yassineberriri:vHBIl1JGB46EUnlq@cluster0.axncp8h.mongodb.net/MBDS?retryWrites=true&w=majority';
 
-//const uri = 'mongodb://yassineberriri:vHBIl1JGB46EUnlq@localhost:27017?authSource=admin&directConnection=true';
+// const uri = 'mongodb://yassineberriri:vHBIl1JGB46EUnlq@localhost:27017/MBDS?authSource=admin';
 
 
 

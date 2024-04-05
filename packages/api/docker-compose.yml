@@ -9,5 +9,6 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: vHBIl1JGB46EUnlq
     volumes:
       - mongodb_data_container:/data/db
+      - D:/mongoRestore/mongoMigration:/mongoMigration
 volumes:
   mongodb_data_container:
