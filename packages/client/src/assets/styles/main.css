@@ -254,7 +254,17 @@ body {
   text-transform: uppercase;
   display: block;
 }
+.VisitorSpace .ant-layout-header {
+  background: #d9d9d9;
+  height: auto;
+  padding: 16px;
+  margin: 10px 4px;
+  line-height: inherit;
+  transition: 0.2s;
+}
+.VisitorSpace-Body{
 
+}
 .menu-item-header:hover {
   color: inherit;
 }
@@ -391,7 +401,10 @@ body {
   line-height: inherit;
   transition: 0.2s;
 }
-
+.sidenav.collapsed {
+  /* Adjust width if necessary */
+  width: 80px; /* or however wide you want just the icons to be */
+}
 .layout-dashboard .ant-breadcrumb > span .ant-breadcrumb-link a {
   color: #8c8c8c;
 }

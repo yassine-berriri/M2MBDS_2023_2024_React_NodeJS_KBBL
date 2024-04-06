@@ -19,6 +19,7 @@ function RootRouter() {
           <Route  path="/login" element={<views.SignInPage/>} />
           <Route  path="/Register" element={<views.RegisterPage/>} />
           <Route  path="/HomePage" element={<views.HomePage/>} />
+
           <Route  path="/profile" element={<views.profile/>} />
           <Route  path="/admin" element={<ProtectedRoute allowedRoles={['admin']} ><spaces.AdminSpace /></ProtectedRoute>}>
           <Route  path="/admin" element={<views.Admin_HomePage/>} />

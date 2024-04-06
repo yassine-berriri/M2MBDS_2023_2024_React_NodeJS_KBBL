@@ -66,6 +66,7 @@ function Visitor_HomePage() {
    */
 
   return (
+    
     <Page>
       {console.log("Visitor_HomePage")}
       <button onClick={handleClickPxBoard}>hello visitor</button>
