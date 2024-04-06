@@ -215,7 +215,11 @@ function PxBoard(props) {
     let action = 'nothing';
     setPixelsState(prevState => {
       const pixelIndex = prevState?.findIndex(p => p.x === x && p.y === y);
-      const newPixel = { x, y, color:selectedColor};
+      const userId =localStorage.getItem('id');
+      if(!userId){
+        const userId ='none';
+      }
+      const newPixel = {userId,x, y, color:selectedColor};
       console.log("newPixel==== ", newPixel)
       console.log("pixelIndex==== ", prevState[pixelIndex])
       console.log("selectedColor==== ", selectedColor)
@@ -240,7 +244,7 @@ function PxBoard(props) {
           }
         }
         else {
-          console.log("addPixel",idPx, x, y, selectedColor)
+          console.log("addPixel",userId,idPx, x, y, selectedColor)
           action = "add";
           //socket.emit('addPixel', { pxBoardId: idPx, x, y, color: selectedColor });
 
@@ -264,7 +268,7 @@ function PxBoard(props) {
         if (action === "add"){
           console.log("addPixel emit = true")
           console.log("addPixel emit = true",idPx, x, y, selectedColor)
-          socket.emit('addPixel', { pxBoardId: idPx, x, y, color: selectedColor });
+          socket.emit('addPixel', {userId, pxBoardId: idPx, x, y, color: selectedColor });
         }
         else if (action === "update"){
           console.log("updatePixel emit = true",idPx, x, y, selectedColor)
@@ -348,10 +352,10 @@ function PxBoard(props) {
     
      // Écoute pour les pixels ajoutés
     socket.on('pixelAdded', (data) => {
-      const { x, y, color } = data;
-      addPixel(x, y, color);
+      const {userId, x, y, color } = data;
+      addPixel(userId ,x, y, color);
     //  addOrUpdatePixel(x, y, color, false);
-        console.log(`Pixel ajouté à x: ${x}, y: ${y} avec la couleur: ${color}`);
+        console.log(`Pixel ajouté à ${userId} x: ${x}, y: ${y} avec la couleur: ${color}`);
 
     });
 

@@ -81,14 +81,16 @@ async function addPixel(req, res) {
     try {
         const pxBoardId = req.params.id;
         const { x, y, color } = req.body;
+        const userId= req.body.userId;
         const pxBoard = await PxBoard.findById(pxBoardId);
-      
         if (!pxBoard) {
             return res.status(404).send({ message: 'PxBoard not found' });
         }
 
+        console.log("ffffffffffffffffffffff");
+
         // Ajouter le nouveau pixel au tableau
-        pxBoard.pixels.push({ x, y, color, history: [{ color, modifiedAt: new Date() }] }); // Ajoute l'historique initial du pixel
+        pxBoard.pixels.push({userId,x, y, color, history: [{ color, modifiedAt: new Date() }] }); // Ajoute l'historique initial du pixel
 
         const updatedPxBoard = await pxBoard.save();
         res.send({ message: 'Pixel added', pxBoard: updatedPxBoard });
