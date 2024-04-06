@@ -75,6 +75,16 @@ async function getPxBoardById(req, res) {
     }
 }
 
+async function getPixelBoardByUserId(req, res) {
+    try {
+        const userId = req.params.userId; 
+        const pixelBoards = await PxBoard.find({ userId: userId }); 
+        res.send(pixelBoards); 
+    } catch (err) {
+        res.status(500).send({ message: 'Failed to fetch PixelBoards for the user', error: err });
+    }
+}
+
 /////// pixel Fonction ///////
 
 async function addPixel(req, res) {
@@ -152,6 +162,6 @@ async function deletePixel(req, res) {
 }
 
 
-module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById,updatePixel,addPixel,deletePixel };
+module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById, getPixelBoardByUserId, updatePixel,addPixel,deletePixel };
 
 

@@ -23,8 +23,7 @@ function RootRouter() {
           <Route  path="/" element={<views.HomePage/>} />
 
           <Route  path="/admin" element={<ProtectedRoute allowedRoles={['admin']} ><spaces.AdminSpace /></ProtectedRoute>}></Route>
-          <Route  path="/profile" element={<ProtectedRoute allowedRoles={['admin']} ><views.profile /></ProtectedRoute>}></Route>
-          <Route  path="/profile" element={<ProtectedRoute allowedRoles={['user']} ><views.profile /></ProtectedRoute>}></Route>
+          <Route  path="/profile" element={<ProtectedRoute allowedRoles={['user','admin']} ><views.profile /></ProtectedRoute>}></Route>
 
             
           

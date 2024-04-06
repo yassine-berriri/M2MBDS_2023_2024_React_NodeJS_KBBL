@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {createPxBoard, fetchPxBoard, deletePxBoard, updatePxBoard, fetchPxBoardById} from './pxBoardThunk';
+import {createPxBoard, fetchPxBoard, deletePxBoard, updatePxBoard, fetchPxBoardById, fetchPxBoardsByUserId} from './pxBoardThunk';
 
 export const pxBoardSlice = createSlice({
     name: 'pxBoard',
@@ -11,6 +11,18 @@ export const pxBoardSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+        .addCase(fetchPxBoardsByUserId.fulfilled, (state, action) => {
+            state.pxBoards = action.payload;
+            state.error = null;
+            state.loading = false;
+        })
+        .addCase(fetchPxBoardsByUserId.rejected, (state, action) => {
+            state.error = action.error.message;
+            state.loading = false;
+        })
+        .addCase(fetchPxBoardsByUserId.pending, (state) => {
+            state.loading = true;
+        })
         
         .addCase(fetchPxBoard.fulfilled, (state, action) => {
             state.pxBoards = action.payload;
