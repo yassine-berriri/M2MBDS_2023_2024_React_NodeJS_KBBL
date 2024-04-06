@@ -12,8 +12,11 @@ function getAllPxBoards(req, res) {
 
 
 async function postPxBoard(req, res) {
+
+    console.log("reqreqreq", req.body.userId);
     const pxBoard = new PxBoard({
         id: req.body.id,
+        userId :req.body.userId,
         title: req.body.title,
         endDate: req.body.endDate,
         modificationDelai: req.body.modificationDelai,
