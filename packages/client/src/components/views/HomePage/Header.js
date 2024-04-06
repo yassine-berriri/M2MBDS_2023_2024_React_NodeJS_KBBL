@@ -150,9 +150,7 @@ const logsetting = [
   return (
     <Row justify="end">
       <Col>
-        <Button onClick={toggleSidenav}>
-          {/* Here you could have an icon indicating the action of opening/closing the sidebar */}
-        </Button>
+ 
       </Col>
       <Col>
         {/* Si l'utilisateur est connecté, affichez le bouton de déconnexion */}
