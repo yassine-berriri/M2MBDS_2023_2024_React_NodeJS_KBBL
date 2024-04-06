@@ -11,20 +11,23 @@ function RootRouter() {
   return (
     <BrowserRouter >
       <Routes>  
-          <Route  path="/" element={<spaces.VisitorSpace/>}>
-            <Route  path="/" element={<views.Visitor_HomePage/>} />
+          <Route  element={<spaces.VisitorSpace/>}>
             <Route  path="/pixelBoard/:id" element={<views.Visitor_PixelBoard/>} />
           </Route>
-       
+          <Route  element={<spaces.AdminSpace/>}>
+            <Route  path="/admin" element={<views.Admin_HomePage/>} />
+          </Route>
           <Route  path="/login" element={<views.SignInPage/>} />
           <Route  path="/Register" element={<views.RegisterPage/>} />
           <Route  path="/HomePage" element={<views.HomePage/>} />
+          <Route  path="/" element={<views.HomePage/>} />
 
-          <Route  path="/profile" element={<views.profile/>} />
-          <Route  path="/admin" element={<ProtectedRoute allowedRoles={['admin']} ><spaces.AdminSpace /></ProtectedRoute>}>
-          <Route  path="/admin" element={<views.Admin_HomePage/>} />
+          <Route  path="/admin" element={<ProtectedRoute allowedRoles={['admin']} ><spaces.AdminSpace /></ProtectedRoute>}></Route>
+          <Route  path="/profile" element={<ProtectedRoute allowedRoles={['admin']} ><views.profile /></ProtectedRoute>}></Route>
+          <Route  path="/profile" element={<ProtectedRoute allowedRoles={['user']} ><views.profile /></ProtectedRoute>}></Route>
+
             
-          </Route>
+          
         {/*token !== "" && userType ? (
           <>
             {userType === "USER" && <Route path="/" element={<spaces.UserSpace />} />}

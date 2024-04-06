@@ -22,14 +22,14 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         console.log("Token expired.");
         localStorage.removeItem('token'); // Clear the expired token
         localStorage.removeItem('role');
-        localStorage.removeItem('isAuthenticated');
+        localStorage.setItem('isAuthenticated', 'false');
 
       }
     } catch (error) {
       console.error("Token decoding failed", error);
       localStorage.removeItem('token'); // Clear the invalid token
       localStorage.removeItem('role');
-      localStorage.removeItem('isAuthenticated');
+      localStorage.setItem('isAuthenticated', 'false');
 
     }
   }
