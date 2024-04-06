@@ -4,7 +4,7 @@
 docker-compose up -d
 
 # Attendre que MongoDB soit prêt (optionnel)
-sleep 10
+sleep 5
 
 # Démarrer l'application Node.js
 node server.js

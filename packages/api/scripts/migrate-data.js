@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const PixelBoard = require('../models/pxBoardModel');
 require('dotenv').config();
 const {  URL_Mongo_DOCKER } = process.env;
+const { exec } = require('child_process');
 
 const uri = URL_Mongo_DOCKER;
 //const collectionPxBoardName = 'pixelBoards'; 
