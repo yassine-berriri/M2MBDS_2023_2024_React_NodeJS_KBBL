@@ -97,8 +97,6 @@ async function addPixel(req, res) {
             return res.status(404).send({ message: 'PxBoard not found' });
         }
 
-        console.log("ffffffffffffffffffffff");
-
         // Ajouter le nouveau pixel au tableau
         pxBoard.pixels.push({userId,x, y, color, history: [{ color, modifiedAt: new Date() }] }); // Ajoute l'historique initial du pixel
 
@@ -129,7 +127,11 @@ async function updatePixel(req, res) {
 
         // Mettre à jour la couleur et ajouter à l'historique
         pxBoard.pixels[pixelIndex].color = color;
-        pxBoard.pixels[pixelIndex].history.push({ color, modifiedAt: new Date() });
+        pxBoard.pixels[pixelIndex].history = [{
+            color: color,
+            modifiedAt: new Date(),
+           // Assuming this is the ID of the user making the change
+        }];
 
         const updatedPxBoard = await pxBoard.save();
         res.send({ message: 'Pixel updated', pxBoard: updatedPxBoard });

@@ -96,6 +96,51 @@ async function addPixel( data, io) {
 }
 
 async function updatePixel(data, io) {
+    const { pxBoardId, x, y, color } = data;
+    const PxBoard = require('../models/pxBoardModel');
+
+    try {
+        console.log("Attempting to update pixel...");
+
+        // Define the update operations for atomic execution
+        const updateOps = {
+            "$set": {
+                "pixels.$[elem].color": color,
+            },
+            "$push": {
+                "pixels.$[elem].history": { color, modifiedAt: new Date() }
+            }
+        };
+
+        // Specify the arrayFilters to identify the correct pixel to update
+        const arrayFilters = [{ "elem.x": x, "elem.y": y }];
+
+        // Execute the update atomically using findOneAndUpdate to apply the changes
+        const updatedDocument = await PxBoard.findOneAndUpdate(
+            { _id: pxBoardId },
+            updateOps,
+            { arrayFilters: arrayFilters, new: true }
+        );
+
+        if (!updatedDocument) {
+            console.log("PxBoard not found or pixel not found");
+            io.emit('error', { message: 'PxBoard not found or pixel not found' });
+            return { success: false };
+        }
+
+        // Emit the update to connected clients
+        io.to(pxBoardId).emit('pixelUpdated', { x, y, color, history: [{ color, modifiedAt: new Date() }] });
+        console.log("Pixel updated successfully.");
+        return { success: true };
+    } catch (err) {
+        console.log("Error updating pixel:", err);
+        io.emit('error', err);
+        return { success: false };
+    }
+}
+
+/*
+async function updatePixel(data, io) {
 
 
     try {
@@ -134,6 +179,7 @@ async function updatePixel(data, io) {
 
     }
 }
+*/
 
 async function deletePixel(data, io) {
     try {

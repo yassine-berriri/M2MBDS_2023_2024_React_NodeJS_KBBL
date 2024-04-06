@@ -14,7 +14,7 @@ const pixelSchema = new Schema({
   x: { type: Number, required: true },
   y: { type: Number, required: true },
   color: { type: String, required: true }, // Validation du format hexadécimal pour les couleurs
-  history: [pixelHistorySchema] // Utilisez le schéma d'historique ici
+  history:   [{ type: pixelHistorySchema, required: false }] // Utilisez le schéma d'historique ici
 });
 
 const modeEnum = {
