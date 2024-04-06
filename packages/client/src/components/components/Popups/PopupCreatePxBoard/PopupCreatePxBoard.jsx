@@ -86,7 +86,9 @@ function PopupCreatePxBoard() {
     }
 
     // Structure de données à envoyer. Assurez-vous de remplir ceci avec toutes les données nécessaires.
+    
     const data = {
+      userId :localStorage.getItem('id'),
       title: title,
       size: boardSize,
       modificationDelai: delai,
