@@ -153,7 +153,31 @@ async function deletePixel(req, res) {
     }
 }
 
+async function countPixelsCreatedByUser(req, res) {
+    try {
+        const userId = req.params.userId; 
+        const pixelBoards = await PxBoard.find({ userId: userId }); 
 
-module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById,updatePixel,addPixel,deletePixel };
+        let count = 0;
+
+        pixelBoards.forEach(board => {
+          board.pixels.forEach(pixel => {
+            if (pixel.userId === userId) {
+              count++;
+            }
+          });
+        });
+        res.json({ count: count }); // Sending count as JSON object
+    } catch (error) {
+      console.error('Error counting pixels:', error);
+      throw error;
+    }
+}
+
+  
+  
+  
+  
+module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById,updatePixel,addPixel,deletePixel,countPixelsCreatedByUser};
 
 

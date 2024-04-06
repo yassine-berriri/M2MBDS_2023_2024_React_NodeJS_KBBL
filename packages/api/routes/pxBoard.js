@@ -15,4 +15,7 @@ router.post('/pxboards/:id/pixels', pxBoardController.addPixel);
 // Mettre à jour un pixel
 router.put('/pxboards/:id/pixels', pxBoardController.updatePixel);
 
+router.get('/pxboards/pixels/:userId', pxBoardController.countPixelsCreatedByUser);
+
+
 module.exports = router;
