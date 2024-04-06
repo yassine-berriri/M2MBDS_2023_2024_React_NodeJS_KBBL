@@ -1,0 +1,147 @@
+.PxBoard {
+    display: flex;
+    flex-direction: column; /* Changez pour column pour organiser verticalement */
+    align-items: center; /* Centrez les enfants horizontalement */
+  }
+  
+  .pxBoardInfo {
+    background-color: #f7f9fc; // Un fond clair pour contraster avec le texte
+    border-radius: 8px; // Bords arrondis pour un look moderne
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Ombre douce pour un effet de profondeur
+    padding: 20px; // Espacement intérieur pour ne pas coller au bord
+    margin-bottom: 20px; // Espacement avec les autres éléments de la page
+    margin-top: 10px; // Espacement avec les autres éléments de la page
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; // Police de caractère lisible
+  
+    h1 {
+      color: #333; // Couleur de titre sombre pour contraste
+      font-size: 24px; // Taille de police pour le titre
+      margin-bottom: 10px; // Espace après le titre
+    }
+  
+    p {
+      color: #666; // Couleur de texte légèrement sombre pour lire confortablement
+      font-size: 16px; // Taille de police pour le paragraphe
+      line-height: 1.5; // Hauteur de ligne pour la lisibilité
+      margin-bottom: 8px; // Espace entre les paragraphes
+  
+      &:last-child {
+        margin-bottom: 0; // Pas d'espace après le dernier paragraphe
+      }
+    }
+  
+    .countdownDisplay {
+      background-color: #e9efff; // Fond distinct pour le compte à rebours
+      color: #0056b3; // Couleur bleue pour le texte du compte à rebours, facile à repérer
+      border-radius: 4px; // Bords arrondis
+      padding: 8px 12px; // Espacement intérieur
+      font-weight: bold; // Texte en gras pour l'importance
+      display: inline-block; // Affichage en ligne pour le positionnement
+      margin-top: 10px; // Espace au-dessus du compteur
+    }
+  }
+  
+  
+  .pxBoardMatrice {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .countdownDisplay {
+    position: fixed; /* Ou "absolute", selon votre layout */
+    top: 10%;
+    left: 15%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 0 0 10px 10px;
+    z-index: 1001;
+  }
+
+  .pixel-history {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 10px;
+    white-space: nowrap;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none; // Éviter que le tooltip n'interfère avec les événements de la souris
+    z-index: 1001;
+  }
+  
+  .pixel:hover .pixel-history {
+    display: block;
+  }
+  .pixel-history-info {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgb(56, 165, 255);
+    border: 1px solid #56526d;
+    color: white;
+    padding: 10px;
+    max-width: 300px;
+    z-index: 1000;
+  }
+
+  .zoom-controls {
+    position: fixed;
+    justify-content: left;
+    margin-bottom: 10px;
+    z-index: 1001;
+    top: 12%;
+    left: 85%;
+    transform: translateX(-50%);
+  }
+
+  .color-selected {
+    position: fixed;
+    top: 20%;
+    left: 8%;
+    z-index: 1001;
+    display: flex;
+    align-items: center; /* Centre verticalement les éléments dans le conteneur */
+    gap: 20px; /* Augmente l'espace entre les éléments */
+    background-color: #e9efff; /* Fond distinct pour le compte à rebours */
+    color: #0056b3; /* Couleur bleue pour le texte du compte à rebours, facile à repérer */
+    border-radius: 8px; /* Bords plus arrondis */
+    padding: 8px; /* Plus d'espacement intérieur */
+    font-weight: bold; /* Texte en gras pour l'importance */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Ombre douce pour un effet élévé */
+    transition: all 0.3s ease; /* Transition douce pour les interactions */
+  p{
+    margin-bottom: 0;
+  
+  }
+  }
+  
+  .color-preview {
+    width: 25px;
+    height: 25px;
+    border: 2px solid #f8f8f8; /* Bordure plus épaisse et plus définie */
+    border-radius: 50%; /* Rend le preview circulaire */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ajoute une légère ombre pour du relief */
+    transition: transform 0.2s ease; /* Anime la transformation pour l'interaction */
+  }
+  
+  .color-preview:hover {
+    transform: scale(1.1); /* Agrandit légèrement le preview au survol */
+  }
+  
+  
+  .zoom-button {
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+  }
+  
+  .zoom-button .fa-icon {
+    margin-right: 5px;
+  }
+  
+  

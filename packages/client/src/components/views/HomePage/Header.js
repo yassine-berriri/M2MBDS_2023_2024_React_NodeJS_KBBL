@@ -140,6 +140,8 @@ const logsetting = [
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('id');
+    localStorage.removeItem('isAuthenticated');
+
     dispatch(signInUser({})); 
     setIsLoggedIn(false);
     window.location.href = '/login'; // Redirect to the login page
@@ -154,8 +156,11 @@ const logsetting = [
         ) : (
           /* Si l'utilisateur n'est pas connecté, affichez les boutons de connexion et d'inscription */
           <>
+             <Button type="link" onClick={handleLogout}>
+            {logsetting}
+          </Button>
             <Link to="/login">
-              <Button>SignIn</Button>
+              <Button>SignInc</Button>
             </Link>
             <Link to="/register">
               <Button>SignUp</Button>

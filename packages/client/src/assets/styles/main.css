@@ -384,12 +384,11 @@ body {
 }
 
 .layout-dashboard .ant-layout-header {
-  background: transparent;
+  background: #d9d9d9;
   height: auto;
   padding: 16px;
   margin: 10px 4px;
   line-height: inherit;
-  border-radius: 12px;
   transition: 0.2s;
 }
 

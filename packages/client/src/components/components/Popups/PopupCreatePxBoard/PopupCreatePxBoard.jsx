@@ -6,10 +6,10 @@
 import React, { useState } from 'react';
 import { Button, ButtonGroup } from 'reactstrap';
 import { FormGroup, Label, Input,   } from 'reactstrap';
-import DropDownButton from '../Buttons/DropDownButton/DropDownButton';
-import DropDownButtonDelai from '../Buttons/DropDownButtonDelai/DropDownButtonDelai';
+import DropDownButton from '../../Buttons/DropDownButton/DropDownButton';
+import DropDownButtonDelai from '../../Buttons/DropDownButtonDelai/DropDownButtonDelai';
 import { useDispatch, useSelector  } from 'react-redux'; 
-import { createPxBoard } from '../../../redux/pxBoard/pxBoardThunk';
+import { createPxBoard } from '../../../../redux/pxBoard/pxBoardThunk';
 
 /*
  * ----------------------------------------------------------------------
@@ -79,6 +79,12 @@ function PopupCreatePxBoard() {
 
 
   const handleCreatePxBoard = async () => {
+   
+    if (!title || !boardSize || !delai || !endDate) {
+      alert("Échec de la création du PixelBoard : tous les champs sont requis.");
+      return; // Arrête l'exécution de la fonction si des champs sont vides
+    }
+
     // Structure de données à envoyer. Assurez-vous de remplir ceci avec toutes les données nécessaires.
     const data = {
       title: title,
@@ -92,7 +98,8 @@ function PopupCreatePxBoard() {
     
     try{
       dispatch(createPxBoard(data)).unwrap();
-      togglePopup();
+      reset();
+     // togglePopup();
       alert("PixelBoard créé avec succès");
     }
     catch (error) {
@@ -100,6 +107,15 @@ function PopupCreatePxBoard() {
       alert("Erreur lors de la création du PixelBoard");
     }
   };
+
+  const reset = () => {
+    setTitle("");
+    setBoardSize(10);
+    setDelai(1);
+    setDelaiLabel("Choisisez le dalai de modification");
+    setBoardSizeLabel("Choisisez la taille du PixelBoard");
+    togglePopup();
+  }
 
   const onCheckboxBtnClick = (selected) => {
     const index = modeSelected.indexOf(selected);
@@ -150,6 +166,7 @@ function PopupCreatePxBoard() {
               value={title}
               onChange={e => setTitle(e.target.value)}
               placeholder="Entrer le titre du pixelboard"
+              required
             />
             </div>
       
@@ -169,6 +186,7 @@ function PopupCreatePxBoard() {
               onChange={e => setEndDate(e.target.value)}
               placeholder="date placeholder"
               min={todayDate} // Définir l'attribut min avec la date du jour
+              required
             />
             </div>
 
@@ -211,7 +229,7 @@ function PopupCreatePxBoard() {
       
             <div className="buttons">
               <Button type="submit" onClick={handleCreatePxBoard} color='success'>Envoyer</Button>
-              <Button onClick={togglePopup} color='danger'>Fermer</Button>
+              <Button onClick={  reset} color='danger'>Fermer</Button>
             </div>
           </FormGroup>
         </div>

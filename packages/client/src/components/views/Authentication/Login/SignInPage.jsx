@@ -50,13 +50,11 @@ const SignInPage = () => {
     }
     try {
       await dispatch(signInUser({ email, password }));
-      localStorage.setItem('token', 'votre-jeton');
-      dispatch({ type: 'USER_LOGIN_SUCCESS', payload: { email } });
-        
-      navigate('/HomePage');
-      // Access token from localStorage (if needed within the component)
+    
       const token = localStorage.getItem('token');
       console.log('Token:', token); // For example, to send the token in API requests
+      dispatch({ type: 'USER_LOGIN_SUCCESS', payload: { email } });
+      navigate('/HomePage');
     } catch (error) {
       // Handle sign-in errors
     }

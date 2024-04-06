@@ -6,6 +6,7 @@ const { REACT_APP_API_URL } = process.env;
 
 
 
+
 // Thunk action for user sign-in
 export const signInUser = createAsyncThunk(
   'user/signIn',
@@ -17,11 +18,16 @@ export const signInUser = createAsyncThunk(
       console.log(response);
       // Save token to localStorage instead of Redux store
       localStorage.setItem('token', response.data.token);
+
+      console.log(localStorage.getItem('token'))
       localStorage.setItem('role', response.data.user.role || '');
       localStorage.setItem('id', response.data.user._id || '');
+      localStorage.setItem('isAuthenticated', 'true');
+
       dispatch(userSuccess(response.data)); 
     } catch (error) {
       localStorage.setItem('token', null);
+      localStorage.setItem('isAuthenticated', 'false');
       dispatch(userFailure(error.message));
     }
   }

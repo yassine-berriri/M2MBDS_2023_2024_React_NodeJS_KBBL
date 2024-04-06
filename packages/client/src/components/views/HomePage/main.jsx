@@ -13,7 +13,7 @@ function Main({ children }) {
   const [visible, setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
   const [sidenavColor, setSidenavColor] = useState("#1890ff");
-  const [sidenavType, setSidenavType] = useState("transparent");
+  const [sidenavType, setSidenavType] = useState("#d9d9d9");
   const [fixed, setFixed] = useState(false);
 
   const openDrawer = () => setVisible(!visible);
@@ -78,7 +78,7 @@ function Main({ children }) {
         width={250}
         theme="light"
         className={`sider-primary ant-layout-sider-primary ${
-          sidenavType === "#fff" ? "active-route" : ""
+          sidenavType === "#1677ff" ? "active-route" : ""
         }`}
         style={{ background: sidenavType }}
       >

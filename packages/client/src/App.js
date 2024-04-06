@@ -5,10 +5,12 @@ import './App.scss';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { store } from '../src/redux/Store'; 
+import { store, persistor  } from '../src/redux/Store'; 
 import { Provider } from 'react-redux';
 import "./assets/styles/main.css";
 import "./assets/styles/responsive.css";
+import { PersistGate } from 'redux-persist/integration/react';
+
 
 /*
 function App() {
@@ -60,7 +62,9 @@ function App() {
 		
 		<div className="App">
 		  <Provider store={store}>
+		  <PersistGate loading={null} persistor={persistor}>
 		  <routers.RootRouter/>
+		  </PersistGate>
 		  </Provider>
 		</div>
 	  );

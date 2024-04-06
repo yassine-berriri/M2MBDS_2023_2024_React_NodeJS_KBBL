@@ -33,4 +33,122 @@ async function postPxBoard(req, res) {
     }
 }
 
-module.exports = {getAllPxBoards, postPxBoard};
+async function deletePxBoard(req, res) {
+    try {
+        const pxBoardId = req.params.id;
+        const deletedPxBoard = await PxBoard.findByIdAndDelete(pxBoardId);
+        if (!deletedPxBoard) {
+            return res.status(404).send({ message: 'PxBoard not found' });
+        }
+        res.send({ message: `PxBoard ${deletedPxBoard.title} deleted`, pxBoard: deletedPxBoard });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+}
+
+async function updatePxBoard(req, res) {
+    try {
+        const pxBoardId = req.params.id;
+        const updatedPxBoard = await PxBoard.findByIdAndUpdate(pxBoardId, req.body, { new: true });
+        if (!updatedPxBoard) {
+            return res.status(404).send({ message: 'PxBoard not found' });
+        }
+        res.send({ message: `PxBoard ${updatedPxBoard.title} updated`, pxBoard: updatedPxBoard });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+}
+
+async function getPxBoardById(req, res) {
+    try {
+        const pxBoardId = req.params.id;
+        const pxBoard = await PxBoard.findById(pxBoardId);
+        if (!pxBoard) {
+            return res.status(404).send({ message: 'PxBoard not found' });
+        }
+        res.send(pxBoard);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+}
+
+/////// pixel Fonction ///////
+
+async function addPixel(req, res) {
+    try {
+        const pxBoardId = req.params.id;
+        const { x, y, color } = req.body;
+        const pxBoard = await PxBoard.findById(pxBoardId);
+      
+        if (!pxBoard) {
+            return res.status(404).send({ message: 'PxBoard not found' });
+        }
+
+        // Ajouter le nouveau pixel au tableau
+        pxBoard.pixels.push({ x, y, color, history: [{ color, modifiedAt: new Date() }] }); // Ajoute l'historique initial du pixel
+
+        const updatedPxBoard = await pxBoard.save();
+        res.send({ message: 'Pixel added', pxBoard: updatedPxBoard });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+}
+
+async function updatePixel(req, res) {
+    try {
+        const pxBoardId = req.params.id;
+        const {  x, y, color } = req.body; // Exemple d'utilisation du corps de la requête pour transporter les données
+        const pxBoard = await PxBoard.findById(pxBoardId);
+        console.log("pxBoard", pxBoard);
+        console.log("pxBoardId", pxBoardId);
+
+        if (!pxBoard) {
+            return res.status(404).send({ message: 'PxBoard not found' });
+        }
+
+        // Trouver et mettre à jour le pixel
+        const pixelIndex = pxBoard.pixels.findIndex(pixel => pixel.x === x && pixel.y === y);
+        if (pixelIndex === -1) {
+            return res.status(404).send({ message: 'Pixel not found' });
+        }
+
+        // Mettre à jour la couleur et ajouter à l'historique
+        pxBoard.pixels[pixelIndex].color = color;
+        pxBoard.pixels[pixelIndex].history.push({ color, modifiedAt: new Date() });
+
+        const updatedPxBoard = await pxBoard.save();
+        res.send({ message: 'Pixel updated', pxBoard: updatedPxBoard });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+}
+
+async function deletePixel(req, res) {
+    try {
+        const pxBoardId = req.params.pxBoardId; // Assurez-vous que l'ID du PxBoard est passé dans l'URL
+        const { x, y } = req.body; // Les coordonnées du pixel à supprimer sont passées dans le corps de la requête
+
+        // Trouver le PxBoard contenant le pixel
+        const pxBoard = await PxBoard.findById(pxBoardId);
+
+        if (!pxBoard) {
+            return res.status(404).send({ message: 'PxBoard not found' });
+        }
+
+        // Filtrer les pixels pour exclure celui à supprimer
+        const updatedPixels = pxBoard.pixels.filter(pixel => !(pixel.x === x && pixel.y === y));
+
+        // Mettre à jour les pixels du PxBoard
+        pxBoard.pixels = updatedPixels;
+
+        const updatedPxBoard = await pxBoard.save();
+        res.send({ message: 'Pixel deleted successfully', pxBoard: updatedPxBoard });
+    } catch (err) {
+        res.status(500).send({ message: 'Failed to delete pixel', error: err });
+    }
+}
+
+
+module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById,updatePixel,addPixel,deletePixel };
+
+

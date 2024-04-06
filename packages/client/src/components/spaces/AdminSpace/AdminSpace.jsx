@@ -8,6 +8,7 @@ import { Space, Sidebar } from "../../components";
 import { AdminRouter } from "../../../routers";
 import * as components from "../../components";
 import { Outlet } from "react-router-dom";
+import Main from '../../views/HomePage/main'; 
 
 /*
  * ----------------------------------------------------------------------
@@ -91,9 +92,12 @@ function AdminSpace() {
   return (
     <Space id="AdminSpace" className="AdminSpace" spaceName="Admin">
       <div className="AdminSpace-Body">
-      <Sidebar >
-        <Outlet/>
-        </Sidebar>
+      <Main>
+      <Outlet/>
+
+      </Main>
+        
+        
       </div>
     </Space>
   );

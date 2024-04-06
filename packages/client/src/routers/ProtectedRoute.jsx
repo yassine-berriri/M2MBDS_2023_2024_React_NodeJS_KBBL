@@ -1,31 +1,43 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode'; // Adjusted import statement
+import { jwtDecode } from 'jwt-decode'; // Corrected named import
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, allowedRoles }) => {
   const token = localStorage.getItem('token');
-  let isValidToken = false; // Changed from result to isValidToken, set initial flag to false
-  
-  if (token) {
+  const role = localStorage.getItem('role');
+  console.log("meeee",localStorage.getItem('role'));
+  console.log(role);
+
+  let isAuthenticated = false;
+  if (token && role) {
     try {
-      let decodedToken = jwtDecode(token);
-      console.log("Decoded Token", decodedToken);
-      let currentDate = new Date();
-      
-      // JWT exp is in seconds
-      if (decodedToken.exp * 1000 < currentDate.getTime()) {
-        console.log("Token expired.");
-      } else {
+      const decodedToken = jwtDecode(token);
+      const currentDate = new Date();
+
+      if (decodedToken.exp * 1000 >= currentDate.getTime()) {
         console.log("Valid token");
-        isValidToken = true; // Token is valid, set the flag to true
+        isAuthenticated = allowedRoles.includes(role);
+
+      } else {
+        console.log("Token expired.");
+        localStorage.removeItem('token'); // Clear the expired token
+        localStorage.removeItem('role');
+        localStorage.removeItem('isAuthenticated');
+
       }
     } catch (error) {
       console.error("Token decoding failed", error);
-      // you might want to navigate to login if there's an error in decoding
+      localStorage.removeItem('token'); // Clear the invalid token
+      localStorage.removeItem('role');
+      localStorage.removeItem('isAuthenticated');
+
     }
   }
+  
+  console.log("Is Authenticated:", isAuthenticated);
+  console.log("Valid token");
 
-  return isValidToken ? children : <Navigate to="/login" replace />;
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

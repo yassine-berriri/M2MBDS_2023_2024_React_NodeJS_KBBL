@@ -1,18 +1,26 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
 
+const pixelHistorySchema = new Schema({
+  color: { type: String, required: false }, // Format hexadécimal, facultatif
+  modifiedAt: { type: Date, default: Date.now, required: false },
+  modifiedBy: { type: Schema.Types.ObjectId, ref: 'User', required: false } // Peut être null pour les visiteurs non enregistrés
+}, { _id: false }); // Ajoutez cette option si vous ne voulez pas d'_id pour chaque entrée de l'historique
+
+const pixelSchema = new Schema({
+  x: { type: Number, required: true },
+  y: { type: Number, required: true },
+  color: { type: String, required: true }, // Validation du format hexadécimal pour les couleurs
+  history: [pixelHistorySchema] // Utilisez le schéma d'historique ici
+});
+
 const modeEnum = {
-  SUPERPOSITION: "superposition", // Permet aux utilisateurs de superposer de nouvelles couleurs sur des pixels déjà colorés, leur donnant la possibilité de changer d'avis ou d'ajouter de la profondeur à leurs dessins.
-  HISTORIQUE: "historique", //  Permet aux utilisateurs de voir l'historique des modifications d'un pixel spécifique ou de l'ensemble du tableau. Cela peut inclure qui a modifié le pixel, quand et quelles étaient les couleurs précédentes. 
-  // DEFI: "defi",  Propose des défis ou des thèmes spécifiques que les utilisateurs doivent suivre, comme créer une image avec une palette de couleurs limitée ou reproduire une image célèbre pixel par pixel.
-
-
-}
+  SUPERPOSITION: "superposition",
+  HISTORIQUE: "historique",
+  // DEFI: "defi",
+};
 
 const pxBoardSchema = new Schema({
-  
-  id: { type: Number, required: false, auto: true },
   title: { type: String, required: true },
   endDate: { type: Date, required: true },
   modificationDelai: { type: Number, required: true },
@@ -22,12 +30,11 @@ const pxBoardSchema = new Schema({
     required: false, 
     enum: Object.values(modeEnum) 
   }],
-
+  pixels: [{ type: pixelSchema, required: false }] // Correctement défini en tant que tableau de sous-documents
 }, {
   timestamps: true, 
 });
 
-// Création du modèle
-const PxBoard = mongoose.model('pixelboards', pxBoardSchema);
+const PxBoard = mongoose.model('PixelBoard', pxBoardSchema);
 
 module.exports = PxBoard;

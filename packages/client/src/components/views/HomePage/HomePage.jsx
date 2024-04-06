@@ -1,7 +1,11 @@
 
-import { useState } from "react";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import IconButton from '@mui/material/IconButton';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Main from '../HomePage/main'; 
 
+import { fetchPxBoard } from '../../../redux/pxBoard/pxBoardThunk'; // Check import path
 import {
   Card,
   Col,
@@ -38,14 +42,36 @@ import team2 from "../../../assets/images/team-2.jpg";
 import team3 from "../../../assets/images/team-3.jpg";
 import team4 from "../../../assets/images/team-4.jpg";
 import card from "../../../assets/images/info-card-1.jpg";
+import {useNavigate} from 'react-router-dom';
 
 function HomePage() {
   const { Title, Text } = Typography;
-
+  const dispatch = useDispatch();
+  const { pxBoards, loading, error } = useSelector(state => state.pxBoard);
   const onChange = (e) => console.log(`radio checked:${e.target.value}`);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    dispatch(fetchPxBoard());
+  }, [dispatch]);
   const [reverse, setReverse] = useState(false);
+  const   drawImageFromPixels = (pixels, width, height) => {
+    // Créer un élément canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
 
+    // Dessiner chaque pixel
+    pixels.forEach(pixel => {
+      ctx.fillStyle = pixel.color; // Définir la couleur
+      ctx.fillRect(pixel.x, pixel.y, 1, 1); 
+    });
+
+ 
+    return canvas.toDataURL();
+  }
+  
   const dollor = [
     <svg
       width="22"
@@ -328,6 +354,10 @@ function HomePage() {
       }
     },
   };
+  const recentPxBoards = pxBoards.slice(-12);
+  const handleClickonPxBoard = (id) => {
+    navigate(`/pixelBoard/${id}`);
+  }
   return (
     <div>
       {/* Your other components or content here */}
@@ -381,86 +411,41 @@ function HomePage() {
               </Card>
             </Col>
           </Row>
-
-
           <Row gutter={[24, 0]}>
-        <Col xs={8} md={8} sm={8} lg={8} xl={8} className="mb-24">
-          <Card bordered={false} className="criclebox h-full">
-            <Row gutter>
-              <Col xs={24} md={12} sm={24} lg={12} xl={14} className="mobile-24">
-                <div className="h-full col-content p-20">
-                  <div className="ant-muse">
-                    <Text>Built by developers</Text>
-                    <Title level={5}>Muse Dashboard for Ant Design</Title>
-                    <Paragraph className="lastweek mb-36">
-                      From colors, cards, typography to complex elements, you will find the full documentation.
-                    </Paragraph>
-                  </div>
-                  <div className="card-footer">
-                    <a className="icon-move-right" href="#pablo">
-                      Read More <RightOutlined />
-                    </a>
-                  </div>
-                </div>
-              </Col>
-              <Col xs={24} md={12} sm={24} lg={12} xl={10} className="col-img">
-                <div className="ant-cret text-right">
-                  <img src={card} alt="" className="border10" />
-                </div>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-        <Col xs={8} md={8} sm={8} lg={8} xl={8} className="mb-24">
-          <Card bordered={false} className="criclebox h-full">
-            {/* Repeat card content for the second column */}
-          </Card>
-        </Col>
-        <Col xs={8} md={8} sm={8} lg={8} xl={8} className="mb-24">
-          <Card bordered={false} className="criclebox h-full">
-            {/* Repeat card content for the third column */}
-          </Card>
-        </Col>
-        </Row>
-        <Row gutter={[24, 0]}>
-        <Col xs={8} md={8} sm={8} lg={8} xl={8} className="mb-24">
-          <Card bordered={false} className="criclebox h-full">
-            <Row gutter>
-              <Col xs={24} md={12} sm={24} lg={12} xl={14} className="mobile-24">
-                <div className="h-full col-content p-20">
-                  <div className="ant-muse">
-                    <Text>Built by developers</Text>
-                    <Title level={5}>Muse Dashboard for Ant Design</Title>
-                    <Paragraph className="lastweek mb-36">
-                      From colors, cards, typography to complex elements, you will find the full documentation.
-                    </Paragraph>
-                  </div>
-                  <div className="card-footer">
-                    <a className="icon-move-right" href="#pablo">
-                      Read More <RightOutlined />
-                    </a>
-                  </div>
-                </div>
-              </Col>
-              <Col xs={24} md={12} sm={24} lg={12} xl={10} className="col-img">
-                <div className="ant-cret text-right">
-                  <img src={card} alt="" className="border10" />
-                </div>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-        <Col xs={8} md={8} sm={8} lg={8} xl={8} className="mb-24">
-          <Card bordered={false} className="criclebox h-full">
-            {/* Repeat card content for the second column */}
-          </Card>
-        </Col>
-        <Col xs={8} md={8} sm={8} lg={8} xl={8} className="mb-24">
-          <Card bordered={false} className="criclebox h-full">
-            {/* Repeat card content for the third column */}
-          </Card>
-        </Col>
-        </Row>
+        {loading && <div> Loading... </div>} {/* Put your loading component here */}
+        {error && <div className="error">{error}</div>}
+        {!loading && !error && (
+          recentPxBoards.map(pxBoard => (
+            <Col key={pxBoard.id} xs={24} sm={12} md={8} lg={6} xl={4} className="mb-24">
+              <Card bordered={false} className="criclebox h-full">
+                <Row gutter={[0, 20]}>
+                  <Col span={24}>
+                    <img
+                      src={drawImageFromPixels(pxBoard.pixels, 100, 100)}
+                      alt={`\${pxBoard.title} thumbnail`}
+                      className="border10"
+                      style={{ width: '100%', height: 'auto' }}
+                      onClick={() => handleClickonPxBoard(pxBoard._id)}
+                    />
+                  </Col>
+                  <Col span={24}>
+                    <div className="ant-muse">
+                      <Text>{pxBoard.title}</Text>
+                      <Title level={5}>{pxBoard.title}</Title>
+                      <Paragraph>
+                        {/* Place additional information here */}
+                        More details about the PixelBoard...
+                      </Paragraph>
+                    </div>
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+          ))
+        )}
+      </Row>
+
+    
         </div>
 </>
       </Main>

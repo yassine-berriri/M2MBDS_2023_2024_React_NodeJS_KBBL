@@ -1,0 +1,17 @@
+.pixel-history {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 10px;
+    white-space: nowrap;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none; // Éviter que le tooltip n'interfère avec les événements de la souris
+  }
+  
+  .pixel:hover .pixel-history {
+    display: block;
+  }

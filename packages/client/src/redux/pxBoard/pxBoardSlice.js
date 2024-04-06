@@ -1,10 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {createPxBoard, fetchPxBoard} from './pxBoardThunk';
+import {createPxBoard, fetchPxBoard, deletePxBoard, updatePxBoard, fetchPxBoardById} from './pxBoardThunk';
 
 export const pxBoardSlice = createSlice({
     name: 'pxBoard',
     initialState: {
         pxBoards: [],
+        pxBoard: {},
         error: null,
         loading: false
     },
@@ -38,7 +39,63 @@ export const pxBoardSlice = createSlice({
 
         .addCase(createPxBoard.pending, (state) => {
             state.loading = true;
-        });
+        })
+        .addCase(deletePxBoard.fulfilled, (state, action) => {
+            const index = state.pxBoards.findIndex(board => board.id === action.payload.id);
+            if (index !== -1) {
+                state.pxBoards = state.pxBoards.filter((board, i) => i !== index);
+            }
+            state.error = "";
+            state.loading = false;
+        })
+
+        .addCase(deletePxBoard.rejected, (state, action) => {
+            state.error = action.error.message;
+            state.loading = false;
+        })
+
+        .addCase(deletePxBoard.pending, (state) => {
+            state.loading = true;
+        })
+        
+        .addCase(updatePxBoard.fulfilled, (state, action) => {
+            // Trouver l'index du pxBoard mis à jour dans le tableau
+            const index = state.pxBoards.findIndex(board => board.id === action.payload.id);
+            // Si le pxBoard est trouvé, mettre à jour le tableau avec les nouvelles données
+            console.log("Je suis dans le reducer de mise à jour", action.payload);
+            console.log("Je suis dans le reducer de mise à jour index", index, state.pxBoards[index]);
+            if (index !== -1) {
+                state.pxBoards[index] = action.payload;
+            }
+            state.error = "";
+            state.loading = false;
+        })
+        
+        .addCase(updatePxBoard.rejected, (state, action) => {
+            state.error = action.error.message;
+            state.loading = false;
+        })
+        
+        .addCase(updatePxBoard.pending, (state) => {
+            state.loading = true;
+        })
+
+        .addCase(fetchPxBoardById.fulfilled, (state, action) => {
+            console.log("je suis dans le reducer fetchPxBoardById", action.payload);
+            state.pxBoard = action.payload;
+            state.error = "";
+            state.loading = false;
+        })
+
+        .addCase(fetchPxBoardById.rejected, (state, action) => {
+            state.error = action.error.message;
+            state.loading = false;
+        })
+
+        .addCase(fetchPxBoardById.pending, (state) => {
+            state.loading = true;
+        })
+
 
     }
 });
