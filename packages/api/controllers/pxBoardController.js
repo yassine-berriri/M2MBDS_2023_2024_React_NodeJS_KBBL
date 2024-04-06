@@ -91,14 +91,16 @@ async function addPixel(req, res) {
     try {
         const pxBoardId = req.params.id;
         const { x, y, color } = req.body;
+        const userId= req.body.userId;
         const pxBoard = await PxBoard.findById(pxBoardId);
-      
         if (!pxBoard) {
             return res.status(404).send({ message: 'PxBoard not found' });
         }
 
+        console.log("ffffffffffffffffffffff");
+
         // Ajouter le nouveau pixel au tableau
-        pxBoard.pixels.push({ x, y, color, history: [{ color, modifiedAt: new Date() }] }); // Ajoute l'historique initial du pixel
+        pxBoard.pixels.push({userId,x, y, color, history: [{ color, modifiedAt: new Date() }] }); // Ajoute l'historique initial du pixel
 
         const updatedPxBoard = await pxBoard.save();
         res.send({ message: 'Pixel added', pxBoard: updatedPxBoard });
@@ -161,7 +163,34 @@ async function deletePixel(req, res) {
     }
 }
 
+async function countPixelsCreatedByUser(req, res) {
+    try {
+        const userId = req.params.userId; 
+        const pixelBoards = await PxBoard.find({ userId: userId }); 
+
+        let count = 0;
+
+        pixelBoards.forEach(board => {
+          board.pixels.forEach(pixel => {
+            if (pixel.userId === userId) {
+              count++;
+            }
+          });
+        });
+        res.json({ count: count }); // Sending count as JSON object
+    } catch (error) {
+      console.error('Error counting pixels:', error);
+      throw error;
+    }
+}
 
 module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById, getPixelBoardByUserId, updatePixel,addPixel,deletePixel };
+
+  
+  
+  
+  
+module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById,updatePixel,addPixel,deletePixel,countPixelsCreatedByUser};
+
 
 

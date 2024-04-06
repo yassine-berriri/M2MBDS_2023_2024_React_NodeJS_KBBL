@@ -196,25 +196,11 @@ function Sidenav({ color }) {
         <Menu.Item className="menu-item-header" key="5">
           Account Pages
         </Menu.Item>
-        {/* Afficher le lien vers le profil uniquement si l'utilisateur est connecté */}
-        {isLoggedIn && (
-          <Menu.Item key="2">
-            <NavLink to="/profile">
-              <span
-                className="icon"
-                style={{
-                  background: page === "profile" ? color : "",
-                }}
-              >
-                {profile}
-              </span>
-              <span className="label">Profile</span>
-            </NavLink>
-          </Menu.Item>
-        )}
+       
 
 {localStorage.getItem('isAuthenticated') !== 'true' ? (
   <>
+  
     <Menu.Item key="3">
       <NavLink to="/login">
         <span className="icon">{signin}</span>
@@ -228,18 +214,34 @@ function Sidenav({ color }) {
       </NavLink>
     </Menu.Item>
   </>
-) : null}
+) : <Menu.Item key="2">
+<NavLink to="/profile">
+  <span
+    className="icon"
+    style={{
+      background: page === "profile" ? color : "",
+    }}
+  >
+    {profile}
+  </span>
+  <span className="label">Profile</span>
+</NavLink>
+</Menu.Item>}
 
-        
-        
-                
- 
-        <Menu.Item key="5">
+{localStorage.getItem('role') === 'admin' ? (
+  <>
+    <Menu.Item key="5">
           <NavLink to="/admin">
             <span className="icon">{admin}</span>
             <span className="label">admin</span>
           </NavLink>
         </Menu.Item>
+  </>
+) : null}       
+        
+                
+ 
+    
       </Menu>
     </>
   );

@@ -29,6 +29,7 @@ import styled from "styled-components";
 import avtar from "../../../assets/images/team-2.jpg";
 import { useDispatch, useSelector } from 'react-redux';
 import { signInUser } from '../../../redux/user/userThunk';
+import { colors } from "@mui/material";
 
 const ButtonContainer = styled.div`
   .ant-btn-primary {
@@ -150,7 +151,15 @@ const logsetting = [
   return (
     <Row justify="end">
       <Col>
- 
+      <Button
+            type="link"
+            className="sidebar-toggler"
+            onClick={() => onPress()}
+          >
+            {toggler}
+            <span style={{ color: 'black'  ,fontSize: '16px'}}>Menu</span>
+          </Button>
+          
       </Col>
       <Col>
         {/* Si l'utilisateur est connecté, affichez le bouton de déconnexion */}
@@ -159,17 +168,19 @@ const logsetting = [
         ) : (
           /* Si l'utilisateur n'est pas connecté, affichez les boutons de connexion et d'inscription */
           <>
-             <Button type="link" onClick={handleLogout}>
-            {logsetting}
+
+{localStorage.getItem('isAuthenticated') === 'true' ? (
+  <>
+        <Button type="link" onClick={handleLogout}>
+            {logsetting} 
+            <span style={{ color: 'black'  ,fontSize: '16px'}}>Logout</span>
+
           </Button>
+  </>
+) : null}   
+         
            
-            <Button
-            type="link"
-            className="sidebar-toggler"
-            onClick={() => onPress()}
-          >
-            {toggler}
-          </Button>
+        
           </>
         )}
       </Col>

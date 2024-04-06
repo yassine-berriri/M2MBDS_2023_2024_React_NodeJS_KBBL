@@ -14,16 +14,18 @@ function RootRouter() {
           <Route  element={<spaces.VisitorSpace/>}>
             <Route  path="/pixelBoard/:id" element={<views.Visitor_PixelBoard/>} />
           </Route>
-          <Route  element={<spaces.AdminSpace/>}>
+          <Route  element={<ProtectedRoute allowedRoles={['admin']} ><spaces.AdminSpace /></ProtectedRoute>}>
             <Route  path="/admin" element={<views.Admin_HomePage/>} />
+          </Route>
+          <Route  element={<spaces.VisitorSpace />}>
+            <Route  path="/dddd" element={<views.Visitor_HomePage/>} />
           </Route>
           <Route  path="/login" element={<views.SignInPage/>} />
           <Route  path="/Register" element={<views.RegisterPage/>} />
           <Route  path="/HomePage" element={<views.HomePage/>} />
           <Route  path="/" element={<views.HomePage/>} />
-
-          <Route  path="/admin" element={<ProtectedRoute allowedRoles={['admin']} ><spaces.AdminSpace /></ProtectedRoute>}></Route>
           <Route  path="/profile" element={<ProtectedRoute allowedRoles={['user','admin']} ><views.profile /></ProtectedRoute>}></Route>
+
 
             
           

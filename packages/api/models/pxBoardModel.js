@@ -10,6 +10,7 @@ const pixelHistorySchema = new Schema({
 }, { _id: false }); // Ajoutez cette option si vous ne voulez pas d'_id pour chaque entrée de l'historique
 
 const pixelSchema = new Schema({
+  userId: { type: String, required: false },
   x: { type: Number, required: true },
   y: { type: Number, required: true },
   color: { type: String, required: true }, // Validation du format hexadécimal pour les couleurs
