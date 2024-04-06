@@ -65,13 +65,13 @@ const SignInPage = () => {
     <>
       <Navbar expand='lg' dark color='primary'>
         <Container>
-          <NavbarBrand href='#'></NavbarBrand>
+          <NavbarBrand href='/'>Go to PixelBoards</NavbarBrand>
         </Container>
       </Navbar>
       <SignInContainer fluid>
         <Row>
           <StyledImageCol md={6}>
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" className="img-fluid" alt="Phone image" />
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" className="img-fluid" alt="Phone image" />
           </StyledImageCol>
           <StyledFormCol md={6}>
             <h1 className="text-center text-primary fw-bold mb-5">Login</h1>
