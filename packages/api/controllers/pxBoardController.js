@@ -184,13 +184,13 @@ async function countPixelsCreatedByUser(req, res) {
     }
 }
 
-module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById, getPixelBoardByUserId, updatePixel,addPixel,deletePixel };
+module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById, getPixelBoardByUserId, updatePixel,addPixel,deletePixel,countPixelsCreatedByUser };
 
   
   
   
   
-module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById,updatePixel,addPixel,deletePixel,countPixelsCreatedByUser};
+// module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById,updatePixel,addPixel,deletePixel,countPixelsCreatedByUser};
 
 
 
