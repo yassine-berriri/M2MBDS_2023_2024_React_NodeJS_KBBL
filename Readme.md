@@ -64,6 +64,10 @@ Ouvrez un navigateur web et accédez à l'adresse suivante :
 - Ibrahim KRIMI (Ibrahim-krimi)
 - Marwane LARBI (MarwaneLarbi)
 
+#### Tâches effectuées : 
+Vous pouvez consulter les tâches effectuées en accédant à la gestion de projet sur GitHub via ce lien : 
+
+- https://github.com/users/yassine-berriri/projects/2
 
 
     
