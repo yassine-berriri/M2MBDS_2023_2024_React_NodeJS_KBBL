@@ -1,92 +1,44 @@
 # 2024 MBDS project PixelBoard
 
-## Introduction
-this is a mono-repo project for the 2024 MBDS project PixelBoard. It contains the following packages:
-- `client`: the frontend of the project
-- `api`: the backend of the project
+## Le Concept
+PixelBoard est une plateforme interactive où chaque utilisateur peut colorier un unique pixel à intervalles réguliers, en choisissant parmi une gamme de couleurs limitée. Chaque dessin créé sur PixelBoard a une durée de vie définie, après quoi il est considéré comme terminé et plus aucun changement n'est autorisé.
 
-You can use this skeleton to start your project.    
-You have to edit the root package.json file : 
-- replace the name property (replace xxxx by the first letter of each member of your group)
-- set the repository by setting the url of your project  
+## Fonctionnalités
+### Page d'accueil
+- Affichage du nombre d'utilisateurs inscrits.
+- Affichage du nombre de PixelBoards créés.
+- Affichage du nombre de Pixel rempli.
+- Affichage du nombre de Pixel non rempli.
+- Affichage de la couleur la plus utilisé.
+### Administrateurs
+- Création de nouveaux PixelBoards en spécifiant leurs propriétés via un formulaire.
+- Modification et suppression des PixelBoards existants.
+- Affichage, tri et filtrage de tous les PixelBoards.
+- Exportation d'un pixelBorad en PNG.
+### PixelBoard
+- Affichage des propriétés du PixelBoard sur sa page dédiée.
+- Affichage du temps restant avant sa fermeture.
+- Affichage du titre, de la taille et du délai entre deux participations.
+- Possibilité de dessiner sur un Pixel déjà colorié, selon les réglages spécifiés.
+- Implémentation de boutton pour zoomer et dézommer le pixelBoard.
+### Utilisateurs Visiteurs
+- Possibilité de s'inscrire pour devenir un utilisateur pleinement enregistré.
+- Dessiner sur un PixelBoard.
+### Utilisateurs
+- Connexion sécurisée avec authentification via JWT (JSON Web Token).
+- Accès à leur profil pour modifier leurs informations et le thème de l'interface.
 
+## Installation & execution
 
-## Installation
-To install the project, you need to clone the repository and install the dependencies. You can do this by running the following commands in the root directory of the project:
-``` js
-yarn
-```
-
-## Usage
-To start the project, you need to run the following commands in the root directory of the project (in two separate terminals):
-``` js
-yarn start:client 
-```
-*call start script in ./packages/client package.json (to start the react client)*  
-
-``` js
-yarn start:api 
-```
-*call start script in ./packages/api package.json (to start the api)*
-
-
-## Adding libraries
-
-If you want to add library you can use the following commands (in the root directory of the project) :
-``` js
-yarn workspace <client|api> add <package-name> 
-```
-For example to add `express` to the api package you can run:
-``` js
-yarn workspace api add express
-```
-fortawesome
-npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
-
-For example to add a librairy for devDependencies to the client package you can run:
-``` js
-yarn workspace client add -D <package-name>
-```
+## Participants
+- Abdenour ACHOURI (Abdenour_ACHOURI)
+- yassine BERRIRI (yassineBr12, YassineBerriri, yassine-berriri)
+- Badis BOUCHEFFA (BOUCHEFF-BADIS)
+- Ibrahim KRIMI (Ibrahim-krimi)
+- Marwane LARBI (MarwaneLarbi)
 
 
-## Test de la base de données MongoDB avec Docker
- 
 
-1/ Positionnez-vous dans le répertoire du service API : cd packages/api
-
-2/ Lancez votre conteneur Docker avec docker-compose : docker-compose -d 
-
-3/ Vérifiez l'état de vos conteneurs Docker et
-   Pour récupérer l'ID de conteneur MongoDB, exécutez : docker ps 
-
-4/ Accédez au shell MongoDB : docker exec -it [id_contenaire] mongosh -u yassineberriri -p vHBIl1JGB46EUnlq --authenticationDatabase admin 
-
-5/ Affichez les bases de données disponibles : show dbs
-
-6/ Sélectionnez la base de données : use test
-
-7/ Affichez les collections : show collections
-
-8/ Interrogez une collection : db.pixelboards.find()
-
-9/ Sortie de MongoDB Shell : exit
-
-## Migration des données de MongoDB Atlas vers la base de données dans Docker
-
-
-1/ Installer mongorestore
-
-2/  Configurer Docker Compose:
-    Ajouter dans docker-compose  
-     volumes:
-      - mongodb_data_container:/data/db
-      - D:/mongoRestore/mongoMigration:/mongoMigration
-
-3/ Exporter les données depuis MongoDB Atlas:
-mongodump --uri="mongodb+srv://yassineberriri:vHBIl1JGB46EUnlq@cluster0.axncp8h.mongodb.net/" --collection=pixelboards --collection=users --db=MBDS --out= PathLocale
-
-4/ Restaurer les données dans Docker: 
-    docker exec -it [id_contenaire] mongorestore --uri="mongodb://yassineberriri:vHBIl1JGB46EUnlq@localhost:27017/" mongoMigration/
     
 
 
