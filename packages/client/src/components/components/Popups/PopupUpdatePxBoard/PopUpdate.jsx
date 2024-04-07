@@ -3,7 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, R
 import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
-import {updatePxBoard, fetchPxBoard } from '../../../../redux/pxBoard/pxBoardThunk';
+import {updatePxBoard, fetchPxBoard, fetchPxBoardsByUserId } from '../../../../redux/pxBoard/pxBoardThunk';
 import { useDispatch } from 'react-redux';
 
 
@@ -53,7 +53,8 @@ function PopupEditPxBoard({ pxBoard, onUpdate }) {
    
    dispatch(updatePxBoard( updatedPxBoard))
    .then(() => {
-    dispatch(fetchPxBoard());
+    const userId = localStorage.getItem('id');
+    dispatch(fetchPxBoardsByUserId(userId));
   });
     // Mettre à jour le pixelboard (à implémenter
     console.log("pxBoard dans update",_id, updatedPxBoard);

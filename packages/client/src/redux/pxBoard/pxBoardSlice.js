@@ -6,13 +6,14 @@ export const pxBoardSlice = createSlice({
     initialState: {
         pxBoards: [],
         pxBoard: {},
+        pxBoardsByUserId: [],
         error: null,
         loading: false
     },
     extraReducers: (builder) => {
         builder
         .addCase(fetchPxBoardsByUserId.fulfilled, (state, action) => {
-            state.pxBoards = action.payload;
+            state.pxBoardsByUserId = action.payload;
             state.error = null;
             state.loading = false;
         })
@@ -107,6 +108,9 @@ export const pxBoardSlice = createSlice({
         .addCase(fetchPxBoardById.pending, (state) => {
             state.loading = true;
         })
+
+
+
 
 
     }
