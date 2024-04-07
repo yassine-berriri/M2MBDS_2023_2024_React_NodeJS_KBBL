@@ -6,8 +6,8 @@ require('dotenv').config();
 const { URL_MONGO_ATLAS, URL_Mongo_DOCKER } = process.env;
 
 
-//const uri = URL_MONGO_ATLAS;
-const uri = URL_Mongo_DOCKER;
+const uri = URL_MONGO_ATLAS;
+//const uri = URL_Mongo_DOCKER;
 
 
 

@@ -9,7 +9,7 @@ import { FormGroup, Label, Input,   } from 'reactstrap';
 import DropDownButton from '../../Buttons/DropDownButton/DropDownButton';
 import DropDownButtonDelai from '../../Buttons/DropDownButtonDelai/DropDownButtonDelai';
 import { useDispatch, useSelector  } from 'react-redux'; 
-import { createPxBoard } from '../../../../redux/pxBoard/pxBoardThunk';
+import { createPxBoard, fetchPxBoardsByUserId } from '../../../../redux/pxBoard/pxBoardThunk';
 
 /*
  * ----------------------------------------------------------------------
@@ -99,7 +99,10 @@ function PopupCreatePxBoard() {
     console.log("Données à envoyer pxBoard :", data);
     
     try{
-      dispatch(createPxBoard(data)).unwrap();
+      dispatch(createPxBoard(data)).then(() => {
+        const userId = localStorage.getItem('id');
+        dispatch(fetchPxBoardsByUserId(userId));
+      });
       reset();
      // togglePopup();
       alert("PixelBoard créé avec succès  ");
