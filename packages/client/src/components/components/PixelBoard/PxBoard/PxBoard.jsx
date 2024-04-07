@@ -94,6 +94,8 @@ function PxBoard(props) {
      // Optionnel, pour encadrer le tableau
   };
 
+  let userId =localStorage.getItem('id');
+
   
 
   /* --------------------------------------------------------------------
@@ -215,9 +217,10 @@ function PxBoard(props) {
     let action = 'nothing';
     setPixelsState(prevState => {
       const pixelIndex = prevState?.findIndex(p => p.x === x && p.y === y);
-      const userId =localStorage.getItem('id');
+    
+      console.log("userId = ", userId)
       if(!userId){
-        const userId ='none';
+         userId ='none';
       }
       const newPixel = {userId,x, y, color:selectedColor};
       console.log("newPixel==== ", newPixel)
@@ -272,10 +275,10 @@ function PxBoard(props) {
         }
         else if (action === "update"){
           console.log("updatePixel emit = true",idPx, x, y, selectedColor)
-          socket.emit('updatePixel', { pxBoardId: idPx, x, y, color: selectedColor });
+          socket.emit('updatePixel', { userId, pxBoardId: idPx, x, y, color: selectedColor });
         }
         else if (action === "delete") {
-          socket.emit('deletePixel', { pxBoardId: idPx, x, y, color: selectedColor });
+          socket.emit('deletePixel', { userId, pxBoardId: idPx, x, y, color: selectedColor });
         }
         else if (action === "error") {
           setcanClick(true);
@@ -304,7 +307,7 @@ function PxBoard(props) {
     console.log("emit = ", emit)
     }
     
-    const addPixel = (x, y, color) => {
+    const addPixel = (userId, x, y, color) => {
       setPixelsState(prevState => {
         // S'assurer que prevState est un tableau pour éviter l'erreur "not iterable"
         const currentState = Array.isArray(prevState) ? prevState : [];
@@ -314,7 +317,7 @@ function PxBoard(props) {
         if (pixelIndex !== -1) {
           // Si le pixel existe déjà, mettre à jour la couleur
           const newState = [...currentState];
-          newState[pixelIndex] = { x, y, color };
+          newState[pixelIndex] = {userId, x, y, color };
           console.log("newState", newState)
           return newState;
         } else {
@@ -360,13 +363,13 @@ function PxBoard(props) {
     });
 
     socket.on('pixelUpdated', (data) => {
-      const { x, y, color } = data;
+      const { userId,x, y, color } = data;
       addOrUpdatePixel(x, y, color, false);
       console.log(`Pixel mis à jour à x: ${x}, y: ${y} avec la couleur: ${color}`);
     });
 
     socket?.on('pixelDeleted', (data) => {
-      const { x, y, color } = data;
+      const { userId ,x, y, color } = data;
       addOrUpdatePixel(x, y, color, false);
       console.log(`Pixel supprimé à x: ${x}, y: ${y} avec la couleur: ${color}`);
     });
@@ -412,6 +415,7 @@ useEffect(() => {
     setPixelsState([]);
     console.log("test socket leaveBoard");
     socket.emit('leaveBoard', idPx);
+    console.log("endDate =====", myPxBoard?.endDate)
     socket.disconnect();
     clearTimeout(timer);
   }
@@ -468,7 +472,10 @@ useEffect(() => {
   return (
     
     <div className="PxBoard">
-      {console.log("isLoading +++++", isLoading)}
+      {console.log("isLoading +++++", isLoading)
+
+      }
+    
     {isLoading ? (
       // Affiche le loader si isLoading est vrai
      <div> <MySpinnerPopup/> </div>
@@ -547,7 +554,7 @@ useEffect(() => {
           )
         }
   
-        {error && <PopupError text="Une erreur est survenue sur notre serveur. Veuillez vérifier votre connexion et essayer à nouveau." clicked={() => setShowPopupError(false)} />}
+        {error && <PopupError text="Une erreur est survenue sur notre serveur. Veuillez vérifier votre connexion et essayer à nouveau. test" clicked={() => setShowPopupError(false)} />}
       </>
     )}
   </div>

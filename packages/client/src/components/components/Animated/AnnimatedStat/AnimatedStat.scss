@@ -1,0 +1,42 @@
+.animated-stat-container {
+  display: inline-block;
+  background: linear-gradient(145deg, #6e48aa, #9d50bb);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: white;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .label {
+    display: block;
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 10px;
+  }
+
+  .value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: -webkit-linear-gradient(left, #f6d365, #fda085);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pop 0.8s ease forwards;
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

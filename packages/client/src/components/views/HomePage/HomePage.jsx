@@ -1,8 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import IconButton from '@mui/material/IconButton';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
+
 import Main from '../HomePage/main'; 
 
 import { fetchPxBoard } from '../../../redux/pxBoard/pxBoardThunk'; // Check import path
@@ -11,38 +10,20 @@ import {
   Col,
   Row,
   Typography,
-  Tooltip,
-  Progress,
-  Upload,
-  message,
-  Button,
-  Timeline,
-  Radio,
 } from "antd";
-import {
-  ToTopOutlined,
-  MenuUnfoldOutlined,
-  RightOutlined,
-} from "@ant-design/icons";
+
 import Paragraph from "antd/lib/typography/Paragraph";
 
-import Echart from "../../components/chart/EChart";
-import LineChart from "../../components/chart/LineChart";
-import Sidenav from "../../../assets/layout/Sidenav";
+import { fetchStat } from '../../../redux/stat/statThunk';
 
-
-import ava1 from "../../../assets/images/logo-shopify.svg";
-import ava2 from "../../../assets/images/logo-atlassian.svg";
-import ava3 from "../../../assets/images/logo-slack.svg";
-import ava4 from "../../../assets/images/logo-spotify.svg";
-import ava5 from "../../../assets/images/logo-jira.svg";
-import ava6 from "../../../assets/images/logo-invision.svg";
-import team1 from "../../../assets/images/team-1.jpg";
-import team2 from "../../../assets/images/team-2.jpg";
-import team3 from "../../../assets/images/team-3.jpg";
-import team4 from "../../../assets/images/team-4.jpg";
-import card from "../../../assets/images/info-card-1.jpg";
 import {useNavigate} from 'react-router-dom';
+import PopupGreen from '../../components/Popups/PopupGreen/PopupGreen'; // Adjust the path to where your PopupGreen component is located
+
+import AnimatedStat from '../../components/Animated/AnnimatedStat/AnimatedStat'
+
+
+import "./HomePage.scss";
+
 
 function HomePage() {
   const { Title, Text } = Typography;
@@ -50,11 +31,36 @@ function HomePage() {
   const { pxBoards, loading, error } = useSelector(state => state.pxBoard);
   const onChange = (e) => console.log(`radio checked:${e.target.value}`);
   const navigate = useNavigate();
+  const [showPopupGreen, setShowPopupGreen] = useState(false);
+ const [popupMessage, setPopupMessage] = useState('');
+
+
+ const { stat, loading: statsLoading, error: statsError } = useSelector(state => state.stat);
 
   useEffect(() => {
+
+    if (localStorage.getItem('showLoginSuccess') === 'true') {
+      // Show the success message here, either by setting state that triggers a PopupGreen component
+      // or by using another method like a toast notification
+      setShowPopupGreen(true); // Assuming you have a state to control this
+      setPopupMessage('Login successful! Welcome back.');
+  
+      // Remove the flag so it doesn't show again on refresh
+      localStorage.removeItem('showLoginSuccess');
+    }
     dispatch(fetchPxBoard());
+    dispatch(fetchStat()); 
+    console.log("je  suis stat", stat);
+
   }, [dispatch]);
+
+
   const [reverse, setReverse] = useState(false);
+  
+  const onPopupDismiss = () => {
+    setShowPopupGreen(false);
+    navigate('/HomePage'); // Adjust the path as necessary
+  };
   
   
   const   drawImageFromPixels = (pixels, width, height) => {
@@ -73,6 +79,118 @@ function HomePage() {
  
     return canvas.toDataURL();
   }
+ 
+  const recentPxBoards = pxBoards.slice(-12);
+  const handleClickonPxBoard = (id) => {
+    navigate(`/pixelBoard/${id}`);
+  }
+
+
+  const renderStatistics = () => {
+    if (statsLoading) return <p>Loading statistics...</p>;
+    if (statsError) return <p>Error loading statistics: {statsError}</p>;
+    if (!stat) return null; // Ou un message par défaut indiquant qu'aucune statistique n'est disponible
+  
+    // En supposant que `stats` est un objet contenant diverses statistiques comme propriétés
+    return (
+      <div className="stats-section">
+     <AnimatedStat key="filledPixels" label="Filled Pixels" value={stat.filledPixels} /> 
+      <AnimatedStat key="unfilledPixels" label="Unfilled Pixels" value={stat.unfilledPixels} /> 
+      <AnimatedStat key="totalUsers" label="Total Users" value={stat.totalUsers} /> 
+      <AnimatedStat key="totalPxBoards" label="Total Pixel Boards" value={stat.totalPxBoards} /> 
+
+      <div className="color-display-container">
+      <span className="label">Most Popular Color:</span>
+      <div className="color-sample" style={{ backgroundColor: stat.mostPopularColor }}></div>
+      <span className="color-name">{stat?.mostPopularColor?.toUpperCase()}</span>
+    </div>
+
+
+
+
+
+      </div>
+    );
+  };
+  
+
+
+
+
+
+
+
+  return (
+    <div>
+      {/* Your other components or content here */}
+      <Main>
+        {/* Content that will be displayed within the Main component's content area */}
+     
+        <>
+
+
+
+
+        <div className="layout-content">
+        {renderStatistics()}
+
+         
+          <Row gutter={[24, 0]}>
+        {loading && <div> Loading... </div>} {/* Put your loading component here */}
+            <>
+      {showPopupGreen && <PopupGreen text={popupMessage} clicked={onPopupDismiss} />}
+      {/* The rest of your SignInPage component's JSX */}
+    </>
+        {error && <div className="error">{error}</div>}
+        {!loading && !error && (
+        recentPxBoards.map((pxBoard, index) => (
+              <Col key={index} xs={24} sm={12} md={8} lg={6} xl={4} className="mb-24">
+              <Card bordered={false} className="criclebox h-full">
+                <Row gutter={[0, 20]}>
+                  <Col span={24}>
+                    <img
+                      src={drawImageFromPixels(pxBoard.pixels, 100, 100)}
+                      alt={`\${pxBoard.title} thumbnail`}
+                      className="border10"
+                      style={{ width: '100%', height: 'auto' }}
+                      onClick={() => handleClickonPxBoard(pxBoard._id)}
+                    />
+                  </Col>
+                  <Col span={24}>
+                    <div className="ant-muse">
+                      <Text>{pxBoard.title}</Text>
+                      <Title level={5}>{pxBoard.title}</Title>
+                      <Paragraph>
+                        {/* Place additional information here */}
+                        More details about the PixelBoard...
+                      </Paragraph>
+                    </div>
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+          ))
+        )}
+      </Row>
+
+
+    
+        </div>
+</>
+      </Main>
+    </div>
+  );
+
+}
+
+export default HomePage;
+
+
+
+
+/*
+ /// code marwan
+
   const profile = [
     <svg
       width="22"
@@ -330,21 +448,8 @@ function HomePage() {
       }
     },
   };
-  const recentPxBoards = pxBoards.slice(-12);
-  const handleClickonPxBoard = (id) => {
-    navigate(`/pixelBoard/${id}`);
-  }
-  return (
-    <div>
-      {/* Your other components or content here */}
-      <Main>
-        {/* Content that will be displayed within the Main component's content area */}
-     
-        <>
 
-
-        <div className="layout-content">
-          <Row className="rowgap-vbox" gutter={[24, 0]}>
+ <Row className="rowgap-vbox" gutter={[24, 0]}>
             {count.map((c, index) => (
               <Col
                 key={index}
@@ -386,47 +491,4 @@ function HomePage() {
               </Card>
             </Col>
           </Row>
-          <Row gutter={[24, 0]}>
-        {loading && <div> Loading... </div>} {/* Put your loading component here */}
-        {error && <div className="error">{error}</div>}
-        {!loading && !error && (
-          recentPxBoards.map(pxBoard => (
-            <Col key={pxBoard.id} xs={24} sm={12} md={8} lg={6} xl={4} className="mb-24">
-              <Card bordered={false} className="criclebox h-full">
-                <Row gutter={[0, 20]}>
-                  <Col span={24}>
-                    <img
-                      src={drawImageFromPixels(pxBoard.pixels, 100, 100)}
-                      alt={`\${pxBoard.title} thumbnail`}
-                      className="border10"
-                      style={{ width: '100%', height: 'auto' }}
-                      onClick={() => handleClickonPxBoard(pxBoard._id)}
-                    />
-                  </Col>
-                  <Col span={24}>
-                    <div className="ant-muse">
-                      <Title level={5}>{pxBoard.title}</Title>
-                      <Text>size : {pxBoard.size}</Text>
-                      <Paragraph>
-                        {/* Place additional information here */}
-                        More details about the PixelBoard...
-                      </Paragraph>
-                    </div>
-                  </Col>
-                </Row>
-              </Card>
-            </Col>
-          ))
-        )}
-      </Row>
-
-    
-        </div>
-</>
-      </Main>
-    </div>
-  );
-
-}
-
-export default HomePage;
+          */

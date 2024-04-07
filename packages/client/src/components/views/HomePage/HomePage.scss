@@ -1,0 +1,41 @@
+.animated-stat-container {
+    margin: 40px; // Ajustez selon les besoins
+    // Les autres styles restent inchangés
+  }
+  .stats-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; // Cela crée un espacement de 20px à la fois horizontalement et verticalement entre les éléments
+    // Les autres styles restent inchangés
+  }
+    
+
+  .color-display-container {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    .label {
+      font-size: 18px;
+      color: #333;
+      margin-right: 12px;
+    }
+    .color-sample {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #ddd; /* A light border to help colors stand out */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      margin-right: 12px;
+    }
+    .color-name {
+      font-size: 18px;
+      color: #555;
+      font-weight: bold;
+    }
+  }
+  
+  

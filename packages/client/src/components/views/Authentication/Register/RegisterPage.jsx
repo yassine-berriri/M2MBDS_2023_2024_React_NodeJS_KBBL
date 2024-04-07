@@ -5,9 +5,11 @@ import { Container, Row, Col, Button, Input, Label, FormGroup, Form , Navbar,
 import { registerUser } from '../../../../redux/user/userThunk'; // Import thunk action for user registration
 import { useDispatch, useSelector } from 'react-redux';
 import { userStart, userFailure } from '../../../../redux/user/userSlice';
+import PopupGreen from '../../../components/Popups/PopupGreen/PopupGreen'; // Adjust the path to where your PopupGreen component is located
 
 
 import styled from 'styled-components';
+
 
 const RegisterContainer = styled(Container)`
   padding: calc(20vh - 3rem) 10rem 2vh 1%;
@@ -39,6 +41,16 @@ const RegisterPage = () => {
     const [errors, setErrors] = useState({});
     const dispatch = useDispatch(); // Get dispatch function from Redux
     const navigate = useNavigate();
+
+    const [showPopupGreen, setShowPopupGreen] = useState(false);
+    const [popupMessage, setPopupMessage] = useState('');
+
+    const onPopupDismiss = () => {
+      setShowPopupGreen(false);
+      navigate('/login');
+  };
+  
+
   
     const validateInputs = () => {
         const errors = {};
@@ -83,8 +95,14 @@ const RegisterPage = () => {
             try {
                 dispatch(userStart()); // Dispatch user start action
                 const userData = { firstName, lastName, email, phoneNumber, bio, password, role };
-                await dispatch(registerUser(userData)); // Dispatch thunk action for user registration
-                navigate('/login');
+                const response = await dispatch(registerUser(userData)); // Dispatch thunk action for user registration
+                
+                // Check if registration was successful, then show popup
+                if (response) { // Adjust this condition based on your actual API response structure
+                    setPopupMessage('Registration successful! You can now log in.');
+                    setShowPopupGreen(true);
+                }
+
             } catch (error) {
                 dispatch(userFailure(error.message)); // Dispatch user failure action
             }
@@ -100,6 +118,10 @@ const RegisterPage = () => {
           <NavbarBrand href='#'></NavbarBrand>
         </Container>
       </Navbar>
+      <>
+    {showPopupGreen && <PopupGreen text={popupMessage} clicked={onPopupDismiss} />}
+    {/* The rest of your RegisterPage component's JSX */}
+    </>
       <RegisterContainer fluid>
         <Row>
           <StyledImageCol md={6}>

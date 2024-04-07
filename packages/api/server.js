@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const corsMiddleware = require('./middleware/cors');
 const pxBoardsRoutes = require('./routes/pxBoard');
+const statRoutes = require('./routes/stat');
 const connectDB = require('./db');
 const cors = require('cors'); // Import the cors module
 const userRoutes = require('./routes/userRoutes');
@@ -37,6 +38,9 @@ app.use(bodyParser.json());
 app.use('/api', userRoutes);
 
 app.use('/api', pxBoardsRoutes);
+
+app.use('/api', statRoutes);
+
 
 // puppler db 
 //const populateDB = require('./pupplerDB/puppler');

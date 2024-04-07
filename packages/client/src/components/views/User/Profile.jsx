@@ -21,7 +21,7 @@ function Profile() {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.user);
     const error = useSelector(state => state.user.error);
-    const pxBoards = useSelector(state => state.pxBoard.pxBoards);
+    const pxBoards = useSelector(state => state.pxBoard.pxBoardsByUserId);
     const navigate = useNavigate();
 
     useEffect(() => {
