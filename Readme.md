@@ -41,10 +41,17 @@ Voici les étapes pour exécuter le projet :
 - Ouvrez un terminal pour le serveur.
 - Ouvrez un autre terminal pour le client.
 
-4- Lancer le serveur :
+4.1 Lancer le serveur avec MongoAtlas:
 - ```cd packages/api```
 - ```npm install```
 - ```node server```
+
+4.2 Lancer le serveur avec Docker:
+- ```Installer mongorestore https://drive.google.com/file/d/11GLtJFf02Rj2n7zcNrdkHiI3WbRzKVi5/view?usp=drive_link```
+- ```cd packages/api```
+- ```npm install```
+- ```./start.sh```
+  
 
 5- Lancer le client :
 - ```cd packages/client```
@@ -73,6 +80,7 @@ Vous pouvez consulter les tâches effectuées en accédant à la gestion de proj
 
 Vous pouvez regarder la vidéo de démonstration et de présentation de ce projet en suivant ce lien : 
 
+https://www.youtube.com/watch?v=uwlFs4ygggE
 
 
     
