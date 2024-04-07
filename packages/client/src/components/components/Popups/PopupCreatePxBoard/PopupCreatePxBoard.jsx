@@ -102,7 +102,7 @@ function PopupCreatePxBoard() {
       dispatch(createPxBoard(data)).unwrap();
       reset();
      // togglePopup();
-      alert("PixelBoard créé avec succès");
+      alert("PixelBoard créé avec succès  ");
     }
     catch (error) {
       console.error('Error creating pxBoard:', error.message);
@@ -139,7 +139,7 @@ function PopupCreatePxBoard() {
    */
   const dispatch = useDispatch();
   const pxBoardError = useSelector((state) => state.pxBoard.error);
-  const pxBoards = useSelector((state) => state.pxBoard.pxBoards);
+  const pxBoards = useSelector((state) => state.pxBoard.pxBoardsByUserId);
 
   console.log("pxBoards", pxBoards);
   console.log("pxBoardError", pxBoardError);

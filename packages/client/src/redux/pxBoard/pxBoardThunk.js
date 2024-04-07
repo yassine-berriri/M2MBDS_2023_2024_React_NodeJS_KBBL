@@ -77,6 +77,7 @@ export const fetchPxBoardsByUserId = createAsyncThunk(
     "pxBoard/fetchPxBoardsByUserId",
     async (userId) => {
         try {
+            console.log('Je suis dans le thunk fetchPxBoardsByUserId:', userId);
             const response = await axios.get(`${REACT_APP_API_URL}/api/pxboards/user/${userId}`);
             return response.data;
         } catch (error) {
