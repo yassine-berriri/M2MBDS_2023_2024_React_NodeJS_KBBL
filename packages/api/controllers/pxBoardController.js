@@ -12,8 +12,11 @@ function getAllPxBoards(req, res) {
 
 
 async function postPxBoard(req, res) {
+
+    console.log("reqreqreq", req.body.userId);
     const pxBoard = new PxBoard({
         id: req.body.id,
+        userId :req.body.userId,
         title: req.body.title,
         endDate: req.body.endDate,
         modificationDelai: req.body.modificationDelai,
@@ -72,20 +75,30 @@ async function getPxBoardById(req, res) {
     }
 }
 
+async function getPixelBoardByUserId(req, res) {
+    try {
+        const userId = req.params.userId; 
+        const pixelBoards = await PxBoard.find({ userId: userId }); 
+        res.send(pixelBoards); 
+    } catch (err) {
+        res.status(500).send({ message: 'Failed to fetch PixelBoards for the user', error: err });
+    }
+}
+
 /////// pixel Fonction ///////
 
 async function addPixel(req, res) {
     try {
         const pxBoardId = req.params.id;
         const { x, y, color } = req.body;
+        const userId= req.body.userId;
         const pxBoard = await PxBoard.findById(pxBoardId);
-      
         if (!pxBoard) {
             return res.status(404).send({ message: 'PxBoard not found' });
         }
 
         // Ajouter le nouveau pixel au tableau
-        pxBoard.pixels.push({ x, y, color, history: [{ color, modifiedAt: new Date() }] }); // Ajoute l'historique initial du pixel
+        pxBoard.pixels.push({userId,x, y, color, history: [{ color, modifiedAt: new Date() }] }); // Ajoute l'historique initial du pixel
 
         const updatedPxBoard = await pxBoard.save();
         res.send({ message: 'Pixel added', pxBoard: updatedPxBoard });
@@ -114,7 +127,11 @@ async function updatePixel(req, res) {
 
         // Mettre à jour la couleur et ajouter à l'historique
         pxBoard.pixels[pixelIndex].color = color;
-        pxBoard.pixels[pixelIndex].history.push({ color, modifiedAt: new Date() });
+        pxBoard.pixels[pixelIndex].history = [{
+            color: color,
+            modifiedAt: new Date(),
+           // Assuming this is the ID of the user making the change
+        }];
 
         const updatedPxBoard = await pxBoard.save();
         res.send({ message: 'Pixel updated', pxBoard: updatedPxBoard });
@@ -148,7 +165,34 @@ async function deletePixel(req, res) {
     }
 }
 
+async function countPixelsCreatedByUser(req, res) {
+    try {
+        const userId = req.params.userId; 
+        const pixelBoards = await PxBoard.find({ userId: userId }); 
 
-module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById,updatePixel,addPixel,deletePixel };
+        let count = 0;
+
+        pixelBoards.forEach(board => {
+          board.pixels.forEach(pixel => {
+            if (pixel.userId === userId) {
+              count++;
+            }
+          });
+        });
+        res.json({ count: count }); // Sending count as JSON object
+    } catch (error) {
+      console.error('Error counting pixels:', error);
+      throw error;
+    }
+}
+
+module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById, getPixelBoardByUserId, updatePixel,addPixel,deletePixel,countPixelsCreatedByUser };
+
+  
+  
+  
+  
+// module.exports = { getAllPxBoards, postPxBoard, deletePxBoard, updatePxBoard, getPxBoardById,updatePixel,addPixel,deletePixel,countPixelsCreatedByUser};
+
 
 

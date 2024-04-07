@@ -50,7 +50,7 @@
   .countdownDisplay {
     position: fixed; /* Ou "absolute", selon votre layout */
     top: 10%;
-    left: 15%;
+    right: 0%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.75);
     color: white;
@@ -91,18 +91,18 @@
 
   .zoom-controls {
     position: fixed;
-    justify-content: left;
+    justify-content: right;
     margin-bottom: 10px;
     z-index: 1001;
     top: 12%;
-    left: 85%;
+    right: 75%;
     transform: translateX(-50%);
   }
 
   .color-selected {
     position: fixed;
     top: 20%;
-    left: 8%;
+    right: 8%;
     z-index: 1001;
     display: flex;
     align-items: center; /* Centre verticalement les éléments dans le conteneur */

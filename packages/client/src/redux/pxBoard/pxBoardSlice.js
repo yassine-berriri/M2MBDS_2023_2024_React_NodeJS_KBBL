@@ -1,16 +1,29 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {createPxBoard, fetchPxBoard, deletePxBoard, updatePxBoard, fetchPxBoardById} from './pxBoardThunk';
+import {createPxBoard, fetchPxBoard, deletePxBoard, updatePxBoard, fetchPxBoardById, fetchPxBoardsByUserId} from './pxBoardThunk';
 
 export const pxBoardSlice = createSlice({
     name: 'pxBoard',
     initialState: {
         pxBoards: [],
         pxBoard: {},
+        pxBoardsByUserId: [],
         error: null,
         loading: false
     },
     extraReducers: (builder) => {
         builder
+        .addCase(fetchPxBoardsByUserId.fulfilled, (state, action) => {
+            state.pxBoardsByUserId = action.payload;
+            state.error = null;
+            state.loading = false;
+        })
+        .addCase(fetchPxBoardsByUserId.rejected, (state, action) => {
+            state.error = action.error.message;
+            state.loading = false;
+        })
+        .addCase(fetchPxBoardsByUserId.pending, (state) => {
+            state.loading = true;
+        })
         
         .addCase(fetchPxBoard.fulfilled, (state, action) => {
             state.pxBoards = action.payload;
@@ -95,6 +108,9 @@ export const pxBoardSlice = createSlice({
         .addCase(fetchPxBoardById.pending, (state) => {
             state.loading = true;
         })
+
+
+
 
 
     }

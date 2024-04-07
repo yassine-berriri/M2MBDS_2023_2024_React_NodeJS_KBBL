@@ -22,11 +22,11 @@ module.exports = function(io) {
 
         // Ajout d'un pixel
         socket.on('addPixel', async (data) => {
-            const { pxBoardId, x, y, color } = data;
+            const { userId,pxBoardId, x, y, color } = data;
             const result = await addPixel(data, io);
             if (result.success) {
-                io.to(pxBoardId).emit('pixelAdded', { x, y, color });
-                console.log('Pixel ajouté', { x, y, color });
+                io.to(pxBoardId).emit('pixelAdded', {userId, x, y, color });
+                console.log('Pixel ajouté', { userId,x, y, color });
             } else {
                 socket.emit('actionFailed', 'L\'ajout du pixel a échoué');
             }
@@ -67,7 +67,7 @@ module.exports = function(io) {
 
 async function addPixel( data, io) {
     try {
-        const { pxBoardId, x, y, color } = data;
+        const { userId, pxBoardId, x, y, color } = data;
         console.log("addPixel", data);
         const PxBoard = require('../models/pxBoardModel'); // Assurez-vous que le chemin d'accès est correct
         const pxBoard = await PxBoard.findById(pxBoardId);
@@ -80,7 +80,7 @@ async function addPixel( data, io) {
         }
 
         // Ajouter le nouveau pixel au tableau
-        pxBoard.pixels.push({ x, y, color, history: [{ color, modifiedAt: new Date() }] });
+        pxBoard.pixels.push({ userId, x, y, color, history: [{ color, modifiedAt: new Date() }] });
 
         const updatedPxBoard = await pxBoard.save();
         // Utilisez socket.emit pour envoyer une confirmation au client
@@ -95,6 +95,51 @@ async function addPixel( data, io) {
     }
 }
 
+async function updatePixel(data, io) {
+    const { pxBoardId, x, y, color } = data;
+    const PxBoard = require('../models/pxBoardModel');
+
+    try {
+        console.log("Attempting to update pixel...");
+
+        // Define the update operations for atomic execution
+        const updateOps = {
+            "$set": {
+                "pixels.$[elem].color": color,
+            },
+            "$push": {
+                "pixels.$[elem].history": { color, modifiedAt: new Date() }
+            }
+        };
+
+        // Specify the arrayFilters to identify the correct pixel to update
+        const arrayFilters = [{ "elem.x": x, "elem.y": y }];
+
+        // Execute the update atomically using findOneAndUpdate to apply the changes
+        const updatedDocument = await PxBoard.findOneAndUpdate(
+            { _id: pxBoardId },
+            updateOps,
+            { arrayFilters: arrayFilters, new: true }
+        );
+
+        if (!updatedDocument) {
+            console.log("PxBoard not found or pixel not found");
+            io.emit('error', { message: 'PxBoard not found or pixel not found' });
+            return { success: false };
+        }
+
+        // Emit the update to connected clients
+        io.to(pxBoardId).emit('pixelUpdated', { x, y, color, history: [{ color, modifiedAt: new Date() }] });
+        console.log("Pixel updated successfully.");
+        return { success: true };
+    } catch (err) {
+        console.log("Error updating pixel:", err);
+        io.emit('error', err);
+        return { success: false };
+    }
+}
+
+/*
 async function updatePixel(data, io) {
 
 
@@ -134,6 +179,7 @@ async function updatePixel(data, io) {
 
     }
 }
+*/
 
 async function deletePixel(data, io) {
     try {

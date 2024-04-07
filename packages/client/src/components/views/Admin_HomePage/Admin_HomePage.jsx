@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import {useNavigate} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchPxBoard,deletePxBoard,updatePxBoard } from '../../../redux/pxBoard/pxBoardThunk';
+import { fetchPxBoard,deletePxBoard,updatePxBoard, fetchPxBoardsByUserId } from '../../../redux/pxBoard/pxBoardThunk';
 import { useSelector } from 'react-redux';
 import Tools from "../../../Utils/tools";
 import { DropDownButtonTrie } from "../../components";
@@ -132,7 +132,8 @@ function Admin_HomePage() {
     console.log(" delete clicked id = ", id);
     dispatch(deletePxBoard(id))
     .then(() => {
-     dispatch(fetchPxBoard());
+      const userId = localStorage.getItem('id');
+      dispatch(fetchPxBoardsByUserId(userId));
     })
   }
   
@@ -165,7 +166,7 @@ function Admin_HomePage() {
         setDropDownTrieLabel("Trier par: delai de modification");
         break;
       default:
-        updatedPxBoards = pxBoards;
+        updatedPxBoards = pxBoardsTest;
         break;
     }
 
@@ -176,9 +177,14 @@ function Admin_HomePage() {
 
   const handleFilterByName = (name) => {
     setNameFilter(name);
-    let updatedPxBoards = [...pxBoards];
+    console.log("name", name);
+    console.log("sortedPxBoards", sortedPxBoards);
+    if (pxBoardsTest === null || pxBoardsTest.length === 0) return;
+    let updatedPxBoards = [...pxBoardsTest];
+    console.log("updatedPxBoards", updatedPxBoards);
     updatedPxBoards = updatedPxBoards.filter(board => board.title.toLowerCase().includes(name.toLowerCase()));
-    setSortedPxBoards(updatedPxBoards);
+    console.log("updatedPxBoards after filter", updatedPxBoards);  
+   setSortedPxBoards(updatedPxBoards);
   }
 
   
@@ -191,15 +197,20 @@ function Admin_HomePage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchPxBoard());
+    const userId = localStorage.getItem('id');
+    dispatch(fetchPxBoardsByUserId(userId));
+    //console.log("Je suis dans le useEffect de Admin_HomePage",userId,  pxBoards);
 }, [ dispatch]);
 
-let { pxBoards, loading, error } = useSelector(state => state.pxBoard);
+let { pxBoards, loading, error } = useSelector(state => state.pxBoard.pxBoards);
+const pxBoardsTest = useSelector(state => state.pxBoard.pxBoardsByUserId);
+
 
 useEffect(() => {
   // Initialisation de l'état local avec les données de Redux
-  setSortedPxBoards(pxBoards);
-}, [pxBoards]);
+  console.log("pxBoardsTest", pxBoardsTest);
+  setSortedPxBoards(pxBoardsTest);
+}, [pxBoardsTest]);
 let imageUrl = "";
 
   /* --------------------------------------------------------------------
@@ -231,9 +242,9 @@ let imageUrl = "";
       <CardGroup className="cardGroup">
                 {loading && <div> <MySpinnerPopup/> </div>}
                 {error && <div className="error">{error}</div>}
-                {!loading && !error && pxBoards.length > 0 ? (
+                {!loading && !error && pxBoardsTest?.length > 0 ? (
                     
-                    sortedPxBoards.slice().reverse().map(pxBoard => (
+                    sortedPxBoards?.slice().reverse().map(pxBoard => (
                         imageUrl = drawImageFromPixels(pxBoard.pixels, 100, 100),
 
                         <div key={pxBoard.id}>
