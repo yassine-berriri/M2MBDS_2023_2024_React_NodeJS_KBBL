@@ -43,6 +43,7 @@ import team3 from "../../../assets/images/team-3.jpg";
 import team4 from "../../../assets/images/team-4.jpg";
 import card from "../../../assets/images/info-card-1.jpg";
 import {useNavigate} from 'react-router-dom';
+import PopupGreen from '../../components/Popups/PopupGreen/PopupGreen'; // Adjust the path to where your PopupGreen component is located
 
 function HomePage() {
   const { Title, Text } = Typography;
@@ -50,11 +51,28 @@ function HomePage() {
   const { pxBoards, loading, error } = useSelector(state => state.pxBoard);
   const onChange = (e) => console.log(`radio checked:${e.target.value}`);
   const navigate = useNavigate();
-
+  const [showPopupGreen, setShowPopupGreen] = useState(false);
+ const [popupMessage, setPopupMessage] = useState('');
   useEffect(() => {
+
+    if (localStorage.getItem('showLoginSuccess') === 'true') {
+      // Show the success message here, either by setting state that triggers a PopupGreen component
+      // or by using another method like a toast notification
+      setShowPopupGreen(true); // Assuming you have a state to control this
+      setPopupMessage('Login successful! Welcome back.');
+  
+      // Remove the flag so it doesn't show again on refresh
+      localStorage.removeItem('showLoginSuccess');
+    }
     dispatch(fetchPxBoard());
+
   }, [dispatch]);
   const [reverse, setReverse] = useState(false);
+  
+  const onPopupDismiss = () => {
+    setShowPopupGreen(false);
+    navigate('/HomePage'); // Adjust the path as necessary
+  };
   
   
   const   drawImageFromPixels = (pixels, width, height) => {
@@ -388,6 +406,10 @@ function HomePage() {
           </Row>
           <Row gutter={[24, 0]}>
         {loading && <div> Loading... </div>} {/* Put your loading component here */}
+            <>
+      {showPopupGreen && <PopupGreen text={popupMessage} clicked={onPopupDismiss} />}
+      {/* The rest of your SignInPage component's JSX */}
+    </>
         {error && <div className="error">{error}</div>}
         {!loading && !error && (
           recentPxBoards.map(pxBoard => (

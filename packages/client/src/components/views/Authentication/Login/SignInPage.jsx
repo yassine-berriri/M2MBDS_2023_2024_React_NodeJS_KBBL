@@ -31,6 +31,8 @@ const SignInPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
+
   const handleSignIn = async () => {
     const validationErrors = {};
 
@@ -54,7 +56,9 @@ const SignInPage = () => {
       const token = localStorage.getItem('token');
       console.log('Token:', token); // For example, to send the token in API requests
       dispatch({ type: 'USER_LOGIN_SUCCESS', payload: { email } });
+      localStorage.setItem('showLoginSuccess', 'true');
       navigate('/HomePage');
+      
     } catch (error) {
       // Handle sign-in errors
     }

@@ -9,8 +9,8 @@ function Footer() {
       <Row className="just">
         <Col xs={24} md={12} lg={12}>
           <div className="copyright">
-            © 2024, made with
-            {<HeartFilled />} 
+            © 2024, made with {<HeartFilled />} MBDS 2023/2024 Berriri Yassine  , KRIMI ibrahim , Boucheffa Badis , MARWAN Larbi , Abdenour Achouri
+             
           
         
           </div>
