@@ -136,12 +136,11 @@ function Profile() {
                     <br />
                     <br />
                     <br />
-                    <div className="profile-nav-bg" style={{ backgroundImage: "url(" + BgProfile + ")" }}></div>
-                    <Card className="card-profile-head" bodyStyle={{ display: "none" }} title={
+                    <div className="profile-nav-bg" style={{ backgroundImage: `url(https://picsum.photos/318/180)`, height: '40%', width: '100%' }}></div>                    <Card className="card-profile-head" bodyStyle={{ display: "none" }} title={
                         <Row justify="space-between" align="middle" gutter={[24, 0]}>
                             <Col span={24} md={12} className="col-info">
                                 <Avatar.Group>
-                                    <Avatar size={74} shape="square" src={profilavatar} />
+                                    <Avatar size={74} shape="square" src= "https://picsum.photos/318/180" />
                                     <div className="avatar-info">
                                         <h4 className="font-semibold m-0">{user && user?.user.firstName} {user?.user.lastName}</h4>
                                         <b>{user?.user.role}</b>
