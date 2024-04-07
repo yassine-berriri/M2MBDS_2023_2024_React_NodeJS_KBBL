@@ -405,8 +405,8 @@ function HomePage() {
                   </Col>
                   <Col span={24}>
                     <div className="ant-muse">
-                      <Text>{pxBoard.title}</Text>
                       <Title level={5}>{pxBoard.title}</Title>
+                      <Text>size : {pxBoard.size}</Text>
                       <Paragraph>
                         {/* Place additional information here */}
                         More details about the PixelBoard...

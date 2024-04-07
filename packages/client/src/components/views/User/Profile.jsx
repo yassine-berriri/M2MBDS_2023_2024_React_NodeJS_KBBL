@@ -110,8 +110,8 @@ function Profile() {
                             </Col>
                             <Col span={24}>
                                 <div className="ant-muse">
-                                    <Text>{board.title}</Text>
                                     <Title level={5}>{board.title}</Title>
+                                    <Text>size : {board.size}</Text>
                                     <Paragraph>
                                         {/* Place additional information here */}
                                         More details about the PixelBoard...
