@@ -10,10 +10,24 @@ const socketIo = require('socket.io');
 const http = require('http');
 
 const app = express();
+const migrateData = require('./scripts/migrate-data'); 
 
 
+/*
+(async () => {
+    await connectDB();
+    //await migrateData(); // Exécutez la migration après la connexion à la DB
+})();
+*/
 
-connectDB()
+connectDB().then(() => {
+    console.log("Connecté à la base MongoDB pxBoard dans le cloud !");
+    //console.log("vérifiez with http://localhost:3001/api/allpxBoards que cela fonctionne")
+    migrateData(); // Exécutez la migration après la connexion à la DB
+}).catch((err) => {
+    console.error('Erreur de connexion: ', err);
+})
+
 
 
 const server = http.createServer(app);

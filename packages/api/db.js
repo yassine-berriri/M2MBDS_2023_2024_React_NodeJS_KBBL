@@ -1,23 +1,29 @@
+
 const mongoose = require('mongoose');
 let express = require('express');
 mongoose.Promise = global.Promise;
-
-const uri = 'mongodb+srv://yassineberriri:vHBIl1JGB46EUnlq@cluster0.axncp8h.mongodb.net/MBDS?retryWrites=true&w=majority';
-
-// const uri = 'mongodb://yassineberriri:vHBIl1JGB46EUnlq@localhost:27017/MBDS?authSource=admin';
+require('dotenv').config();
+const { URL_MONGO_ATLAS, URL_Mongo_DOCKER } = process.env;
 
 
+//const uri = URL_MONGO_ATLAS;
+const uri = URL_Mongo_DOCKER;
 
 
-const connectDB = async () => {
-    try {
-        await mongoose.connect(uri, { })
-        console.log("Connecté à la base MongoDB pxBoard dans le cloud !");
-        console.log("at URI = " + uri);
-        console.log("vérifiez with http://localhost:3001/api/allpxBoards que cela fonctionne")
-    } catch (err) {
-        console.error('Erreur de connexion: ', err);
-    }
-};
 
-module.exports = connectDB;
+
+    const connectDB = async () => {
+        try {
+            console.log("uri ="+ uri);
+            await mongoose.connect(uri, { })
+            console.log("Connecté à la base MongoDB pxBoard dans le cloud !");
+            console.log("at URI = " + uri);
+            console.log("vérifiez with http://localhost:3001/api/allpxBoards que cela fonctionne")
+        } catch (err) {
+            console.error('Erreur de connexion: ', err);
+        }
+    };
+
+    
+
+    module.exports = connectDB;
