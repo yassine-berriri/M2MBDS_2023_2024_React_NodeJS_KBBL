@@ -211,6 +211,7 @@ function Profile() {
                               </Card>
                           </Col>
                     </Row>
+                    {localStorage.getItem('role') === 'admin' ? (
                     <Card bordered={false} className="header-solid mb-24" title={
                         <>
                             <h6 className="font-semibold">Pixel Boards</h6>
@@ -220,6 +221,7 @@ function Profile() {
                         {/* Render Pixel Boards */}
                         {renderPxBoards()}
                     </Card>
+                    ) : null} 
                 </>
             </Main>
         </div>
