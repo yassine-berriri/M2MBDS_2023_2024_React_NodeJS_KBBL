@@ -10,6 +10,7 @@ import PopupGreen from '../../../components/Popups/PopupGreen/PopupGreen'; // Ad
 
 import styled from 'styled-components';
 
+
 const RegisterContainer = styled(Container)`
   padding: calc(20vh - 3rem) 10rem 2vh 1%;
   display: flex;
