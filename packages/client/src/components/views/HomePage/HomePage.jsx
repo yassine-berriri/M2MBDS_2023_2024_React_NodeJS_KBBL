@@ -102,7 +102,7 @@ function HomePage() {
       <div className="color-display-container">
       <span className="label">Most Popular Color:</span>
       <div className="color-sample" style={{ backgroundColor: stat.mostPopularColor }}></div>
-      <span className="color-name">{stat.mostPopularColor.toUpperCase()}</span>
+      <span className="color-name">{stat?.mostPopularColor?.toUpperCase()}</span>
     </div>
 
 

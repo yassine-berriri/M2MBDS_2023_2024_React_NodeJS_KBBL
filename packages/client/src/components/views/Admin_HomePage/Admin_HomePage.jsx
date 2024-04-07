@@ -132,7 +132,8 @@ function Admin_HomePage() {
     console.log(" delete clicked id = ", id);
     dispatch(deletePxBoard(id))
     .then(() => {
-     dispatch(fetchPxBoard());
+      const userId = localStorage.getItem('id');
+      dispatch(fetchPxBoardsByUserId(userId));
     })
   }
   
@@ -165,7 +166,7 @@ function Admin_HomePage() {
         setDropDownTrieLabel("Trier par: delai de modification");
         break;
       default:
-        updatedPxBoards = pxBoards;
+        updatedPxBoards = pxBoardsTest;
         break;
     }
 
@@ -176,11 +177,14 @@ function Admin_HomePage() {
 
   const handleFilterByName = (name) => {
     setNameFilter(name);
-    if (pxBoards !== null || pxBoards.length === 0) return;
-    let updatedPxBoards = [...pxBoards];
-    
+    console.log("name", name);
+    console.log("sortedPxBoards", sortedPxBoards);
+    if (pxBoardsTest === null || pxBoardsTest.length === 0) return;
+    let updatedPxBoards = [...pxBoardsTest];
+    console.log("updatedPxBoards", updatedPxBoards);
     updatedPxBoards = updatedPxBoards.filter(board => board.title.toLowerCase().includes(name.toLowerCase()));
-    setSortedPxBoards(updatedPxBoards);
+    console.log("updatedPxBoards after filter", updatedPxBoards);  
+   setSortedPxBoards(updatedPxBoards);
   }
 
   
@@ -240,7 +244,7 @@ let imageUrl = "";
                 {error && <div className="error">{error}</div>}
                 {!loading && !error && pxBoardsTest?.length > 0 ? (
                     
-                    sortedPxBoards.slice().reverse().map(pxBoard => (
+                    sortedPxBoards?.slice().reverse().map(pxBoard => (
                         imageUrl = drawImageFromPixels(pxBoard.pixels, 100, 100),
 
                         <div key={pxBoard.id}>

@@ -3669,7 +3669,7 @@ apexcharts@^3.41.0:
     svg.resize.js "^1.4.3"
     svg.select.js "^3.0.1"
 
-"api@file:C:\\Users\\ibrah\\Desktop\\Projet Node-React\\M2MBDS_2023_2024_React_NodeJS_KBBL\\packages\\api":
+"api@file:C:\\Users\\User\\Desktop\\projetReact\\M2MBDS_2023_2024_React_NodeJS_KBBL\\packages\\api":
   version "0.0.1"
   resolved "file:packages/api"
   dependencies:
@@ -4529,7 +4529,7 @@ cli-width@^3.0.0:
   resolved "https://registry.npmjs.org/cli-width/-/cli-width-3.0.0.tgz"
   integrity sha512-FxqpkPPwu1HjuN93Omfm4h8uIanXofW0RxVEW3k5RKx+mJJYSthzNhp32Kzxxy3YAEZ/Dc/EWN1vZRY0+kOhbw==
 
-"client@file:C:\\Users\\ibrah\\Desktop\\Projet Node-React\\M2MBDS_2023_2024_React_NodeJS_KBBL\\packages\\client":
+"client@file:C:\\Users\\User\\Desktop\\projetReact\\M2MBDS_2023_2024_React_NodeJS_KBBL\\packages\\client":
   version "0.0.1"
   resolved "file:packages/client"
   dependencies:
