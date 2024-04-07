@@ -69,6 +69,11 @@ Vous pouvez consulter les tâches effectuées en accédant à la gestion de proj
 
 - https://github.com/users/yassine-berriri/projects/2
 
+## Vidéo de démonstration du projet : 
+
+Vous pouvez regarder la vidéo de démonstration et de présentation de ce projet en suivant ce lien : 
+
+
 
     
 
