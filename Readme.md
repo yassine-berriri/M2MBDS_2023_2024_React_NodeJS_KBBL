@@ -28,7 +28,34 @@ PixelBoard est une plateforme interactive où chaque utilisateur peut colorier u
 - Connexion sécurisée avec authentification via JWT (JSON Web Token).
 - Accès à leur profil pour modifier leurs informations et le thème de l'interface.
 
-## Installation & execution
+## Instruction de l'exécution
+Voici les étapes pour exécuter le projet :
+
+1- Cloner le projet :
+
+- ``` git clone https://github.com/yassine-berriri/M2MBDS_2023_2024_React_NodeJS_KBBL.git ```
+
+2- Accéder au projet
+
+3- Ouvrir deux terminaux : 
+- Ouvrez un terminal pour le serveur.
+- Ouvrez un autre terminal pour le client.
+
+4- Lancer le serveur :
+- ```cd packages/api```
+- ```npm install```
+- ```node server```
+
+5- Lancer le client :
+- ```cd packages/client```
+- ```npm install```
+- ```npm start```
+
+6- Accès au navigateur : 
+
+Ouvrez un navigateur web et accédez à l'adresse suivante : 
+
+- ```http://localhost:3000/```
 
 ## Participants
 - Abdenour ACHOURI (Abdenour_ACHOURI)
