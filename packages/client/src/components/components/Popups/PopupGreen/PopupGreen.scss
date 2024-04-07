@@ -1,0 +1,16 @@
+.PopupGreen {
+    .modal-header {
+      background-color: #dff0d8; // Light green background
+      color: #3c763d; // Dark green text
+    }
+    
+    .modal-footer .btn-primary {
+      background-color: #5cb85c; // Bootstrap "success" green
+      border-color: #4cae4c; // Slightly darker green for the border
+    }
+  
+    .modal-content {
+      border-color: #4cae4c; // Consistent with button border color
+    }
+  }
+  

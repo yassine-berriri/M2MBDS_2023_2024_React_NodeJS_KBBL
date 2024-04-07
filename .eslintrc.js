@@ -1,5 +1,7 @@
+
 module.exports = {
 	extends: [
-		'53js',
+		//'53js',
+		"react-app"
 	],
 };

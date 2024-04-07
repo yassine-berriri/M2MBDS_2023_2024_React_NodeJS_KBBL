@@ -1,11 +1,20 @@
 import { useState } from 'react';
 import logo from './logo.svg';
+import * as routers from "./routers";
+import './App.scss';
 
-import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const { REACT_APP_API_URL } = process.env;
+import { store, persistor  } from '../src/redux/Store'; 
+import { Provider } from 'react-redux';
+import "./assets/styles/main.css";
+import "./assets/styles/responsive.css";
+import { PersistGate } from 'redux-persist/integration/react';
 
+
+/*
 function App() {
+	const { REACT_APP_API_URL } = process.env;
 	const [resp, setResp] = useState(null);
 	const [error, setError] = useState(null);
 	const [loading, setLoading] = useState(null);
@@ -44,6 +53,21 @@ function App() {
 			</header>
 		</div>
 	);
+}
+*/
+
+
+function App() {
+	return (
+		
+		<div className="App">
+		  <Provider store={store}>
+		  <PersistGate loading={null} persistor={persistor}>
+		  <routers.RootRouter/>
+		  </PersistGate>
+		  </Provider>
+		</div>
+	  );
 }
 
 export default App;
