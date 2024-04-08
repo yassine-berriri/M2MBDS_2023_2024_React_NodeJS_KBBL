@@ -66,7 +66,7 @@ Ouvrez un navigateur web et accédez à l'adresse suivante :
 
 ## Participants
 - Abdenour ACHOURI (Abdenour_ACHOURI)
-- yassine BERRIRI (yassineBr12, YassineBerriri, yassine-berriri)
+- yassine BERRIRI (yassine-berriri, yassineBr12, YassineBerriri)
 - Badis BOUCHEFFA (BOUCHEFF-BADIS)
 - Ibrahim KRIMI (Ibrahim-krimi)
 - Marwane LARBI (MarwaneLarbi)
